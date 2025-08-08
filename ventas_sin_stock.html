@@ -1421,18 +1421,18 @@
 										<script language="javascript"
 											src="/b2bWeb/portal/comercial/../static/scripts/ajax-Ripley.js"></script>
 										<script type="text/javascript">
-											<!--
-											function validaCheck(op) {
-												obj = document.ConsultaComercialForm;
-												if (op == "1")
-												if (obj.chkFileStock.checked)
-												   obj.chkSinVtaSinStock.checked = false;
-												if (op == "2")
-												 if (obj.chkSinVtaSinStock.checked)
-														 obj.chkFileStock.checked = false;
-											}
-											
-											function resetearDatos(form){
+											< !-
+												function validaCheck(op) {
+													obj = document.ConsultaComercialForm;
+													if (op == "1")
+														if (obj.chkFileStock.checked)
+															obj.chkSinVtaSinStock.checked = false;
+													if (op == "2")
+														if (obj.chkSinVtaSinStock.checked)
+															obj.chkFileStock.checked = false;
+												}
+
+											function resetearDatos(form) {
 												form.cboTipoConsulta.selectedIndex = 0;
 												form.cboSucursalDestino.selectedIndex = 0;
 												form.cboTemporada.selectedIndex = 0;
@@ -1445,20 +1445,19 @@
 												form.chkFileStock.checked = false;
 												form.txtFechaDesde.value = form.hdnFechaDesde.value;
 												form.txtFechaHasta.value = form.hdnFechaHasta.value;
-												if (form.cboDepto.selectedIndex != 0){
+												if (form.cboDepto.selectedIndex != 0) {
 													form.cboDepto.selectedIndex = 0;
 												}
 											}
-											function ValidaDatos(form)
-											{
-													if(!comparaDates(form.txtFechaDesde.value,form.txtFechaHasta.value)){
-														alert('Fecha Hasta debe ser mayor que Fecha Desde');	
-														return false;
-													} else {
-														return true;
-													}
+											function ValidaDatos(form) {
+												if (!comparaDates(form.txtFechaDesde.value, form.txtFechaHasta.value)) {
+													alert('Fecha Hasta debe ser mayor que Fecha Desde');
+													return false;
+												} else {
+													return true;
+												}
 											}
-											
+
 											//-->
 										</script>
 
@@ -3205,7 +3204,8 @@
 																							onclick="cal.select(document.forms[0].elements['txtFechaDesde'],'anchorDesde','dd-MM-yyyy'); return false;"
 																							border="0" alt="Calendario"
 																							align="top" width="22"
-																							height="21"></div>
+																							height="21">
+																					</div>
 																				</td>
 																				<td width="25%">
 																					<div align="right">
@@ -3222,7 +3222,8 @@
 																							onclick="cal.select(document.forms[0].elements['txtFechaHasta'],'anchorHasta','dd-MM-yyyy'); return false;"
 																							border="0" alt="Calendario"
 																							align="top" width="22"
-																							height="21"></div>
+																							height="21">
+																					</div>
 																				</td>
 																			</tr>
 																		</tbody>

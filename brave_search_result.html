@@ -1,0 +1,907 @@
+<html lang="es">
+
+<head>
+	<title>Portal Proveedores</title>
+	<script type="text/javascript" src="/b2bWeb/portal/comercial/../static/scripts/general.js"></script>
+	<link rel="stylesheet" type="text/css" href="/b2bWeb/portal/comercial/../static/styles/general.css">
+	<link rel="stylesheet" type="text/css" href="/b2bWeb/portal/comercial/../static/styles/style.css">
+	<script type="text/javascript">
+		var djConfig = { isDebug: true };
+	</script>
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Last-Modified" content="0">
+</head>
+
+<body class="body" onload="window.status='';" marginwidth="0" marginheight="0">
+	<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td valign="top" height="100%">
+
+
+
+
+
+
+					<script language="javascript" src="/b2bWeb/portal/comercial/../static/scripts/form.js"></script>
+					<link rel="stylesheet" type="text/css" href="/b2bWeb/portal/static/styles/general.css">
+
+					<table width="100%" class="PageHeadTable">
+						<tbody>
+							<tr>
+								<td class="PageHeadCell">
+									<div align="CENTER"><strong>Consulta de Ventas Detalladas Sin Stock</strong></div>
+									<div align="CENTER"><strong>Venta - Diaria</strong></div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div></div>
+					<div align="CENTER"></div>
+					<div></div>
+					<div>&nbsp;</div>
+					<div align="CENTER">
+
+
+
+
+
+
+
+
+
+
+
+						<link rel="stylesheet" type="text/css" href="/b2bWeb/portal/static/styles/general.css">
+
+
+
+						<!-- CRITERIA TIPO 9 -->
+						<div align="CENTER">
+							<table width="100%" border="1" cellspacing="0" cellpadding="2" class="CriteriosTable">
+								<thead>
+									<tr>
+										<td class="CriteriosTit" colspan="4" height="35"><a href="#"
+												onclick="toggle('criterios');">Criterios de búsqueda</a></td>
+									</tr>
+								</thead>
+								<tbody id="criterios" style="display:none">
+									<tr class="CriteriosCell">
+										<td width="25%" class="CriteriosCell">
+											<div align="left">Fecha Inicial</div>
+										</td>
+										<td width="25%" class="CriteriosDat" bgcolor="#e7e7e7">
+											<div align="left">&nbsp;
+
+
+
+												01-07-2025
+
+
+											</div>
+										</td>
+										<td width="25%" class="CriteriosCell" bgcolor="#e7e7e7" bordercolor="#333333">
+											<div align="left">Fecha Final</div>
+										</td>
+										<td width="25%" class="CriteriosDat" bgcolor="#e7e7e7">
+											<div align="left" bordercolor="#333333">&nbsp;
+
+
+
+												31-07-2025
+
+
+											</div>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="CriteriosCell" bgcolor="#e7e7e7">
+											<div align="left" bordercolor="#333333">Sucursal</div>
+										</td>
+										<td width="25%" class="CriteriosDat" bgcolor="#e7e7e7">
+											<div align="left" bordercolor="#ffffff">&nbsp;Todas</div>
+										</td>
+										<td width="25%" class="CriteriosCell" bgcolor="#e7e7e7" bordercolor="#333333">
+											<div align="left">Marca</div>
+										</td>
+										<td width="25%" class="CriteriosDat" bgcolor="#e7e7e7">
+											<div align="left" bordercolor="#333333">&nbsp;Todos</div>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="CriteriosCell" bgcolor="#e7e7e7" bordercolor="#333333">
+											<div align="left">Departamento</div>
+										</td>
+										<td width="25%" class="CriteriosDat" bgcolor="#e7e7e7">
+											<div align="left" bordercolor="#333333"> &nbsp;Todos</div>
+										</td>
+										<td width="25%" class="CriteriosCell" bgcolor="#e7e7e7">
+											<div align="left" bordercolor="#333333">Línea de Producto</div>
+										</td>
+										<td width="25%" class="CriteriosDat" bgcolor="#e7e7e7">
+											<div align="left" bordercolor="#ffffff">&nbsp;Todas</div>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="CriteriosCell" bgcolor="#e7e7e7" bordercolor="#333333">
+											<div align="left">Temporada</div>
+										</td>
+										<td width="25%" class="CriteriosDat" bgcolor="#e7e7e7">
+											<div align="left" bordercolor="#333333"> &nbsp;Todas</div>
+										</td>
+										<td width="25%" class="CriteriosCell" bgcolor="#e7e7e7" colspan="2">
+											<div align="left" bordercolor="#333333">&nbsp;</div>
+										</td>
+									</tr>
+									<tr>
+										<td width="25%" class="CriteriosCell" bgcolor="#e7e7e7" bordercolor="#333333">
+											<div align="left">Código UPC</div>
+										</td>
+										<td width="25%" class="CriteriosDat" bgcolor="#e7e7e7">
+											<div align="left" bordercolor="#333333"> &nbsp;</div>
+										</td>
+										<td width="25%" class="CriteriosCell" bgcolor="#e7e7e7" colspan="2">
+											<div align="left" bordercolor="#333333">&nbsp;</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+
+
+						<div>&nbsp;</div>
+						<div align="left">
+
+
+
+
+							<div align="CENTER">
+								<table width="100%" class="TotalesTable" border="0" textspacing="2" cellpadding="2">
+									<tbody>
+										<tr>
+											<td width="100%" bgcolor="#efefef" colspan="4" class="TotalesTit">
+												<strong>Totales</strong></td>
+										</tr>
+										<tr class="TotalesCell">
+											<td bgcolor="#e7e7e7" class="TotalesText" align="right">Total unidades
+												vendidas:</td>
+											<td width="15%" class="TotalesDat">
+												<div align="right">
+													114
+												</div>
+											</td>
+											<td bgcolor="#e7e7e7" class="TotalesText" align="right">Total venta
+												valorizada:</td>
+											<td class="TotalesDat" width="15%" align="right">
+												<div align="right">$
+													10.269.220</div>
+											</td>
+										</tr>
+										<tr class="TotalesCell">
+											<td bgcolor="#e7e7e7" class="TotalesText" align="right">Total costo de
+												venta:</td>
+											<td class="TotalesDat" width="15%" align="right">
+												<div align="right">$
+													8.899.391</div>
+											</td>
+											<td bgcolor="#e7e7e7" class="TotalesText" colspan="2">&nbsp;</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<br>
+						</div>
+						<div align="left">
+
+
+
+
+
+
+							<div>Se encontraron 98 registros.</div>
+							<div>
+
+
+							</div>
+
+						</div>
+						<div align="CENTER">
+							<table width="100%" cellspacing="0" cellpadding="2" border="1" class="DojoTable">
+								<tbody>
+									<tr>
+										<td width="98%" bgcolor="#efefef" align="center" valign="middle" colspan="16"
+											class="TotalesTit">
+											<div align="LEFT"><strong>Movimientos</strong></div>
+										</td>
+									</tr>
+									<tr>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Fecha</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Cód.Art. Ripley</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">UPC</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Desc.Art. Ripley</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Cód.Art.Prov. (Case Pack)</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Desc.Art.Prov.(Case Pack)</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Sucursal</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Venta (u)</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Venta ($)</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Costo De Venta($)</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10" nowrap="nowrap">Mark-up</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Marca</td>
+										<td bgcolor="#e7e7e7" align="center" valign="bottom" height="50"
+											class="ReportHead10">Temp.</td>
+									</tr>
+
+
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('par', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'par')"
+										class="par">
+										<td align="right" nowrap="nowrap">
+
+
+											15-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">40104143</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ESCOBA INALAMBRICA KARCHER KB5 </td>
+										<td align="right" nowrap="nowrap">4054278974750 </td>
+										<td align="left">ESCOBA INALAMBRICA KARCHER KB5</td>
+										<td align="left">Internet</td>
+										<td align="right" nowrap="nowrap">8</td>
+										<td align="right" nowrap="nowrap">369.681</td>
+										<td align="right" nowrap="nowrap">449.524</td>
+										<td align="right" nowrap="nowrap">0,82</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('impar', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'impar')"
+										class="impar">
+										<td align="right" nowrap="nowrap">
+
+
+											13-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">40489390</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA KARCHER ROBOT RCV3 </td>
+										<td align="right" nowrap="nowrap">4054278965727 </td>
+										<td align="left">ASPIRADORA KARCHER ROBOT RCV3</td>
+										<td align="left">Portal Temuco</td>
+										<td align="right" nowrap="nowrap">3</td>
+										<td align="right" nowrap="nowrap">793.252</td>
+										<td align="right" nowrap="nowrap">623.316</td>
+										<td align="right" nowrap="nowrap">1,27</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('par', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'par')"
+										class="par">
+										<td align="right" nowrap="nowrap">
+
+
+											21-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">39560917</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA MANUAL KARCHER VCH2 </td>
+										<td align="right" nowrap="nowrap">1.198-400.0 </td>
+										<td align="left">ASPIRADORA MANUAL KARCHER VCH2</td>
+										<td align="left">Portal Temuco</td>
+										<td align="right" nowrap="nowrap">2</td>
+										<td align="right" nowrap="nowrap">98.303</td>
+										<td align="right" nowrap="nowrap">72.915</td>
+										<td align="right" nowrap="nowrap">1,35</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('impar', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'impar')"
+										class="impar">
+										<td align="right" nowrap="nowrap">
+
+
+											25-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">39560917</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA MANUAL KARCHER VCH2 </td>
+										<td align="right" nowrap="nowrap">1.198-400.0 </td>
+										<td align="left">ASPIRADORA MANUAL KARCHER VCH2</td>
+										<td align="left">Portal Temuco</td>
+										<td align="right" nowrap="nowrap">2</td>
+										<td align="right" nowrap="nowrap">100.824</td>
+										<td align="right" nowrap="nowrap">72.915</td>
+										<td align="right" nowrap="nowrap">1,38</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('par', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'par')"
+										class="par">
+										<td align="right" nowrap="nowrap">
+
+
+											29-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">39560919</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA POLVO Y AGUA KARCHER WD1 </td>
+										<td align="right" nowrap="nowrap">1.098-322.0 </td>
+										<td align="left">ASPIRADORA POLVO Y AGUA KARCHER WD1</td>
+										<td align="left">Internet</td>
+										<td align="right" nowrap="nowrap">2</td>
+										<td align="right" nowrap="nowrap">92.429</td>
+										<td align="right" nowrap="nowrap">115.474</td>
+										<td align="right" nowrap="nowrap">0,80</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('impar', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'impar')"
+										class="hilite">
+										<td align="right" nowrap="nowrap">
+
+
+											20-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">40104137</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA CICLONICA KARCHER VC3 </td>
+										<td align="right" nowrap="nowrap">4054278991757 </td>
+										<td align="left">ASPIRADORA CICLONICA KARCHER VC3</td>
+										<td align="left">Portal Temuco</td>
+										<td align="right" nowrap="nowrap">2</td>
+										<td align="right" nowrap="nowrap">193.261</td>
+										<td align="right" nowrap="nowrap">162.408</td>
+										<td align="right" nowrap="nowrap">1,19</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('par', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'par')"
+										class="par">
+										<td align="right" nowrap="nowrap">
+
+
+											24-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">40104138</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA INALAMBRICA KARCHER VCL3 </td>
+										<td align="right" nowrap="nowrap">7891374301601 </td>
+										<td align="left">ASPIRADORA INALAMBRICA KARCHER VCL3</td>
+										<td align="left">Internet</td>
+										<td align="right" nowrap="nowrap">2</td>
+										<td align="right" nowrap="nowrap">126.034</td>
+										<td align="right" nowrap="nowrap">105.636</td>
+										<td align="right" nowrap="nowrap">1,19</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('impar', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'impar')"
+										class="impar">
+										<td align="right" nowrap="nowrap">
+
+
+											15-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">40104140</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA TAMBOR KARCHER WD3V </td>
+										<td align="right" nowrap="nowrap">4066529117304 </td>
+										<td align="left">ASPIRADORA TAMBOR KARCHER WD3V</td>
+										<td align="left">Internet</td>
+										<td align="right" nowrap="nowrap">2</td>
+										<td align="right" nowrap="nowrap">151.244</td>
+										<td align="right" nowrap="nowrap">188.222</td>
+										<td align="right" nowrap="nowrap">0,80</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('par', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'par')"
+										class="par">
+										<td align="right" nowrap="nowrap">
+
+
+											11-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">40104143</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ESCOBA INALAMBRICA KARCHER KB5 </td>
+										<td align="right" nowrap="nowrap">4054278974750 </td>
+										<td align="left">ESCOBA INALAMBRICA KARCHER KB5</td>
+										<td align="left">Internet</td>
+										<td align="right" nowrap="nowrap">2</td>
+										<td align="right" nowrap="nowrap">126.034</td>
+										<td align="right" nowrap="nowrap">112.381</td>
+										<td align="right" nowrap="nowrap">1,12</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('impar', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'impar')"
+										class="impar">
+										<td align="right" nowrap="nowrap">
+
+
+											12-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">40489390</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA KARCHER ROBOT RCV3 </td>
+										<td align="right" nowrap="nowrap">4054278965727 </td>
+										<td align="left">ASPIRADORA KARCHER ROBOT RCV3</td>
+										<td align="left">Portal Temuco</td>
+										<td align="right" nowrap="nowrap">2</td>
+										<td align="right" nowrap="nowrap">537.798</td>
+										<td align="right" nowrap="nowrap">415.544</td>
+										<td align="right" nowrap="nowrap">1,29</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('par', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'par')"
+										class="par">
+										<td align="right" nowrap="nowrap">
+
+
+											23-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">40489394</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">BOLSA DEL FILTRO KARCHER WD3 </td>
+										<td align="right" nowrap="nowrap">4054278777689 </td>
+										<td align="left">BOLSA DEL FILTRO KARCHER WD3</td>
+										<td align="left">Parque Arauco</td>
+										<td align="right" nowrap="nowrap">2</td>
+										<td align="right" nowrap="nowrap">30.235</td>
+										<td align="right" nowrap="nowrap">23.986</td>
+										<td align="right" nowrap="nowrap">1,26</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('impar', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'impar')"
+										class="impar">
+										<td align="right" nowrap="nowrap">
+
+
+											25-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">39272044</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA DE ARRASTRE VC1 FILTRO HEPA </td>
+										<td align="right" nowrap="nowrap">11980810 </td>
+										<td align="left">Limpiadora a Vapor Karcher SC2 EasyFix</td>
+										<td align="left">El Trebol</td>
+										<td align="right" nowrap="nowrap">1</td>
+										<td align="right" nowrap="nowrap">21.000</td>
+										<td align="right" nowrap="nowrap">42.222</td>
+										<td align="right" nowrap="nowrap">0,50</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('par', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'par')"
+										class="par">
+										<td align="right" nowrap="nowrap">
+
+
+											05-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">39272044</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA DE ARRASTRE VC1 FILTRO HEPA </td>
+										<td align="right" nowrap="nowrap">11980810 </td>
+										<td align="left">Limpiadora a Vapor Karcher SC2 EasyFix</td>
+										<td align="left">El Trebol</td>
+										<td align="right" nowrap="nowrap">1</td>
+										<td align="right" nowrap="nowrap">37.807</td>
+										<td align="right" nowrap="nowrap">42.222</td>
+										<td align="right" nowrap="nowrap">0,90</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('impar', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'impar')"
+										class="impar">
+										<td align="right" nowrap="nowrap">
+
+
+											19-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">39272044</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA DE ARRASTRE VC1 FILTRO HEPA </td>
+										<td align="right" nowrap="nowrap">11980810 </td>
+										<td align="left">Limpiadora a Vapor Karcher SC2 EasyFix</td>
+										<td align="left">Portal Temuco</td>
+										<td align="right" nowrap="nowrap">1</td>
+										<td align="right" nowrap="nowrap">37.807</td>
+										<td align="right" nowrap="nowrap">42.222</td>
+										<td align="right" nowrap="nowrap">0,90</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+
+
+
+
+									<tr onmouseover="this.className = this.className.replace('par', 'hilite')"
+										onmouseout="this.className = this.className.replace('hilite', 'par')"
+										class="par">
+										<td align="right" nowrap="nowrap">
+
+
+											29-07-2025
+
+										</td>
+										<td align="right" nowrap="nowrap">39272044</td>
+										<td align="right" nowrap="nowrap"> </td>
+										<td align="left">ASPIRADORA DE ARRASTRE VC1 FILTRO HEPA </td>
+										<td align="right" nowrap="nowrap">11980810 </td>
+										<td align="left">Limpiadora a Vapor Karcher SC2 EasyFix</td>
+										<td align="left">Portal Temuco</td>
+										<td align="right" nowrap="nowrap">1</td>
+										<td align="right" nowrap="nowrap">37.807</td>
+										<td align="right" nowrap="nowrap">42.222</td>
+										<td align="right" nowrap="nowrap">0,90</td>
+										<td align="left">KARCHER</td>
+										<td align="left">TODA TEMPORADA</td>
+									</tr>
+
+								</tbody>
+							</table>
+
+
+
+
+
+
+
+
+
+
+
+							<script language="JavaScript">
+								<!--
+								function changePageSize(size) {
+									// uses the first form to call the page.
+									document.forms[0].action='ConsDetalladaVentasSinStockBuscar.do?action=buscar&pageSize=' + size + "&pag=1";
+									document.forms[0].submit();
+								}
+								
+								function searchPage(pag) {
+									// uses the first form to call the page.
+									document.forms[0].action='ConsDetalladaVentasSinStockBuscar.do?action=buscar&pag=' + pag;
+									document.forms[0].submit();
+								}
+								//-->
+							</script>
+
+							<div align="left">
+								<table border="0" cellspacing="0" cellpadding="0" class="ReportHead">
+									<tbody>
+										<tr align="left">
+											<td>
+												<div class="ReportHead"><strong>Items por Página</strong></div>
+											</td>
+											<td>
+												<select name="pageSize" class="ReportBody"
+													onchange="return changePageSize(this.value);">
+													<option value="15" selected="">15</option>
+													<option value="20">20</option>
+													<option value="25">25</option>
+													<option value="30">30</option>
+													<option value="50">50</option>
+													<option value="100">100</option>
+													<option value="150">150</option>
+													<option value="200">200</option>
+												</select>
+											</td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+
+
+
+
+
+
+
+
+								<table border="0" cellspacing="0" cellpadding="0" class="ReportHead">
+									<tbody>
+										<tr align="left">
+											<td>
+
+
+
+												<span class="ReportHead">Anterior</span>
+
+
+											</td>
+											<td>
+												<!-- tiene que funcionar con link para que la paginacion se pueda poner en cualquier lugar en la pagina -->
+												<select name="pag" class="ReportBody"
+													onchange="return searchPage(this.value);">
+
+													<option value="1" selected="">
+														1&nbsp;-
+
+
+
+														15
+
+
+													</option>
+
+													<option value="2">
+														16&nbsp;-
+
+
+
+														30
+
+
+													</option>
+
+													<option value="3">
+														31&nbsp;-
+
+
+
+														45
+
+
+													</option>
+
+													<option value="4">
+														46&nbsp;-
+
+
+
+														60
+
+
+													</option>
+
+													<option value="5">
+														61&nbsp;-
+
+
+
+														75
+
+
+													</option>
+
+													<option value="6">
+														76&nbsp;-
+
+
+
+														90
+
+
+													</option>
+
+													<option value="7">
+														91&nbsp;-
+
+
+														98
+
+
+
+													</option>
+
+												</select>
+											</td>
+											<td>
+
+
+												<a
+													href="ConsDetalladaVentasSinStockBuscar.do?action=buscar&amp;pag=2&amp;pageSize=15">
+													<strong><span class="ReportHead">Siguiente</span></strong>
+												</a>
+
+
+
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+						<table width="50%">
+							<tbody>
+								<tr>
+									<td class="body"></td>
+									<td class="body"></td>
+								</tr>
+							</tbody>
+						</table>
+
+
+
+
+						<form name="ConsultaComercialForm" method="post"
+							action="/b2bWeb/portal/comercial/consulta/ConsDetalladaVentasSinStockBuscar.do">
+							<div align="CENTER">
+								<p><input type="submit" name="btnVolver2" value="Nueva Busqueda"></p>
+							</div>
+						</form>
+						<p></p>
+						<p></p>
+
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+
+
+					<div align="CENTER">
+						<table cellspacing="0" cellpadding="0" border="0" width="100%">
+							<tbody>
+								<tr>
+									<td>&nbsp;</td>
+								</tr>
+								<tr>
+									<td align="center">&nbsp;</td>
+								</tr>
+								<tr>
+									<td align="center">
+										<div align="center">
+											<font color="gray" face="Arial" size="2">
+												Usuario:&nbsp;
+												karcher chile spa&nbsp;
+												&nbsp;-&nbsp;
+												Proveedor:&nbsp;
+
+
+
+												KARCHER CHILE SPA &nbsp;-&nbsp;
+												76215357
+
+
+											</font>
+										</div>
+									</td>
+								</tr>
+
+								<tr>
+									<td align="center">
+										<font size="1">
+											<a href="javascript:parent.logoff();"
+												style="font-family : Verdana, MS Serif; color : #d0d0d0;"
+												name="Salir">Cerrar Sesión</a>
+										</font>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<script defer=""
+		src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+		integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+		data-cf-beacon="{&quot;rayId&quot;:&quot;96bfe8d8bffd25e3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.7.0&quot;,&quot;token&quot;:&quot;f225f021b8f640d1a0fb927ef1b364e7&quot;}"
+		crossorigin="anonymous"></script>
+
+
+
+</body>
+
+</html>

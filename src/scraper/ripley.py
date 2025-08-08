@@ -1,6 +1,7 @@
 from playwright.sync_api import sync_playwright, TimeoutError
 from src.config import Config
-import time
+import pandas as pd
+from bs4 import BeautifulSoup
 
 
 class RipleyScraper:
@@ -33,38 +34,75 @@ class RipleyScraper:
                 # Esperar redirección o validación del login
                 page.wait_for_load_state("networkidle", timeout=15000)
 
-                # Guardar estado después del login
                 page.screenshot(path="brave_post_login.png")
                 print("[📷] Captura guardada como 'brave_post_login.png'")
-
                 print("[✅] ¡Login exitoso!")
 
-                # 🔁 Esperar hasta que cargue el frame del menú
-                print("[*] Esperando el frame del menú...")
+                # Buscar el frame del menú
                 menu_frame = None
-                # timeout = time.time() + 10  # Espera máxima: 10s
-                # while time.time() < timeout:
                 for frame in page.frames:
-                    print(f"[DEBUG] Frame encontrado: {frame.url}")
-
                     if "setProveedor.do" in frame.url:
-
-                        frame.evaluate(
-                            "() => executeActividad('1348', 'portal/comercial/consulta/ConsDetalladaVentasSinStockBuscar.do')"
-                        )
-                        for _ in range(20):
-                            for f in page.frames:
-                                if "ConsDetalladaVentasSinStockBuscar.do" in f.url:
-                                    f.wait_for_load_state("networkidle")
-
-                                    
-                                    break
-
+                        menu_frame = frame
                         break
 
-                page.wait_for_timeout(500)
+                if not menu_frame:
+                    print("[❌] No se encontró el frame del menú.")
+                    return
+
+                print("[*] Ejecutando actividad dentro del frame del menú...")
+                menu_frame.evaluate(
+                    "() => executeActividad('1348', 'portal/comercial/consulta/ConsDetalladaVentasSinStockBuscar.do')"
+                )
+
+                # Esperar a que se cargue el frame con el formulario
+                target_frame = None
+                for _ in range(20):
+                    for f in page.frames:
+                        if "ConsDetalladaVentasSinStockBuscar.do" in f.url:
+                            target_frame = f
+                            break
+                    if target_frame:
+                        break
+                    page.wait_for_timeout(500)
+
+                if not target_frame:
+                    print("[❌] No se encontró el frame del formulario.")
+                    return
+
+                print(f"[✅] Frame del formulario cargado: {target_frame.url}")
+                target_frame.wait_for_load_state("load")
+
+                # Esperar y llenar los campos de fecha
+                print("[*] Esperando inputs de fechas...")
+                target_frame.wait_for_selector("input#txtFechaDesde", timeout=10000)
+                target_frame.wait_for_selector("input#txtFechaHasta", timeout=10000)
+
+                target_frame.fill("input#txtFechaDesde", "01-07-2025")
+                target_frame.fill("input#txtFechaHasta", "31-07-2025")
+
+                print("[*] Haciendo clic en Buscar...")
+                target_frame.click("input[value='Buscar']")
+                target_frame.wait_for_load_state("networkidle", timeout=15000)
+                print(target_frame.content())
+                # Extraer la tabla con pandas
+
+                html = target_frame.content()
+                soup = BeautifulSoup(html, "html.parser")
+                table = soup.find("table", class_="DojoTable")
+
+                if table:
+                    df = pd.read_html(str(table), header=0)[0]
+                    print(df)
+                else:
+                    print("[❌] No se encontró la tabla con clase 'DojoTable'.")
+
+                print("[✅] Búsqueda enviada correctamente.")
 
             except TimeoutError:
                 print("[❌] Timeout: el campo de login no apareció.")
                 page.screenshot(path="brave_timeout.png")
-                print("[📷] Captura guardada como 'brave_timeout.png'")
+                print("Captura guardada como 'brave_timeout.png'")
+
+    def _do_login(self,page):
+        pass
+
