@@ -18,8 +18,9 @@
 	#2
 	poetry install
 	#3
-	python main.py
+	uvicorn main:app --reload
 	```
 
 ### Documentación adicional
-	- actualmente el proyecto burla el captha e inicia sesion en la plataforma
+	- actualmente el proyecto burla el captha e inicia sesion en la plataforma con navegador directo del sistema operativo en modo "-- no headless"
+
