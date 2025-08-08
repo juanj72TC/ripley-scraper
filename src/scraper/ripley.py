@@ -3,7 +3,7 @@ from src.config import Config
 import pandas as pd
 from bs4 import BeautifulSoup
 from src.validators.date_format import validate_date_format
-
+from src.models.ripley_response import RipleyResponse
 
 class RipleyScraper:
 
@@ -29,7 +29,7 @@ class RipleyScraper:
         self.username = config.config["ripley"]["username"]
         self.password = config.config["ripley"]["password"]
 
-    def run(self):
+    def run(self, date_from: str, date_to: str):
         with sync_playwright() as p:
             print("[*] Conectando a Brave en http://localhost:9222...")
             browser = p.chromium.connect_over_cdp("http://localhost:9222")
@@ -52,7 +52,7 @@ class RipleyScraper:
                 target_frame.wait_for_load_state("load")
 
                 html_content = self._fill_input_dates(
-                    target_frame, date_from="01-07-2025", date_to="05-07-2025"
+                    target_frame, date_from=date_from, date_to=date_to
                 )
                 # Extraer la tabla con pandas
 
@@ -61,10 +61,10 @@ class RipleyScraper:
                 table = soup.find("table", class_="DojoTable")
 
                 if table:
-                    df = pd.read_html(str(table), header=0)[0]
+                    df = pd.read_html(str(table), header=1)[0]
                     df.to_csv("ripley_data.csv", index=False)
-                    print("archivo 'ripley_data.csv' guardado.")
-                    return df
+                    return self.convert_to_ripley_response(df)
+
                 else:
                     print("[❌] No se encontró la tabla con clase 'DojoTable'.")
 
@@ -147,3 +147,26 @@ class RipleyScraper:
         target_frame.wait_for_load_state("networkidle", timeout=15000)
 
         return target_frame.content()
+    
+    def convert_to_ripley_response(self, data: pd.DataFrame) -> list[RipleyResponse]:
+        """Convierte un DataFrame a una lista de RipleyResponse."""
+        responses = []
+        for _, row in data.iterrows():
+            response = RipleyResponse(
+                fecha= row["Fecha"],
+                cod_art_ripley=row["Cód.Art. Ripley"],
+                upc=row.get("UPC"),
+                desc_art_ripley=row["Desc.Art. Ripley"],
+                cod_art_prov_case_pack=row["Cód.Art.Prov. (Case Pack)"],
+                desc_art_prov_case_pack=row["Desc.Art.Prov.(Case Pack)"],
+                sucursal=row["Sucursal"],
+                venta_u=row["Venta (u)"],
+                venta_pesos=row["Venta ($)"],
+                costo_de_venta_pesos=row["Costo De Venta($)"],
+                mark_up=row["Mark-up"],
+                marca=row["Marca"],
+                temp=row["Temp."],
+               
+            )
+            responses.append(response)
+        return responses
