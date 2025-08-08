@@ -1,0 +1,3615 @@
+<html lang="es">
+
+<head>
+	<title>Portal Proveedores</title>
+	<script type="text/javascript" src="/b2bWeb/portal/comercial/../static/scripts/general.js"></script>
+	<link rel="stylesheet" type="text/css" href="/b2bWeb/portal/comercial/../static/styles/general.css">
+	<link rel="stylesheet" type="text/css" href="/b2bWeb/portal/comercial/../static/styles/style.css">
+	<script type="text/javascript">
+		var djConfig = { isDebug: true };
+	</script>
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Last-Modified" content="0">
+</head>
+
+<body class="body" onload="window.status='';" marginwidth="0" marginheight="0">
+	<table width="100%" height="100%" cellpadding="0" cellspacing="0">
+		<tbody>
+			<tr>
+				<td valign="top" height="100%">
+
+
+
+					<div align="CENTER">
+						<table width="100%">
+							<tbody>
+								<tr>
+									<td width="100%">
+										<table width="100%" cellspacing="0" cellpadding="0" class="PageHeadTable">
+											<tbody>
+												<tr>
+													<td height="40" class="PageHeadCell">
+														<div align="CENTER">Consulta de Ventas Detalladas Sin Stock
+														</div>
+													</td>
+												</tr>
+											</tbody>
+										</table>
+										<div>&nbsp;</div>
+
+
+										<script language="JavaScript" src="/b2bWeb/js/funcionesValidacion.js"></script>
+										<script language="JavaScript" src="/b2bWeb/js/CalendarPopup.js"></script>
+
+										<script language="JavaScript" type="text/javascript">
+											var cal = new CalendarPopup();
+
+											function setDefaultDate(form) {
+												var date = new Date();
+												var fechaMenosSiete = new Date(date.getYear(), date.getMonth(), date.getDate() - 8);
+												var fechaAyer = new Date(date.getYear(), date.getMonth(), date.getDate() - 1);
+												if (date.getYear() < 2000) {
+													fechaMenosSiete = new Date(date.getYear() + 1900, date.getMonth(), date.getDate() - 8);
+													fechaAyer = new Date(date.getYear() + 1900, date.getMonth(), date.getDate() - 1);
+												}
+												var dia1 = fechaMenosSiete.getDate();
+												var dia2 = fechaAyer.getDate();
+												var mes1 = fechaMenosSiete.getMonth() + 1;
+												var ano1 = fechaMenosSiete.getYear() > 2000 ? fechaMenosSiete.getYear() : fechaMenosSiete.getYear() + 1900;
+												var mes2 = fechaAyer.getMonth() + 1;
+												var ano2 = fechaAyer.getYear() > 2000 ? fechaAyer.getYear() : fechaAyer.getYear() + 1900;
+												if (dia1.toString().length == 1)
+													dia1 = "0" + dia1;
+												if (mes1.toString().length == 1)
+													mes1 = "0" + mes1;
+												if (ano1.toString().lenght == 1)
+													ano1 = "0" + ano1;
+												if (dia2.toString().length == 1)
+													dia2 = "0" + dia2;
+												if (mes2.toString().length == 1)
+													mes2 = "0" + mes2;
+												if (ano2.toString().length == 1)
+													ano2 = "0" + ano2;
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = dia1 + "-" + mes1 + "-" + ano1;
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = dia2 + "-" + mes2 + "-" + ano2;
+												if (form.hdnFechaDesde != undefined) form.hdnFechaDesde.value = form.txtFechaDesde.value;
+												if (form.hdnFechaHasta != undefined) form.hdnFechaHasta.value = form.txtFechaHasta.value;
+											}
+											function setDefaultDateHoy(form) {
+												var date = new Date();
+												var fechaMenosSiete = new Date(date.getYear(), date.getMonth(), date.getDate() - 7);
+												var fechaAyer = new Date(date.getYear(), date.getMonth(), date.getDate());
+												if (date.getYear() < 2000) {
+													fechaMenosSiete = new Date(date.getYear() + 1900, date.getMonth(), date.getDate() - 7);
+													fechaAyer = new Date(date.getYear() + 1900, date.getMonth(), date.getDate());
+												}
+												var dia1 = fechaMenosSiete.getDate();
+												var dia2 = fechaAyer.getDate();
+												var mes1 = fechaMenosSiete.getMonth() + 1;
+												var ano1 = fechaMenosSiete.getYear() > 2000 ? fechaMenosSiete.getYear() : fechaMenosSiete.getYear() + 1900;
+												var mes2 = fechaAyer.getMonth() + 1;
+												var ano2 = fechaAyer.getYear() > 2000 ? fechaAyer.getYear() : fechaAyer.getYear() + 1900;
+												if (dia1.toString().length == 1)
+													dia1 = "0" + dia1;
+												if (mes1.toString().length == 1)
+													mes1 = "0" + mes1;
+												if (ano1.toString().lenght == 1)
+													ano1 = "0" + ano1;
+												if (dia2.toString().length == 1)
+													dia2 = "0" + dia2;
+												if (mes2.toString().length == 1)
+													mes2 = "0" + mes2;
+												if (ano2.toString().length == 1)
+													ano2 = "0" + ano2;
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = dia1 + "-" + mes1 + "-" + ano1;
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = dia2 + "-" + mes2 + "-" + ano2;
+												if (form.hdnFechaDesde != undefined) form.hdnFechaDesde.value = form.txtFechaDesde.value;
+												if (form.hdnFechaHasta != undefined) form.hdnFechaHasta.value = form.txtFechaHasta.value;
+											}
+
+											// Rango de fechas por defecto, teniendo como fecha final el dia actual -1, la fecha inicial puede ser descontando dias,meses o anios
+											// ejemplo: si la fecha actual es 29-05-2007 y utilizamos la siguiente llamada a la funcion
+											// setDefaultDateRango(form,1,1,1) la fecha inicial seria 27-04-2006 y final 28-05-2007
+											function setDefaultDateRango(form, dia, mes, anio) {
+												var date = new Date();
+												var fechaMenosSiete = new Date(date.getYear() - anio, date.getMonth() - mes, date.getDate() - dia);
+												var fechaAyer = new Date(date.getYear(), date.getMonth(), date.getDate() - 1);
+												if (date.getYear() < 2000) {
+													fechaMenosSiete = new Date(date.getYear() + 1900, date.getMonth(), date.getDate() - 8);
+													fechaAyer = new Date(date.getYear() + 1900, date.getMonth(), date.getDate() - 1);
+												}
+												var dia1 = fechaMenosSiete.getDate();
+												var dia2 = fechaAyer.getDate();
+												var mes1 = fechaMenosSiete.getMonth() + 1;
+												var ano1 = fechaMenosSiete.getYear() > 2000 ? fechaMenosSiete.getYear() : fechaMenosSiete.getYear() + 1900;
+												var mes2 = fechaAyer.getMonth() + 1;
+												var ano2 = fechaAyer.getYear() > 2000 ? fechaAyer.getYear() : fechaAyer.getYear() + 1900;
+												if (dia1.toString().length == 1)
+													dia1 = "0" + dia1;
+												if (mes1.toString().length == 1)
+													mes1 = "0" + mes1;
+												if (ano1.toString().lenght == 1)
+													ano1 = "0" + ano1;
+												if (dia2.toString().length == 1)
+													dia2 = "0" + dia2;
+												if (mes2.toString().length == 1)
+													mes2 = "0" + mes2;
+												if (ano2.toString().length == 1)
+													ano2 = "0" + ano2;
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = dia1 + "-" + mes1 + "-" + ano1;
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = dia2 + "-" + mes2 + "-" + ano2;
+												if (form.hdnFechaDesde != undefined) form.hdnFechaDesde.value = form.txtFechaDesde.value;
+												if (form.hdnFechaHasta != undefined) form.hdnFechaHasta.value = form.txtFechaHasta.value;
+											}
+
+											//Retorna una rango de fechas por defecto
+											//Ejemplo: si la fecha actual es 29-05-2007 
+											//Para rango de fechas anual, se utiliza setDefaultDateAnioMesSemanaDia(form,"anio")
+											//		fecha inicial 28-05-2006, fecha final 28-05-2007
+											//Para rango de fechas Mensual, se utiliza setDefaultDateAnioMesSemanaDia(form,"mes")
+											//		fecha inicial 28-04-2006, fecha final 28-05-2007
+											//Para rango de fechas Semanal, se utiliza setDefaultDateAnioMesSemanaDia(form,"semana")
+											//		fecha inicial 21-05-2006, fecha final 28-05-2007
+											//Para rango de fechas diario, se utiliza setDefaultDateAnioMesSemanaDia(form,"dia")
+											//		fecha inicial 27-05-2006, fecha final 28-05-2007
+											function setDefaultDateAnioMesSemanaDia(form, opt) {
+												if (opt == "semana") {
+													setDefaultDate(form)
+												} else if (opt == "dia") {
+													setDefaultDateRango(form, 2, 0, 0)
+												} else if (opt == "mes") {
+													setDefaultDateRango(form, 1, 1, 0)
+												} else if (opt == "anio") {
+													setDefaultDateRango(form, 1, 0, 1)
+												}
+											}
+											function setDefaultDateComparacion(form) {
+												var date = new Date();
+												var fechaAyer = new Date(date.getYear(), date.getMonth(), date.getDate() - 1);
+												var dia2 = fechaAyer.getDate();
+												var mes2 = fechaAyer.getMonth() + 1;
+												var ano2 = fechaAyer.getYear() > 2000 ? fechaAyer.getYear() : fechaAyer.getYear() + 1900;
+												if (dia2.toString().length == 1)
+													dia2 = "0" + dia2;
+												if (mes2.toString().length == 1)
+													mes2 = "0" + mes2;
+												if (ano2.toString().length == 1)
+													ano2 = "0" + ano2;
+
+												form.txtFechaDesde.value = dia2 + "-" + mes2 + "-" + ano2;
+											}
+
+											function setDateInicial(form) {
+												var date = new Date();
+												var fechaActual = new Date(date.getYear(), date.getMonth(), date.getDate());
+												if (date.getYear() < 2000) fechaActual = new Date(date.getYear() + 1900, date.getMonth(), date.getDate());
+												var dia1 = fechaActual.getDate();
+												var mes1 = fechaActual.getMonth() + 1;
+												var ano1 = fechaActual.getYear() > 2000 ? fechaActual.getYear() : fechaActual.getYear() + 1900;
+												if (dia1.toString().length == 1)
+													dia1 = "0" + dia1;
+												if (mes1.toString().length == 1)
+													mes1 = "0" + mes1;
+												if (ano1.toString().lenght == 1)
+													ano1 = "0" + ano1;
+												form.txtFechaDocumento.value = dia1 + "-" + mes1 + "-" + ano1;
+											}
+
+											function submitWhenValid(form) {
+
+												if (form.txtFechaDesde.value != '' && validarFecha(form.txtFechaDesde.value, 'dd-MM-yyyy') == false) {
+													alert('Fecha ingresada es errónea');
+												} else if (form.txtFechaHasta.value != '' && validarFecha(form.txtFechaHasta.value, 'dd-MM-yyyy') == false) {
+													alert('Fecha ingresada es errónea');
+												} else if ((form.txtFechaDesde.value != '' || form.txtFechaHasta.value != '') && (!form.optFecha[0].checked && !form.optFecha[1].checked && !form.optFecha[2].checked)) {
+													alert('Debe seleccionar un tipo de fecha');
+												} else if (form.txtFechaDesde.value != '' && form.txtFechaHasta.value == '') {
+													alert('Debe ingresar un rango de fechas');
+												} else if (form.txtFechaDesde.value == '' && form.txtFechaHasta.value != '') {
+													alert('Debe ingresar un rango de fechas');
+												} else if (form.txtNumODI.value == '' && form.txtFechaDesde.value == '') {
+													alert('Debe ingresar un rango de fechas o un numero de orden de compra');
+												} else {
+													if (!comparaDates(form.txtFechaDesde.value, form.txtFechaHasta.value)) {
+														alert('Fecha Hasta debe ser mayor que Fecha Desde');
+													} else {
+														return true;
+													}
+												}
+												return false;
+											}
+
+											function habilitaOnOffArriba(form) {
+												if (form.txtNumODI != undefined) form.txtNumODI.value = "";
+												if (form.txtNumDocumento != undefined) form.txtNumDocumento.value = "";
+												if (form.txtNumBulto != undefined) form.txtNumBulto.value = "";
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = "";
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+											}
+											function habilitaOnOffNumOdi(form) {
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboSucursalEntrega != undefined) form.cboSucursalEntrega.selectedIndex = 0
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.departamentos != undefined) form.departamentos.selectedIndex = 0
+												if (form.txtNumDocumento != undefined) form.txtNumDocumento.value = "";
+												if (form.txtNumBulto != undefined) form.txtNumBulto.value = "";
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = ""
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+												if (form.txtNumDespacho != undefined) form.txtNumDespacho.value = ""
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = ""
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = ""
+												if (form.txtNumPallet != undefined) form.txtNumPallet.value = "";
+												if (form.txtFechaCarga != undefined) form.txtFechaCarga.value = "";
+											}
+											function habilitaOnOffNumDocumento(form) {
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboSucursalEntrega != undefined) form.cboSucursalEntrega.selectedIndex = 0
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.departamentos != undefined) form.departamentos.selectedIndex = 0
+												if (form.txtNumODI != undefined) form.txtNumODI.value = "";
+												if (form.txtNumBulto != undefined) form.txtNumBulto.value = "";
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = ""
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+												if (form.txtNumDespacho != undefined) form.txtNumDespacho.value = ""
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = ""
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = ""
+											}
+											function habilitaOnOffNumDocDespacho(form) {
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboSucursalEntrega != undefined) form.cboSucursalEntrega.selectedIndex = 0
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.departamentos != undefined) form.departamentos.selectedIndex = 0
+												if (form.txtNumODI != undefined) form.txtNumODI.value = "";
+												if (form.txtNumBulto != undefined) form.txtNumBulto.value = "";
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = ""
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+												if (form.txtNumDocumento != undefined) form.txtNumDocumento.value = "";
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = ""
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = ""
+											}
+											function habilitaOnOffNumBulto(form) {
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboSucursalEntrega != undefined) form.cboSucursalEntrega.selectedIndex = 0
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.departamentos != undefined) form.departamentos.selectedIndex = 0
+												if (form.txtNumODI != undefined) form.txtNumODI.value = "";
+												if (form.txtNumDocumento != undefined) form.txtNumDocumento.value = "";
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = ""
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+												if (form.txtNumDespacho != undefined) form.txtNumDespacho.value = ""
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = ""
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = ""
+												if (form.txtNumPallet != undefined) form.txtNumPallet.value = "";
+												if (form.txtFechaCarga != undefined) form.txtFechaCarga.value = ""
+											}
+											function habilitaOnOffCodArtRipley(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboSucursalEntrega != undefined) form.cboSucursalEntrega.selectedIndex = 0
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.departamentos != undefined) form.departamentos.selectedIndex = 0
+												if (form.txtNumODI != undefined) form.txtNumODI.value = "";
+												if (form.txtNumDocumento != undefined) form.txtNumDocumento.value = "";
+												if (form.txtNumBulto != undefined) form.txtNumBulto.value = "";
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = ""
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+												if (form.txtNumDespacho != undefined) form.txtNumDespacho.value = ""
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = ""
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = ""
+												if (form.txtCodArtEAN != undefined) form.txtCodArtEAN.value = ""
+												if (form.txtCodArtVenta != undefined) form.txtCodArtVenta.value = ""
+												if (form.txtFechaCarga != undefined) form.txtFechaCarga.value = ""
+											}
+											function habilitaOnOffCodArtProv(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboSucursalEntrega != undefined) form.cboSucursalEntrega.selectedIndex = 0
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.departamentos != undefined) form.departamentos.selectedIndex = 0
+												if (form.txtNumODI != undefined) form.txtNumODI.value = "";
+												if (form.txtNumDocumento != undefined) form.txtNumDocumento.value = "";
+												if (form.txtNumBulto != undefined) form.txtNumBulto.value = "";
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtNumDespacho != undefined) form.txtNumDespacho.value = ""
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = ""
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = ""
+											}
+											function habilitaOnOffSucursal(form) {
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboLinea != undefined) form.cboLinea.selectedIndex = 0;
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+											}
+											function habilitaOnOffMarca(form) {
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboLinea != undefined) form.cboLinea.selectedIndex = 0;
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+											}
+											function habilitaOnOffDepto(form) {
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+											}
+											function habilitaOnOffCodArtProvSinFecha(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtNumDespacho != undefined) form.txtNumDespacho.value = "";
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+											}
+											function habilitaOnOffCodUpcSinFecha(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = "";
+												if (form.txtNumDespacho != undefined) form.txtNumDespacho.value = "";
+											}
+											function habilitaOnOffCodArtRipleySinFecha(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.cboSucursalDestino != undefined) form.cboSucursalDestino.selectedIndex = 0;
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = "";
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+											}
+											function habilitaOnOffCodArtRipleyYProveedor(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.txtCodArtVenta != undefined) form.txtCodArtVenta.value = "";
+												if (form.txtCodArtEAN != undefined) form.txtCodArtEAN.value = "";
+												if (form.txtDescRipley != undefined) form.txtDescRipley.value = "";
+												if (form.txtDescProveedor != undefined) form.txtDescProveedor.value = "";
+											}
+											function habilitaOnOffCodArtVenta(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = "";
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtEAN != undefined) form.txtCodArtEAN.value = "";
+												if (form.txtDescRipley != undefined) form.txtDescRipley.value = "";
+												if (form.txtDescProveedor != undefined) form.txtDescProveedor.value = "";
+											}
+											function habilitaOnOffDescRipley(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = "";
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtVenta != undefined) form.txtCodArtVenta.value = "";
+												if (form.txtCodArtEAN != undefined) form.txtCodArtEAN.value = "";
+												if (form.txtDescProveedor != undefined) form.txtDescProveedor.value = "";
+											}
+											function habilitaOnOffDescProveedor(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.txtCodArtProveedor != undefined) form.txtCodArtProveedor.value = "";
+												if (form.txtCodUpc != undefined) form.txtCodUpc.value = "";
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtVenta != undefined) form.txtCodArtVenta.value = "";
+												if (form.txtCodArtEAN != undefined) form.txtCodArtEAN.value = "";
+												if (form.txtDescRipley != undefined) form.txtDescRipley.value = "";
+											}
+											function habilitaOnOffCodArtEAN(form) {
+												if (form.cboLinea != undefined) { form.cboLinea.options.length = 1; }
+												if (form.cboMarca != undefined) form.cboMarca.selectedIndex = 0;
+												if (form.cboDepto != undefined) form.cboDepto.selectedIndex = 0;
+												if (form.txtCodArtRipley != undefined) form.txtCodArtRipley.value = "";
+												if (form.txtCodArtVenta != undefined) form.txtCodArtVenta.value = "";
+												if (form.txtDescRipley != undefined) form.txtDescRipley.value = "";
+											}
+
+											function habilitaOnOffFechaCarga(form) {
+												if (form.txtFechaDesde != undefined) form.txtFechaDesde.value = "";
+												if (form.txtFechaHasta != undefined) form.txtFechaHasta.value = "";
+												if (form.txtNumODI != undefined) form.txtNumODI.value = "";
+												if (form.txtNumBulto != undefined) form.txtNumBulto.value = "";
+												if (form.txtNumPallet != undefined) form.txtNumPallet.value = "";
+											}
+
+											function habilitaOnOffFechaDesde(form) {
+												if (form.txtFechaCarga != undefined) form.txtFechaCarga.value = "";
+												if (form.txtNumODI != undefined) form.txtNumODI.value = "";
+												if (form.txtNumBulto != undefined) form.txtNumBulto.value = "";
+												if (form.txtNumPallet != undefined) form.txtNumPallet.value = "";
+											}
+											function habilitaOnOffFechaHasta(form) {
+												if (form.txtFechaCarga != undefined) form.txtFechaCarga.value = "";
+												if (form.txtNumODI != undefined) form.txtNumODI.value = "";
+												if (form.txtNumBulto != undefined) form.txtNumBulto.value = "";
+												if (form.txtNumPallet != undefined) form.txtNumPallet.value = "";
+											}
+
+
+
+											function tipoConsultaFechaIniFin(form) {
+												if (form.cboTipoConsulta[1].selected == true) {
+													form.txtFechaDesde.value = '01-' + form.txtFechaDesde.value.substr(3, 2) + '-' + form.txtFechaDesde.value.substr(6, 4);
+												}
+												else {
+													form.txtFechaDesde.value = form.hdnFechaDesde.value;
+													form.txtFechaHasta.value = form.hdnFechaHasta.value;
+												}
+											}
+
+											function tipoConsultaFechaIniFinMensual(form) {
+												if (form.cboTipoConsulta[1].selected == true) {
+													form.txtFechaDesde.value = '01-' + form.txtFechaDesde.value.substr(3, 2) + '-' + form.txtFechaDesde.value.substr(6, 4);
+												}
+											}
+
+											function DiferenciaFechas(formulario) {
+
+												//Obtiene los datos del formulario
+												CadenaFechaInicial = formulario.txtFechaDesde.value
+												CadenaFechaFinal = formulario.txtFechaHasta.value
+
+												//Obtiene dia, mes y año
+												var fecha1 = new fecha(CadenaFechaInicial)
+												var fecha2 = new fecha(CadenaFechaFinal)
+
+												//Obtiene objetos Date
+												var miFecha1 = new Date(fecha1.anio, fecha1.mes, fecha1.dia)
+												var miFecha2 = new Date(fecha2.anio, fecha2.mes, fecha2.dia)
+
+												//Resta fechas y redondea
+												var diferencia = miFecha1.getTime() - miFecha2.getTime()
+												var dias = (-1) * Math.floor(diferencia / (1000 * 60 * 60 * 24))
+												var segundos = Math.floor(diferencia / 1000)
+												//alert ('La diferencia es de ' + dias);
+												formulario.hdnDias.value = dias;
+												return false
+											}
+											function fecha(cadena) {
+
+												//Separador para la introduccion de las fechas
+												var separador = "-"
+
+												//Separa por dia, mes y año
+												if (cadena.indexOf(separador) != -1) {
+													var posi1 = 0
+													var posi2 = cadena.indexOf(separador, posi1 + 1)
+													var posi3 = cadena.indexOf(separador, posi2 + 1)
+													this.dia = cadena.substring(posi1, posi2)
+													this.mes = cadena.substring(posi2 + 1, posi3)
+													this.anio = cadena.substring(posi3 + 1, cadena.length)
+												} else {
+													this.dia = 0
+													this.mes = 0
+													this.anio = 0
+												}
+											}
+
+											function forceNumber(event) {
+												if (event.keyCode < 45 || event.keyCode > 57)
+													event.returnValue = false;
+											}
+
+											function cargaDatosProveedor() {
+
+											}
+											function DiasDelMes(Mes, Anyo) {
+												if (Mes <= 0 || Mes >= 13) return 0;
+
+												if (Mes == 1
+													|| Mes == 3
+													|| Mes == 5
+													|| Mes == 7
+													|| Mes == 8
+													|| Mes == 10
+													|| Mes == 12
+												) return 31;
+
+												if (Mes == 4
+													|| Mes == 6
+													|| Mes == 9
+													|| Mes == 11
+												) return 30;
+
+												/* Aquí llegamos si Mes == 2, i.e., Febrero */
+
+												if ((Anyo % 400 == 0)
+													|| (
+														(Anyo % 4 == 0) && (Anyo % 100 != 0)
+													)
+												) return 29;
+
+												return 28;  // Mes == 2 y año no bisiesto 
+											}
+											function setFecha(fecha) {
+												var dia = fecha.substr(0, 2);
+												var mes = fecha.substr(3, 2);
+												var ano = fecha.substr(6, 4);
+												var lunes = "";
+												lunes = retornaLunes(dia, mes, ano);
+
+												document.forms[0].hdnFecha.value = lunes;
+												var ndia = lunes.substr(0, 2);
+												var nmes = lunes.substr(3, 2);
+												var nano = lunes.substr(6, 4);
+												var valordia = 0;
+												valordia = parseInt(ndia, 10);
+												var valormes = 0;
+												valormes = parseInt(nmes, 10);
+
+												var valorano = 0;
+												valorano = parseInt(nano);
+												valordia = valordia + 6;
+
+												if (valordia < 29) {
+													if (valordia < 10) {
+														var hidd = '0' + valordia + fecha.substr(2, 10);
+
+														document.forms[0].hidFechaInicial1.value = hidd;
+														return true;
+													}
+													else {
+														var hidd = valordia + fecha.substr(2, 10);
+
+														document.forms[0].hidFechaInicial1.value = hidd;
+														return true;
+													}
+												}
+												else {
+													if ((valormes == 4) || (valormes == 6) || (valormes == 9) || (valormes == 11)) {
+
+														valormes = valormes + 1;
+														switch (valordia) {
+															case 31:
+																valordia = 1;
+																break;
+															case 32:
+																valordia = 2;
+																break;
+															case 33:
+																valordia = 3;
+																break;
+															case 34:
+																valordia = 4;
+																break;
+															case 35:
+																valordia = 5;
+																break;
+															case 36:
+																valordia = 6;
+														}
+
+													}
+													else {
+
+														if (DiasDelMes(valormes, valorano) == 29) {
+
+															valormes = valormes + 1;
+															switch (valordia) {
+																case 30:
+																	valordia = 1;
+																	break;
+																case 31:
+																	valordia = 2;
+																	break;
+																case 32:
+																	valordia = 3;
+																	break;
+																case 33:
+																	valordia = 4;
+																	break;
+																case 34:
+																	valordia = 5;
+																	break;
+																case 35:
+																	valordia = 6;
+															}
+														}
+														else {
+															if (valormes == 2) {
+
+																valormes = valormes + 1;
+																switch (valordia) {
+																	case 29:
+																		valordia = 1;
+																		break;
+																	case 30:
+																		valordia = 2;
+																		break;
+																	case 31:
+																		valordia = 3;
+																		break;
+																	case 32:
+																		valordia = 4;
+																		break;
+																	case 33:
+																		valordia = 5;
+																		break;
+																	case 34:
+																		valordia = 6;
+																}
+															}
+															else {
+
+																valormes = valormes + 1;
+																switch (valordia) {
+																	case 32:
+																		valordia = 1;
+																		break;
+																	case 33:
+																		valordia = 2;
+																		break;
+																	case 34:
+																		valordia = 3;
+																		break;
+																	case 35:
+																		valordia = 4;
+																		break;
+																	case 36:
+																		valordia = 5;
+																		break;
+																	case 37:
+																		valordia = 6;
+																}
+
+
+															}
+														}
+													}
+												}
+
+												if (valormes < 10) {
+													if (valordia < 10) {
+														var hidd = '0' + valordia + '-' + '0' + valormes + '-' + valorano;
+
+														document.forms[0].hidFechaInicial1.value = hidd;
+														return true;
+													}
+													else {
+														valormes = valormes - 1;
+														var hidd = valordia + '-' + '0' + valormes + '-' + valorano;
+
+														document.forms[0].hidFechaInicial1.value = hidd;
+														return true;
+
+													}
+												}
+												else {
+													if (valormes > 12) {
+														valorano = valorano + 1;
+														valormes = 1;
+														var hidd = '0' + valordia + '-' + '0' + valormes + '-' + valorano;
+
+														document.forms[0].hidFechaInicial1.value = hidd;
+														return true;
+													}
+													else {
+														if (valordia < 10) {
+															var hidd = '0' + valordia + '-' + valormes + '-' + valorano;
+
+															document.forms[0].hidFechaInicial1.value = hidd;
+															return true;
+														}
+														else {
+															valormes = valormes - 1;
+															var hidd = valordia + '-' + valormes + '-' + valorano;
+
+															document.forms[0].hidFechaInicial1.value = hidd;
+															return true;
+														}
+													}
+												}
+
+											}
+
+											function retornaLunes(dia, mes, ano) {
+												var lunes = 0;
+
+												FechaDia = new Date(ano, mes, dia);
+												var DiaSem = FechaDia.getDay();
+												valordia = parseInt(dia, 10);
+												valormes = parseInt(mes, 10);
+												valorano = parseInt(ano, 10);
+
+
+												if ((valormes == 4) || (valormes == 6) || (valormes == 9) || (valormes == 11)) {
+													switch (DiaSem) {
+														case 0:
+															lunes = valordia - 4;
+															break;
+														case 1:
+															lunes = valordia - 5;
+															break;
+														case 2:
+															lunes = valordia - 6;
+															break;
+														case 3:
+															lunes = valordia;
+															break;
+														case 4:
+															lunes = valordia - 1;
+															break;
+														case 5:
+															lunes = valordia - 2;
+															break;
+														default:
+															lunes = valordia - 3;
+													}
+													if (lunes < 1) {
+														valormes = valormes - 1;
+														switch (lunes) {
+															case -1:
+																lunes = 30;
+																break;
+															case -2:
+																lunes = 29;
+																break;
+															case -3:
+																lunes = 28;
+																break;
+															case -4:
+																lunes = 27;
+																break;
+															case -5:
+																lunes = 26;
+																break;
+															default:
+																lunes = 31;
+														}
+													}
+													if (valormes < 10) {
+														if (lunes < 10) {
+															var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+														}
+														else {
+															var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+														}
+														return hidd;
+
+													}
+													else {
+														if (valormes > 12) {
+															valorano = valorano + 1;
+															valormes = 1;
+															if (lunes < 10) {
+																var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+															}
+															else {
+																var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+															}
+															return hidd;
+														}
+														else {
+															if (lunes < 10) {
+																var hidd = '0' + lunes + '-' + valormes + '-' + valorano;
+															}
+															else {
+																var hidd = lunes + '-' + valormes + '-' + valorano;
+															}
+															return hidd;
+														}
+													}
+												}
+												else {
+													if ((valormes == 2) && (DiasDelMes(valormes, valorano) == 29)) {
+														switch (DiaSem) {
+															case 0:
+																lunes = valordia - 5;
+																break;
+															case 1:
+																lunes = valordia - 6;
+																break;
+															case 2:
+																lunes = valordia;
+																break;
+															case 3:
+																lunes = valordia - 1;
+																break;
+															case 4:
+																lunes = valordia - 2;
+																break;
+															case 5:
+																lunes = valordia - 3;
+																break;
+															default:
+																lunes = valordia - 4;
+														}
+
+
+														if (lunes < 1) {
+															valormes = valormes - 1;
+															switch (lunes) {
+																case -1:
+																	lunes = 30;
+																	break;
+																case -2:
+																	lunes = 29;
+																	break;
+																case -3:
+																	lunes = 28;
+																	break;
+																case -4:
+																	lunes = 27;
+																	break;
+																case -5:
+																	lunes = 26;
+																	break;
+																default:
+																	lunes = 31;
+															}
+														}
+														if (valormes < 10) {
+															if (lunes < 10) {
+																var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+															}
+															else {
+																var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+															}
+															return hidd;
+														}
+														else {
+															if (valormes > 12) {
+																valorano = valorano + 1;
+																valormes = 1;
+																if (lunes < 10) {
+																	var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+																}
+																else {
+																	var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+																}
+																return hidd;
+															}
+															else {
+																if (lunes < 10) {
+																	var hidd = '0' + lunes + '-' + valormes + '-' + valorano;
+																}
+																else {
+																	var hidd = lunes + '-' + valormes + '-' + valorano;
+																}
+																return hidd;
+															}
+														}
+													}
+													else {
+														if (valormes == 2) {
+															switch (DiaSem) {
+																case 0:
+																	lunes = valordia - 6;
+																	break;
+																case 1:
+																	lunes = valordia;
+																	break;
+																case 2:
+																	lunes = valordia - 1;
+																	break;
+																case 3:
+																	lunes = valordia - 2;
+																	break;
+																case 4:
+																	lunes = valordia - 3;
+																	break;
+																case 5:
+																	lunes = valordia - 4;
+																	break;
+																default:
+																	lunes = valordia - 5;
+															}
+															if (lunes < 1) {
+																valormes = valormes - 1;
+																switch (lunes) {
+																	case -1:
+																		lunes = 30;
+																		break;
+																	case -2:
+																		lunes = 29;
+																		break;
+																	case -3:
+																		lunes = 28;
+																		break;
+																	case -4:
+																		lunes = 27;
+																		break;
+																	case -5:
+																		lunes = 26;
+																		break;
+																	default:
+																		lunes = 31;
+																}
+															}
+															if (valormes < 10) {
+																if (lunes < 10) {
+																	var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+																}
+																else {
+																	var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+																}
+																return hidd;
+															}
+															else {
+																if (valormes > 12) {
+																	valorano = valorano + 1;
+																	valormes = 1;
+																	if (lunes < 10) {
+																		var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+																	}
+																	else {
+																		var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+																	}
+																	return hidd;
+																}
+																else {
+																	if (lunes < 10) {
+																		var hidd = '0' + lunes + '-' + valormes + '-' + valorano;
+																	}
+																	else {
+																		var hidd = lunes + '-' + valormes + '-' + valorano;
+																	}
+																	return hidd;
+																}
+															}
+														}
+														else {
+															if ((valormes == 5) || (valormes == 7) || (valormes == 10) || (valormes == 12)) {
+																switch (DiaSem) {
+																	case 0:
+																		lunes = valordia - 3;
+																		break;
+																	case 1:
+																		lunes = valordia - 4;
+																		break;
+																	case 2:
+																		lunes = valordia - 5;
+																		break;
+																	case 3:
+																		lunes = valordia - 6;
+																		break;
+																	case 4:
+																		lunes = valordia;
+																		break;
+																	case 5:
+																		lunes = valordia - 1;
+																		break;
+																	default:
+																		lunes = valordia - 2;
+																}
+																if (lunes < 1) {
+																	valormes = valormes - 1;
+																	switch (lunes) {
+																		case -1:
+																			lunes = 29;
+																			break;
+																		case -2:
+																			lunes = 28;
+																			break;
+																		case -3:
+																			lunes = 27;
+																			break;
+																		case -4:
+																			lunes = 26;
+																			break;
+																		case -5:
+																			lunes = 25;
+																			break;
+																		default:
+																			lunes = 30;
+																	}
+																}
+																if (valormes < 10) {
+																	if (lunes < 10) {
+																		var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+																	}
+																	else {
+																		var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+																	}
+																	return hidd;
+																}
+																else {
+																	if (valormes > 12) {
+																		valorano = valorano + 1;
+																		valormes = 1;
+																		if (lunes < 10) {
+																			var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+																		}
+																		else {
+																			var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+																		}
+																		return hidd;
+																	}
+																	else {
+																		if (lunes < 10) {
+																			var hidd = '0' + lunes + '-' + valormes + '-' + valorano;
+																		}
+																		else {
+																			var hidd = lunes + '-' + valormes + '-' + valorano;
+																		}
+																		return hidd;
+																	}
+																}
+															}
+															else {
+																if ((valormes == 8) || (valormes == 1)) {
+																	switch (DiaSem) {
+																		case 0:
+																			lunes = valordia - 3;
+																			break;
+																		case 1:
+																			lunes = valordia - 4;
+																			break;
+																		case 2:
+																			lunes = valordia - 5;
+																			break;
+																		case 3:
+																			lunes = valordia - 6;
+																			break;
+																		case 4:
+																			lunes = valordia;
+																			break;
+																		case 5:
+																			lunes = valordia - 1;
+																			break;
+																		default:
+																			lunes = valordia - 2;
+																	}
+																	if (lunes < 1) {
+																		valormes = valormes - 1;
+																		switch (lunes) {
+																			case -1:
+																				lunes = 30;
+																				break;
+																			case -2:
+																				lunes = 29;
+																				break;
+																			case -3:
+																				lunes = 28;
+																				break;
+																			case -4:
+																				lunes = 27;
+																				break;
+																			case -5:
+																				lunes = 26;
+																				break;
+																			default:
+																				lunes = 31;
+																		}
+																	}
+																	if (valormes < 10) {
+																		if (valormes == 0) {
+																			valorano = valorano - 1;
+																			valormes = 12;
+																			if (lunes < 10) {
+																				var hidd = '0' + lunes + '-' + valormes + '-' + valorano;
+																			}
+																			else {
+																				var hidd = lunes + '-' + valormes + '-' + valorano;
+																			}
+																			return hidd;
+																		}
+																		else {
+																			if (lunes < 10) {
+																				var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+																			}
+																			else {
+																				var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+																			}
+																			return hidd;
+																		}
+																	}
+																	else {
+																		if (valormes > 12) {
+																			valorano = valorano + 1;
+																			valormes = 1;
+																			if (lunes < 10) {
+																				var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+																			}
+																			else {
+																				var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+																			}
+																			return hidd;
+																		}
+																		else {
+																			if (lunes < 10) {
+																				var hidd = '0' + lunes + '-' + valormes + '-' + valorano;
+																			}
+																			else {
+																				var hidd = lunes + '-' + valormes + '-' + valorano;
+																			}
+																			return hidd;
+																		}
+																	}
+																}
+																else {
+																	switch (DiaSem) {
+																		case 0:
+																			lunes = valordia - 3;
+																			break;
+																		case 1:
+																			lunes = valordia - 4;
+																			break;
+																		case 2:
+																			lunes = valordia - 5;
+																			break;
+																		case 3:
+																			lunes = valordia - 6;
+																			break;
+																		case 4:
+																			lunes = valordia;
+																			break;
+																		case 5:
+																			lunes = valordia - 1;
+																			break;
+																		default:
+																			lunes = valordia - 2;
+																	}
+																	if (lunes < 1) {
+																		valormes = valormes - 1;
+																		switch (lunes) {
+																			case -1:
+																				lunes = 27;
+																				break;
+																			case -2:
+																				lunes = 26;
+																				break;
+																			case -3:
+																				lunes = 25;
+																				break;
+																			case -4:
+																				lunes = 24;
+																				break;
+																			case -5:
+																				lunes = 23;
+																				break;
+																			default:
+																				lunes = 28;
+																		}
+																	}
+																	if (lunes < 10) {
+																		var hidd = '0' + lunes + '-' + '0' + valormes + '-' + valorano;
+																	}
+																	else {
+																		var hidd = lunes + '-' + '0' + valormes + '-' + valorano;
+																	}
+																	document.forms[0].hidFechaInicial1.value = hidd;
+																	return hidd;
+																}
+															}
+														}
+													}
+												}
+											}
+											function ValidaFecha() {
+												var correct = true;
+												var i, c, Mensaje = "";
+												var fecha1;
+												var fecha;
+
+												if ((document.forms[0].txtCodArtRipley.value.length < 7) && (document.forms[0].txtCodArtRipley.value != "")) {
+													correct = false;
+													Mensaje = "Se necesitan como minimo 7 digitos para definir el código de articulo Ripley";
+													document.forms[0].txtCodArtRipley.focus();
+
+												}
+												var ndia = document.forms[0].txtFechaInicial.value.substr(0, 2);
+												var nmes = document.forms[0].txtFechaInicial.value.substr(3, 2);
+												var nano = document.forms[0].txtFechaInicial.value.substr(6, 4);
+
+												if ((!esnumero(ndia) || ndia < 1 || ndia > 31) || (!esnumero(nmes) || nmes < 1 || nmes > 12) ||
+													(!esnumero(nano) || nano < 1900 || nano > 2100)) {
+													Mensaje += "Ingrese fecha válida\n";
+													correct = false;
+												}
+												else {
+													fecha1 = new Date(nano, (nmes - 1), ndia)
+													var vano = fecha1.getYear()
+													if (vano < 1900) {
+														vano = (vano + 1900);
+													}
+													if (fecha1.getDate() != ndia || (fecha1.getMonth() + 1) != nmes || vano != nano) {
+														Mensaje += "Fecha no válida\n";
+														correct = false;
+													}
+
+
+												}
+												today = new Date();
+												var vano = today.getYear()
+
+												if (vano < 1900) {
+													today = new Date(today.getYear() + 1900, today.getMonth(), today.getDate());
+												}
+												if (fecha1 > today) {
+													Mensaje += "Fecha Mayor que fecha en curso\n";
+													correct = false;
+												}
+												var dia = document.forms[0].hidFechaInicial1.value.substr(0, 2);
+												var mes = document.forms[0].hidFechaInicial1.value.substr(3, 2);
+												var ano = document.forms[0].hidFechaInicial1.value.substr(6, 4);
+												fecha = new Date(ano, (mes - 1), dia);
+
+												if (fecha > today) {
+													Mensaje += "La semana en curso no se puede procesar\n";
+													correct = false;
+												}
+												if (!correct) alert(Mensaje);
+												return correct;
+											}
+											function esnumero(str) {
+												var num = "0123456789";
+												for (k = 0; k < str.length; k++) {
+													if (str.charAt(k) == "-" || num.search(str.charAt(k)) < 0) {
+														return false;
+													}
+												}
+												return true
+											}
+											function validaPeriodo() {
+												var correct = true;
+												var i, c, Mensaje = "";
+												var fecha1;
+												var fecha2;
+
+												var ndia = document.forms[0].txtFechaDesde.value.substr(0, 2);
+												var nmes = document.forms[0].txtFechaDesde.value.substr(3, 2);
+												var nano = document.forms[0].txtFechaDesde.value.substr(6, 4);
+
+												if ((!esnumero(ndia) || ndia < 1 || ndia > 31) || (!esnumero(nmes) || nmes < 1 || nmes > 12) ||
+													(!esnumero(nano) || nano < 1900 || nano > 2100)) {
+													Mensaje += "Fecha inicial no valida\n";
+													correct = false;
+												}
+												else {
+													fecha1 = new Date(nano, (nmes - 1), ndia)
+													fecha1.setDate(ndia)
+													var vano = fecha1.getYear()
+													if (vano < 1900) {
+														vano = (vano + 1900);
+													}
+													if (fecha1.getDate() != ndia || (fecha1.getMonth() + 1) != nmes || vano != nano) {
+														Mensaje += "Fecha inicial no valida\n";
+														correct = false;
+													}
+													else {
+														ndia = document.forms[0].txtFechaHasta.value.substr(0, 2);
+														nmes = document.forms[0].txtFechaHasta.value.substr(3, 2);
+														nano = document.forms[0].txtFechaHasta.value.substr(6, 4);
+
+														if ((!esnumero(ndia) || ndia < 1 || ndia > 31) || (!esnumero(nmes) || nmes < 1 || nmes > 12) ||
+															(!esnumero(nano) || nano < 1900 || nano > 2100)) {
+															Mensaje += "Fecha final no valida\n";
+															correct = false;
+														}
+														else {
+															fecha2 = new Date(nano, (nmes - 1), ndia)
+															fecha2.setDate(ndia)
+															var vano = fecha2.getYear()
+															if (vano < 1900) {
+																vano = (vano + 1900);
+															}
+															if (fecha2.getDate() != ndia || (fecha2.getMonth() + 1) != nmes || vano != nano) {
+																Mensaje += "Fecha final no valida\n";
+																correct = false;
+															}
+														}
+													}
+												}
+												if (Mensaje.length == 0) {
+													fechaInicio = document.forms[0].txtFechaDesde.value.substr(6) + document.forms[0].txtFechaDesde.value.substr(3, 2) + document.forms[0].txtFechaDesde.value.substr(0, 2);
+													fechaFinal = document.forms[0].txtFechaHasta.value.substr(6) + document.forms[0].txtFechaHasta.value.substr(3, 2) + document.forms[0].txtFechaHasta.value.substr(0, 2);
+
+													if (fechaInicio > fechaFinal) {
+														correct = false;
+														Mensaje = "la fecha inicial no puede ser mayor que la fecha final\n";
+														document.forms[0].txtFechaHasta.value = document.forms[0].txtFechaDesde.value
+													}
+												}
+												if (correct) {
+													if (document.forms[0].cboTipoConsulta.value == 0) {
+														if ((fecha2.getTime() / 86400000 - fecha1.getTime() / 86400000) > 31) {
+															correct = false;
+															Mensaje = "Periodo no puede ser mayor a 31 dias para venta diaria\n";
+														}
+													}
+													else {
+														/* primer dia del mes para fecha final menos fecha inicial*/
+														if (((fecha2.getTime() / 86400000 - fecha2.getDate()) - fecha1.getTime() / 86400000) > 154) {
+															correct = false;
+															Mensaje = "Periodo no puede ser mayor a 6 meses para venta mensual\n";
+														}
+													}
+												}
+												if (!correct) alert(Mensaje);
+												return correct;
+											}
+											function ValidaPeriodoCerrado() {
+												var correct = true;
+												var i, c, Mensaje = "";
+												var fecha1;
+												var fecha;
+
+												if ((document.forms[0].txtCodArtRipley.value.length < 7) && (document.forms[0].txtCodArtRipley.value != "")) {
+													correct = false;
+													Mensaje = "Se necesitan como minimo 7 digitos para definir el código de articulo Ripley";
+													document.forms[0].txtCodArtRipley.focus();
+												}
+												today = new Date();
+												var vano = today.getYear()
+
+												if (vano < 1900) {
+													today = new Date(today.getYear() + 1900, today.getMonth(), today.getDate());
+												}
+												if (fecha1 > today) {
+													Mensaje += "Fecha Mayor que fecha en curso\n";
+													correct = false;
+												}
+												var dia = document.forms[0].hidFechaInicial1.value.substr(0, 2);
+												var mes = document.forms[0].hidFechaInicial1.value.substr(3, 2);
+												var ano = document.forms[0].hidFechaInicial1.value.substr(6, 4);
+
+												fecha = new Date(ano, (mes - 1), dia);
+
+												if (fecha > today) {
+													Mensaje += "La semana en curso no se puede procesar\n";
+													correct = false;
+												}
+
+												if (!correct) alert(Mensaje);
+
+												return correct;
+											}
+
+											function validaSemanaActualCerrada() {
+
+												var correct = true;
+
+												var dia1 = document.forms[0].txtFechaDesde.value.substr(0, 2);
+												var mes1 = document.forms[0].txtFechaDesde.value.substr(3, 2);
+												var ano1 = document.forms[0].txtFechaDesde.value.substr(6, 4);
+
+												var hoy = new Date();
+
+												var dia2 = hoy.getDate();
+												var mes2 = hoy.getMonth() + 1;
+												var ano2 = hoy.getYear();
+												var lunes = retornaLunes(dia2, mes2, ano2);
+
+												var dia3 = lunes.substr(0, 2);
+												var mes3 = lunes.substr(3, 2);
+												var ano3 = lunes.substr(6, 4);
+												if (ano3 < 1900) ano3 = parseInt(ano3, 10) + 1900;
+												var fecha = new Date(ano1, (mes1 - 1), dia1);
+												var lunesSemana = new Date(ano3, (mes3 - 1), dia3);
+												if (fecha >= lunesSemana) {
+													alert("La semana en curso no se puede procesar");
+													correct = false;
+												}
+
+												return correct;
+											}
+											function validaLargoCodArticuloRipley() {
+												var correct = true;
+												if ((document.forms[0].txtCodArtRipley.value.length < 7) && (document.forms[0].txtCodArtRipley.value != "")) {
+													correct = false;
+													alert("Se necesitan como minimo 7 digitos para definir el código de articulo Ripley");
+													document.forms[0].txtCodArtRipley.focus();
+												}
+												return correct;
+											}
+										</script>
+
+
+
+
+
+										<script language="javascript"
+											src="/b2bWeb/portal/comercial/../static/scripts/ajax-schema.js"></script>
+										<script language="javascript"
+											src="/b2bWeb/portal/comercial/../static/scripts/ajax-Ripley.js"></script>
+										<script type="text/javascript">
+											<!--
+											function validaCheck(op) {
+												obj = document.ConsultaComercialForm;
+												if (op == "1")
+												if (obj.chkFileStock.checked)
+												   obj.chkSinVtaSinStock.checked = false;
+												if (op == "2")
+												 if (obj.chkSinVtaSinStock.checked)
+														 obj.chkFileStock.checked = false;
+											}
+											
+											function resetearDatos(form){
+												form.cboTipoConsulta.selectedIndex = 0;
+												form.cboSucursalDestino.selectedIndex = 0;
+												form.cboTemporada.selectedIndex = 0;
+												form.cboMarca.selectedIndex = 0;
+												form.cboLinea.selectedIndex = 0;
+												form.cboLinea.options.length = 1;
+												form.txtCodArtRipley.value = "";
+												form.txtCodArtProveedor.value = "";
+												form.chkFile.checked = false;
+												form.chkFileStock.checked = false;
+												form.txtFechaDesde.value = form.hdnFechaDesde.value;
+												form.txtFechaHasta.value = form.hdnFechaHasta.value;
+												if (form.cboDepto.selectedIndex != 0){
+													form.cboDepto.selectedIndex = 0;
+												}
+											}
+											function ValidaDatos(form)
+											{
+													if(!comparaDates(form.txtFechaDesde.value,form.txtFechaHasta.value)){
+														alert('Fecha Hasta debe ser mayor que Fecha Desde');	
+														return false;
+													} else {
+														return true;
+													}
+											}
+											
+											//-->
+										</script>
+
+										<script type="text/javascript" language="Javascript1.1">
+
+											<!-- Begin 
+											
+												var bCancel = false; 
+											
+												function validate(form) { 
+													if (bCancel) { 
+														return true; 
+													} else { 
+														var formValidationResult; 
+														formValidationResult = validateRequired(form) && validateDate(form); 
+														return (formValidationResult); 
+													} 
+												} 
+											
+												function ConsultaComercialForm_required () { 
+												 this.a0 = new Array("txtFechaDesde", "Fecha desde es obligatorio.", new Function ("varName", "this.datePattern='dd-MM-yyyy';  return this[varName];"));
+												 this.a1 = new Array("txtFechaHasta", "Fecha hasta es obligatorio.", new Function ("varName", "this.datePattern='dd-MM-yyyy';  return this[varName];"));
+												} 
+											
+												function ConsultaComercialForm_DateValidations () { 
+												 this.a0 = new Array("txtFechaDesde", "Fecha desde no es una fecha valida.", new Function ("varName", "this.datePattern='dd-MM-yyyy';  return this[varName];"));
+												 this.a1 = new Array("txtFechaHasta", "Fecha hasta no es una fecha valida.", new Function ("varName", "this.datePattern='dd-MM-yyyy';  return this[varName];"));
+												} 
+											
+											
+											
+											function validateRutFull(form) {
+														var isValid = true;
+														var focusField;
+														var fieldRut;
+														var fields = new Array();
+														var i = 0;            
+														var formName = form.getAttributeNode("name");
+														oRutFull = eval('new ' + formName.value + '_rutFull()');
+													    
+														// for each field in the list
+														for (x in oRutFull) {
+															var fieldRut = form[oRutFull[x][0]];
+																if (fieldRut.value!=null && fieldRut.value!= '' && ! Rut(fieldRut) ) {
+																	fields[i++] = oRutFull[x][1];    	
+																	focusField = fieldRut;
+																	isValid = false;
+																}
+														}
+												    
+														if (fields.length > 0) {
+															focusField.focus();
+															alert(fields.join('\n'));
+														}
+														return isValid;
+													}
+											
+													
+													function revisarDigito( dvr )
+													{	
+														dv = dvr + ""	
+														if ( dv != '0' && dv != '1' && dv != '2' && dv != '3' && dv != '4' && dv != '5' && dv != '6' && dv != '7' && dv != '8' && dv != '9' && dv != 'k'  && dv != 'K')	
+														{		
+															// alert("Debe ingresar un digito verificador valido");		
+															// window.document.form1.rut.focus();		
+															// window.document.form1.rut.select();		
+															return false;	
+														}	
+														return true;
+													}
+													
+													function revisarDigito2( crut )
+													{	
+														largo = crut.length;	
+														if ( largo < 2 )	
+														{		
+															// alert("Debe ingresar el rut completo")		
+															// window.document.form1.rut.focus();		
+															// window.document.form1.rut.select();		
+															return false;	
+														}	
+														if ( largo > 2 )		
+															rut = crut.substring(0, largo - 1);	
+														else		
+															rut = crut.charAt(0);	
+														dv = crut.charAt(largo-1);	
+														revisarDigito( dv );	
+													
+														if ( rut == null || dv == null )
+															return 0	
+													
+														var dvr = '0'	
+														suma = 0	
+														mul  = 2	
+														
+														
+														for (i= rut.length -1 ; i >= 0; i--)	
+														{	
+															suma = suma + rut.charAt(i) * mul		
+															if (mul == 7)			
+																mul = 2		
+															else    			
+																mul++	
+														}	
+														res = suma % 11	
+														if (res==1)		
+															dvr = 'k'	
+														else if (res==0)		
+															dvr = '0'	
+														else	
+														{		
+															dvi = 11-res		
+															dvr = dvi + ""	
+														}
+														if ( dvr != dv.toLowerCase() )	
+														{		
+															// alert("EL rut es incorrecto")		
+															// window.document.form1.rut.focus();		
+															// window.document.form1.rut.select();		
+															return false	
+														}
+													
+														return true
+													}
+													
+													
+													function Rut(field)
+													{	
+														var texto = field.value;
+														var tmpstr = "";	
+														for ( i=0; i < texto.length ; i++ )		
+															if ( texto.charAt(i) != ' ' && texto.charAt(i) != '.' && texto.charAt(i) != '-' )
+																tmpstr = tmpstr + texto.charAt(i);	
+														texto = tmpstr;	
+														largo = texto.length;	
+														
+														
+														if ( largo < 2 )	
+														{		
+															// alert("Debe ingresar el rut completo")		
+															// window.document.form1.rut.focus();		
+															// window.document.form1.rut.select();		
+															return false;	
+														}	
+													
+														for (i=0; i < largo ; i++ )	
+														{			
+															if ( texto.charAt(i) !="0" && texto.charAt(i) != "1" && texto.charAt(i) !="2" && texto.charAt(i) != "3" && texto.charAt(i) != "4" && texto.charAt(i) !="5" && texto.charAt(i) != "6" && texto.charAt(i) != "7" && texto.charAt(i) !="8" && texto.charAt(i) != "9" && texto.charAt(i) !="k" && texto.charAt(i) != "K" )
+																{			
+																// alert("El valor ingresado no corresponde a un R.U.T valido");			
+																// window.document.form1.rut.focus();			
+																// window.document.form1.rut.select();			
+																return false;		
+															}	
+														}	
+													
+														var invertido = "";	
+														for ( i=(largo-1),j=0; i>=0; i--,j++ )		
+															invertido = invertido + texto.charAt(i);	
+														var dtexto = "";	
+														dtexto = dtexto + invertido.charAt(0);	
+														dtexto = dtexto + '-';	
+														cnt = 0;	
+													
+														for ( i=1,j=2; i<largo; i++,j++ )	
+														{		
+															//alert("i=[" + i + "] j=[" + j +"]" );		
+															if ( cnt == 3 )		
+															{			
+																dtexto = dtexto + '.';			
+																j++;			
+																dtexto = dtexto + invertido.charAt(i);			
+																cnt = 1;		
+															}		
+															else		
+															{				
+																dtexto = dtexto + invertido.charAt(i);			
+																cnt++;		
+															}	
+														}	
+													
+														invertido = "";	
+														for ( i=(dtexto.length-1),j=0; i>=0; i--,j++ )		
+															invertido = invertido + dtexto.charAt(i);	
+													
+														// window.document.form1.
+														field.value = invertido.toUpperCase();
+													
+														if ( revisarDigito2(texto) )		
+															return true;	
+													
+														return false;
+													}
+											function validateMultiFieldDateNotExpired(form) {
+														var isValid = true;
+														var focusField;
+														var secondProperty;
+														var thirdProperty;            
+														var theField;
+														var fields = new Array();
+														var i = 0;            
+														var formName = form.getAttributeNode("name");
+														oDates = eval('new ' + formName.value + '_multiFieldDateNotExpired()');
+													    
+														// for each field in the list
+														var focus = false;
+														for (x in oDates) {
+															var theField = form[oDates[x][0]];
+															var secondProperty = form[oDates[x][2]("secondProperty")];
+															var thirdProperty = form[oDates[x][2]("thirdProperty")];                
+																if (!isValidDate(theField.value, secondProperty.value, thirdProperty.value))  {
+																// ignores... 
+																// should be catched in multiFieldDate
+																} else {
+																	// controls that the date has not expired
+																	var now = new Date();
+																	var date = new Date();
+																	date.setUTCFullYear(thirdProperty.value);
+																	date.setUTCMonth(secondProperty.value - 1);
+																	date.setUTCDate(theField.value);
+																	if (date <= now) {
+																		fields[i++] = oDates[x][1];    	
+																		if (!focus) {
+																			focusField = theField;
+																			focus = true;
+																		}
+																		isValid = false;
+																	}
+																}
+														}
+												    
+														if (fields.length > 0) {
+															focusField.focus();
+															alert(fields.join('\n'));
+														}
+														return isValid;
+													}
+											
+											   /*$RCSfile: validateFloatRange.js,v $ $Revision: 1.9 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* Check to see if fields are in a valid float range.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateFloatRange(form) {
+												var isValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oRange = eval('new ' + formName.value + '_floatRange()');
+												for (x in oRange) {
+													var field = form[oRange[x][0]];
+
+													if ((field.type == 'hidden' ||
+														field.type == 'text' || field.type == 'textarea') &&
+														(field.value.length > 0) &&
+														field.disabled == false) {
+
+														var fMin = parseFloat(oRange[x][2]("min"));
+														var fMax = parseFloat(oRange[x][2]("max"));
+														var fValue = parseFloat(field.value);
+														if (!(fValue >= fMin && fValue <= fMax)) {
+															if (i == 0) {
+																focusField = field;
+															}
+															fields[i++] = oRange[x][1];
+															isValid = false;
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											// to pass parameters by Reference
+											function refParam() {
+												this.array = new Array(1);
+												this.setValue = function (v) { this.array[0] = v; }
+												this.getValue = function () { return this.array[0]; }
+											}
+
+											function validateRequiredIfOtherNotNull(form) {
+												var isValid = true;
+												var focusFieldNN = new refParam;
+												var focusField = new refParam;
+												var fieldNN = new refParam;
+												var fieldX = new refParam;
+												var fields = new Array();
+												var i = 0;
+												var formName = form.getAttributeNode("name");
+												oRequiredIfOtherNotNull = eval('new ' + formName.value + '_requiredIfOtherNotNull()');
+
+												// for each field in the list
+												for (x in oRequiredIfOtherNotNull) {
+													var field = form[oRequiredIfOtherNotNull[x][0]];
+													var notNullField = form[oRequiredIfOtherNotNull[x][2]("notNullField")];
+													var j = 0;
+													if (isNotNull(focusFieldNN, fieldNN, notNullField, oRequiredIfOtherNotNull, j)) {
+														if (!isNotNull(focusField, fieldX, field, oRequiredIfOtherNotNull, i)) {  // doble no is yes
+															isValid = false;
+															fields[i++] = fieldX.getValue();
+														}
+													}
+												}
+
+												if (fields.length > 0) {
+													focusField.getValue().focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											function isNotNull(focusField, fieldX, field, oRequiredIfOtherNotNull, i) {
+												var notNull = true;
+
+												if ((field.type == 'hidden' ||
+													field.type == 'text' ||
+													field.type == 'textarea' ||
+													field.type == 'file' ||
+													field.type == 'checkbox' ||
+													field.type == 'select-one' ||
+													field.type == 'password') &&
+													field.disabled == false) {
+
+													var value = '';
+													// get field's value
+													if (field.type == "select-one") {
+														var si = field.selectedIndex;
+														if (si >= 0) {
+															value = field.options[si].value;
+														}
+													} else if (field.type == 'checkbox') {
+														if (field.checked) {
+															value = field.value;
+														}
+													} else {
+														value = field.value;
+													}
+
+													if (trim(value).length == 0) {
+														if (i == 0) {
+															focusField.setValue(field);
+														}
+														fieldX.setValue(oRequiredIfOtherNotNull[x][1]);
+														i++;
+														notNull = false;
+													}
+												} else if (field.type == "select-multiple") {
+													var numOptions = field.options.length;
+													lastSelected = -1;
+													for (loop = numOptions - 1; loop >= 0; loop--) {
+														if (field.options[loop].selected) {
+															lastSelected = loop;
+															value = field.options[loop].value;
+															break;
+														}
+													}
+													if (lastSelected < 0 || trim(value).length == 0) {
+														if (i == 0) {
+															focusField.setValue(field);
+														}
+														fieldX.setValue(oRequiredIfOtherNotNull[x][1]);
+														i++;
+														notNull = false;
+													}
+												} else if ((field.length > 0) && (field[0].type == 'radio' || field[0].type == 'checkbox')) {
+													isChecked = -1;
+													for (loop = 0; loop < field.length; loop++) {
+														if (field[loop].checked) {
+															isChecked = loop;
+															break; // only one needs to be checked
+														}
+													}
+													if (isChecked < 0) {
+														if (i == 0) {
+															focusField.setValue(field[0]);
+														}
+														fieldX.setValue(oRequiredIfOtherNotNull[x][1]);
+														i++;
+														notNull = false;
+													}
+												}
+												return notNull
+											}
+
+											/*$RCSfile: validateByte.js,v $ $Revision: 1.9 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* Check to see if fields are a valid byte.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateByte(form) {
+												var bValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+												oByte = eval('new ' + formName.value + '_ByteValidations()');
+
+												for (x in oByte) {
+													var field = form[oByte[x][0]];
+
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'textarea' ||
+														field.type == 'select-one' ||
+														field.type == 'radio') &&
+														field.disabled == false) {
+
+														var value = '';
+														// get field's value
+														if (field.type == "select-one") {
+															var si = field.selectedIndex;
+															if (si >= 0) {
+																value = field.options[si].value;
+															}
+														} else {
+															value = field.value;
+														}
+
+														if (value.length > 0) {
+															if (!isAllDigits(value)) {
+																bValid = false;
+																if (i == 0) {
+																	focusField = field;
+																}
+																fields[i++] = oByte[x][1];
+
+															} else {
+
+																var iValue = parseInt(value);
+																if (isNaN(iValue) || !(iValue >= -128 && iValue <= 127)) {
+																	if (i == 0) {
+																		focusField = field;
+																	}
+																	fields[i++] = oByte[x][1];
+																	bValid = false;
+																}
+															}
+														}
+
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return bValid;
+											}
+
+
+											/*$RCSfile: validateMaxLength.js,v $ $Revision: 1.10 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* A field is considered valid if less than the specified maximum.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* <strong>Caution:</strong> Using <code>validateMaxLength</code> on a password field in a 
+											*  login page gives unnecessary information away to hackers. While it only slightly
+											*  weakens security, we suggest using it only when modifying a password.</p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateMaxLength(form) {
+												var isValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oMaxLength = eval('new ' + formName.value + '_maxlength()');
+												for (x in oMaxLength) {
+													var field = form[oMaxLength[x][0]];
+
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'password' ||
+														field.type == 'textarea') &&
+														field.disabled == false) {
+
+														var iMax = parseInt(oMaxLength[x][2]("maxlength"));
+														if (field.value.length > iMax) {
+															if (i == 0) {
+																focusField = field;
+															}
+															fields[i++] = oMaxLength[x][1];
+															isValid = false;
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+
+											/*$RCSfile: validateIntRange.js,v $ $Revision: 1.10 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* Check to see if fields is in a valid integer range.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateIntRange(form) {
+												var isValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oRange = eval('new ' + formName.value + '_intRange()');
+												for (x in oRange) {
+													var field = form[oRange[x][0]];
+													if (field.disabled == false) {
+														var value = '';
+														if (field.type == 'hidden' ||
+															field.type == 'text' || field.type == 'textarea' ||
+															field.type == 'radio') {
+															value = field.value;
+														}
+														if (field.type == 'select-one') {
+															var si = field.selectedIndex;
+															if (si >= 0) {
+																value = field.options[si].value;
+															}
+														}
+														if (value.length > 0) {
+															var iMin = parseInt(oRange[x][2]("min"));
+															var iMax = parseInt(oRange[x][2]("max"));
+															var iValue = parseInt(value);
+															if (!(iValue >= iMin && iValue <= iMax)) {
+																if (i == 0) {
+																	focusField = field;
+																}
+																fields[i++] = oRange[x][1];
+																isValid = false;
+															}
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											function validateMultiFieldDate(form) {
+												var isValid = true;
+												var focusField;
+												var secondProperty;
+												var thirdProperty;
+												var theField;
+												var fields = new Array();
+												var i = 0;
+												var formName = form.getAttributeNode("name");
+												oDates = eval('new ' + formName.value + '_multiFieldDate()');
+
+												// for each field in the list
+												var focus = false;
+												for (x in oDates) {
+													var theField = form[oDates[x][0]];
+													var secondProperty = form[oDates[x][2]("secondProperty")];
+													var thirdProperty = form[oDates[x][2]("thirdProperty")];
+													if (!isValidDate(theField.value, secondProperty.value, thirdProperty.value)) {
+														fields[i++] = oDates[x][1];
+														if (!focus) {
+															focusField = theField;
+															focus = true;
+														}
+														isValid = false;
+													}
+												}
+
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+											function validateRut(form) {
+												var isValid = true;
+												var focusField;
+												var fieldRut;
+												var fieldRutDig;
+												var fields = new Array();
+												var i = 0;
+												var formName = form.getAttributeNode("name");
+												oRut = eval('new ' + formName.value + '_rut()');
+
+												// for each field in the list
+												for (x in oRut) {
+													var fieldRut = form[oRut[x][0]];
+													if (fieldRut.value != null && fieldRut.value != '' && !RutSolo(fieldRut)) {
+														fields[i++] = oRut[x][1];
+														focusField = fieldRut;
+														isValid = false;
+													}
+												}
+
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											// function Rut(texto)
+											function RutSolo(rut) {
+												texto = rut.value + ' ';
+												var tmpstr = "";
+												for (i = 0; i < texto.length; i++)
+													if (texto.charAt(i) != ' ' && texto.charAt(i) != '.' && texto.charAt(i) != '-')
+														tmpstr = tmpstr + texto.charAt(i);
+												texto = tmpstr;
+												largo = texto.length;
+
+												if (largo < 2) {
+													// alert("Debe ingresar el rut completo")		
+													// window.document.form1.rut.focus();		
+													// window.document.form1.rut.select();		
+													return false;
+												}
+
+												for (i = 0; i < largo; i++) {
+													if (texto.charAt(i) != "0" && texto.charAt(i) != "1" && texto.charAt(i) != "2" && texto.charAt(i) != "3" && texto.charAt(i) != "4" && texto.charAt(i) != "5" && texto.charAt(i) != "6" && texto.charAt(i) != "7" && texto.charAt(i) != "8" && texto.charAt(i) != "9" && texto.charAt(i) != "k" && texto.charAt(i) != "K") {
+														// alert("El valor ingresado no corresponde a un R.U.T valido");			
+														// window.document.form1.rut.focus();			
+														// window.document.form1.rut.select();			
+														return false;
+													}
+												}
+
+												var invertido = "";
+												for (i = (largo - 1), j = 0; i >= 0; i--, j++)
+													invertido = invertido + texto.charAt(i);
+												var dtexto = "";
+												dtexto = dtexto + invertido.charAt(0);
+												dtexto = dtexto + '-';
+												cnt = 0;
+
+												for (i = 1, j = 2; i < largo; i++, j++) {
+													//alert("i=[" + i + "] j=[" + j +"]" );		
+													if (cnt == 3) {
+														dtexto = dtexto + '.';
+														j++;
+														dtexto = dtexto + invertido.charAt(i);
+														cnt = 1;
+													}
+													else {
+														dtexto = dtexto + invertido.charAt(i);
+														cnt++;
+													}
+												}
+
+												invertido = "";
+												for (i = (dtexto.length - 1), j = 0; i >= 0; i--, j++)
+													invertido = invertido + dtexto.charAt(i);
+
+												return true;
+											}
+											function validatePassword(form) {
+												var isValid = true;
+												var focusField;
+												var fieldRut;
+												var fields = new Array();
+												var i = 0;
+												var formName = form.getAttributeNode("name");
+												oPasswordFull = eval('new ' + formName.value + '_password()');
+
+												// for each field in the list
+												for (x in oPasswordFull) {
+													var fieldPassword = form[oPasswordFull[x][0]];
+													if (fieldPassword.value != null && fieldPassword.value != ''
+														&& !(fieldPassword.value.match(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[\.!@#\$%\^\*])(?=.{8,})/))) {
+														fields[i++] = oPasswordFull[x][1];
+														focusField = fieldPassword;
+														isValid = false;
+													}
+												}
+
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											/*$RCSfile: validateFloat.js,v $ $Revision: 1.11 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* Check to see if fields are a valid float.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateFloat(form) {
+												var bValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oFloat = eval('new ' + formName.value + '_FloatValidations()');
+												for (x in oFloat) {
+													var field = form[oFloat[x][0]];
+
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'textarea' ||
+														field.type == 'select-one' ||
+														field.type == 'radio') &&
+														field.disabled == false) {
+
+														var value = '';
+														// get field's value
+														if (field.type == "select-one") {
+															var si = field.selectedIndex;
+															if (si >= 0) {
+																value = field.options[si].value;
+															}
+														} else {
+															value = field.value;
+														}
+
+														if (value.length > 0) {
+															// remove '.' before checking digits
+															var tempArray = value.split('.');
+															//Strip off leading '0'
+															var zeroIndex = 0;
+															var joinedString = tempArray.join('');
+															while (joinedString.charAt(zeroIndex) == '0') {
+																zeroIndex++;
+															}
+															var noZeroString = joinedString.substring(zeroIndex, joinedString.length);
+
+															if (!isAllDigits(noZeroString)) {
+																bValid = false;
+																if (i == 0) {
+																	focusField = field;
+																}
+																fields[i++] = oFloat[x][1];
+
+															} else {
+																var iValue = parseFloat(value);
+																if (isNaN(iValue)) {
+																	if (i == 0) {
+																		focusField = field;
+																	}
+																	fields[i++] = oFloat[x][1];
+																	bValid = false;
+																}
+															}
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return bValid;
+											}
+
+
+											/*$RCSfile: validateEmail.js,v $ $Revision: 1.9 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* Check to see if fields are a valid email address.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateEmail(form) {
+												var bValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+
+												oEmail = eval('new ' + formName.value + '_email()');
+
+												for (x in oEmail) {
+													var field = form[oEmail[x][0]];
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'textarea') &&
+														(field.value.length > 0) &&
+														field.disabled == false) {
+														if (!checkEmail(field.value)) {
+															if (i == 0) {
+																focusField = field;
+															}
+															fields[i++] = oEmail[x][1];
+															bValid = false;
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return bValid;
+											}
+
+											/**
+											 * Reference: Sandeep V. Tamhankar (stamhankar@hotmail.com),
+											 * http://javascript.internet.com
+											 */
+											function checkEmail(emailStr) {
+												if (emailStr.length == 0) {
+													return true;
+												}
+												var emailPat = /^(.+)@(.+)$/;
+												var specialChars = "\\(\\)<>@,;:\\\\\\\"\\.\\[\\]";
+												var validChars = "\[^\\s" + specialChars + "\]";
+												var quotedUser = "(\"[^\"]*\")";
+												var ipDomainPat = /^(\d{1,3})[.](\d{1,3})[.](\d{1,3})[.](\d{1,3})$/;
+												var atom = validChars + '+';
+												var word = "(" + atom + "|" + quotedUser + ")";
+												var userPat = new RegExp("^" + word + "(\\." + word + ")*$");
+												var domainPat = new RegExp("^" + atom + "(\\." + atom + ")*$");
+												var matchArray = emailStr.match(emailPat);
+												if (matchArray == null) {
+													return false;
+												}
+												var user = matchArray[1];
+												var domain = matchArray[2];
+												if (user.match(userPat) == null) {
+													return false;
+												}
+												var IPArray = domain.match(ipDomainPat);
+												if (IPArray != null) {
+													for (var i = 1; i <= 4; i++) {
+														if (IPArray[i] > 255) {
+															return false;
+														}
+													}
+													return true;
+												}
+												var domainArray = domain.match(domainPat);
+												if (domainArray == null) {
+													return false;
+												}
+												var atomPat = new RegExp(atom, "g");
+												var domArr = domain.match(atomPat);
+												var len = domArr.length;
+												if ((domArr[domArr.length - 1].length < 2) ||
+													(domArr[domArr.length - 1].length > 3)) {
+													return false;
+												}
+												if (len < 2) {
+													return false;
+												}
+												return true;
+											}
+
+
+
+
+											/*$RCSfile: validateRequired.js,v $ $Revision: 1.13 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											*  Check to see if fields must contain a value.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+
+											function validateRequired(form) {
+												var isValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oRequired = eval('new ' + formName.value + '_required()');
+
+												for (x in oRequired) {
+													var field = form[oRequired[x][0]];
+
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'textarea' ||
+														field.type == 'file' ||
+														field.type == 'checkbox' ||
+														field.type == 'select-one' ||
+														field.type == 'password') &&
+														field.disabled == false) {
+
+														var value = '';
+														// get field's value
+														if (field.type == "select-one") {
+															var si = field.selectedIndex;
+															if (si >= 0) {
+																value = field.options[si].value;
+															}
+														} else if (field.type == 'checkbox') {
+															if (field.checked) {
+																value = field.value;
+															}
+														} else {
+															value = field.value;
+														}
+
+														if (trim(value).length == 0) {
+
+															if (i == 0) {
+																focusField = field;
+															}
+															fields[i++] = oRequired[x][1];
+															isValid = false;
+														}
+													} else if (field.type == "select-multiple") {
+														var numOptions = field.options.length;
+														lastSelected = -1;
+														for (loop = numOptions - 1; loop >= 0; loop--) {
+															if (field.options[loop].selected) {
+																lastSelected = loop;
+																value = field.options[loop].value;
+																break;
+															}
+														}
+														if (lastSelected < 0 || trim(value).length == 0) {
+															if (i == 0) {
+																focusField = field;
+															}
+															fields[i++] = oRequired[x][1];
+															isValid = false;
+														}
+													} else if ((field.length > 0) && (field[0].type == 'radio' || field[0].type == 'checkbox')) {
+														isChecked = -1;
+														for (loop = 0; loop < field.length; loop++) {
+															if (field[loop].checked) {
+																isChecked = loop;
+																break; // only one needs to be checked
+															}
+														}
+														if (isChecked < 0) {
+															if (i == 0) {
+																focusField = field[0];
+															}
+															fields[i++] = oRequired[x][1];
+															isValid = false;
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											// Trim whitespace from left and right sides of s.
+											function trim(s) {
+												return s.replace(/^\s*/, "").replace(/\s*$/, "");
+											}
+
+
+											/*$RCSfile: validateCreditCard.js,v $ $Revision: 1.8 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* Check to see if fields are a valid creditcard number based on Luhn checksum.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateCreditCard(form) {
+												var bValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oCreditCard = eval('new ' + formName.value + '_creditCard()');
+
+												for (x in oCreditCard) {
+													if ((form[oCreditCard[x][0]].type == 'text' ||
+														form[oCreditCard[x][0]].type == 'textarea') &&
+														(form[oCreditCard[x][0]].value.length > 0) &&
+														form[oCreditCard[x][0]].disabled == false) {
+														if (!luhnCheck(form[oCreditCard[x][0]].value)) {
+															if (i == 0) {
+																focusField = form[oCreditCard[x][0]];
+															}
+															fields[i++] = oCreditCard[x][1];
+															bValid = false;
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return bValid;
+											}
+
+											/**
+											 * Checks whether a given credit card number has a valid Luhn checksum.
+											 * This allows you to spot most randomly made-up or garbled credit card numbers immediately.
+											 * Reference: http://www.speech.cs.cmu.edu/~sburke/pub/luhn_lib.html
+											 */
+											function luhnCheck(cardNumber) {
+												if (isLuhnNum(cardNumber)) {
+													var no_digit = cardNumber.length;
+													var oddoeven = no_digit & 1;
+													var sum = 0;
+													for (var count = 0; count < no_digit; count++) {
+														var digit = parseInt(cardNumber.charAt(count));
+														if (!((count & 1) ^ oddoeven)) {
+															digit *= 2;
+															if (digit > 9) digit -= 9;
+														};
+														sum += digit;
+													};
+													if (sum == 0) return false;
+													if (sum % 10 == 0) return true;
+												};
+												return false;
+											}
+
+											function isLuhnNum(argvalue) {
+												argvalue = argvalue.toString();
+												if (argvalue.length == 0) {
+													return false;
+												}
+												for (var n = 0; n < argvalue.length; n++) {
+													if ((argvalue.substring(n, n + 1) < "0") ||
+														(argvalue.substring(n, n + 1) > "9")) {
+														return false;
+													}
+												}
+												return true;
+											}
+
+
+											/*$RCSfile: validateMask.js,v $ $Revision: 1.10 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* Check to see if fields are a valid using a regular expression.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateMask(form) {
+												var isValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oMasked = eval('new ' + formName.value + '_mask()');
+												for (x in oMasked) {
+													var field = form[oMasked[x][0]];
+
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'textarea' ||
+														field.type == 'file') &&
+														(field.value.length > 0) &&
+														field.disabled == false) {
+
+														if (!matchPattern(field.value, oMasked[x][2]("mask"))) {
+															if (i == 0) {
+																focusField = field;
+															}
+															fields[i++] = oMasked[x][1];
+															isValid = false;
+														}
+													}
+												}
+
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											function matchPattern(value, mask) {
+												return mask.exec(value);
+											}
+
+
+											/*$RCSfile: validateDate.js,v $ $Revision: 1.10 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* Check to see if fields are a valid date.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateDate(form) {
+												var bValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oDate = eval('new ' + formName.value + '_DateValidations()');
+
+												for (x in oDate) {
+													var field = form[oDate[x][0]];
+													var value = field.value;
+													var datePattern = oDate[x][2]("datePatternStrict");
+													// try loose pattern
+													if (datePattern == null)
+														datePattern = oDate[x][2]("datePattern");
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'textarea') &&
+														(value.length > 0) && (datePattern.length > 0) &&
+														field.disabled == false) {
+														var MONTH = "MM";
+														var DAY = "dd";
+														var YEAR = "yyyy";
+														var orderMonth = datePattern.indexOf(MONTH);
+														var orderDay = datePattern.indexOf(DAY);
+														var orderYear = datePattern.indexOf(YEAR);
+														if ((orderDay < orderYear && orderDay > orderMonth)) {
+															var iDelim1 = orderMonth + MONTH.length;
+															var iDelim2 = orderDay + DAY.length;
+															var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
+															var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
+															if (iDelim1 == orderDay && iDelim2 == orderYear) {
+																dateRegexp = new RegExp("^(\\d{2})(\\d{2})(\\d{4})$");
+															} else if (iDelim1 == orderDay) {
+																dateRegexp = new RegExp("^(\\d{2})(\\d{2})[" + delim2 + "](\\d{4})$");
+															} else if (iDelim2 == orderYear) {
+																dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})(\\d{4})$");
+															} else {
+																dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{4})$");
+															}
+															var matched = dateRegexp.exec(value);
+															if (matched != null) {
+																if (!isValidDate(matched[2], matched[1], matched[3])) {
+																	if (i == 0) {
+																		focusField = field;
+																	}
+																	fields[i++] = oDate[x][1];
+																	bValid = false;
+																}
+															} else {
+																if (i == 0) {
+																	focusField = field;
+																}
+																fields[i++] = oDate[x][1];
+																bValid = false;
+															}
+														} else if ((orderMonth < orderYear && orderMonth > orderDay)) {
+															var iDelim1 = orderDay + DAY.length;
+															var iDelim2 = orderMonth + MONTH.length;
+															var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
+															var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
+															if (iDelim1 == orderMonth && iDelim2 == orderYear) {
+																dateRegexp = new RegExp("^(\\d{2})(\\d{2})(\\d{4})$");
+															} else if (iDelim1 == orderMonth) {
+																dateRegexp = new RegExp("^(\\d{2})(\\d{2})[" + delim2 + "](\\d{4})$");
+															} else if (iDelim2 == orderYear) {
+																dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})(\\d{4})$");
+															} else {
+																dateRegexp = new RegExp("^(\\d{2})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{4})$");
+															}
+															var matched = dateRegexp.exec(value);
+															if (matched != null) {
+																if (!isValidDate(matched[1], matched[2], matched[3])) {
+																	if (i == 0) {
+																		focusField = field;
+																	}
+																	fields[i++] = oDate[x][1];
+																	bValid = false;
+																}
+															} else {
+																if (i == 0) {
+																	focusField = field;
+																}
+																fields[i++] = oDate[x][1];
+																bValid = false;
+															}
+														} else if ((orderMonth > orderYear && orderMonth < orderDay)) {
+															var iDelim1 = orderYear + YEAR.length;
+															var iDelim2 = orderMonth + MONTH.length;
+															var delim1 = datePattern.substring(iDelim1, iDelim1 + 1);
+															var delim2 = datePattern.substring(iDelim2, iDelim2 + 1);
+															if (iDelim1 == orderMonth && iDelim2 == orderDay) {
+																dateRegexp = new RegExp("^(\\d{4})(\\d{2})(\\d{2})$");
+															} else if (iDelim1 == orderMonth) {
+																dateRegexp = new RegExp("^(\\d{4})(\\d{2})[" + delim2 + "](\\d{2})$");
+															} else if (iDelim2 == orderDay) {
+																dateRegexp = new RegExp("^(\\d{4})[" + delim1 + "](\\d{2})(\\d{2})$");
+															} else {
+																dateRegexp = new RegExp("^(\\d{4})[" + delim1 + "](\\d{2})[" + delim2 + "](\\d{2})$");
+															}
+															var matched = dateRegexp.exec(value);
+															if (matched != null) {
+																if (!isValidDate(matched[3], matched[2], matched[1])) {
+																	if (i == 0) {
+																		focusField = field;
+																	}
+																	fields[i++] = oDate[x][1];
+																	bValid = false;
+																}
+															} else {
+																if (i == 0) {
+																	focusField = field;
+																}
+																fields[i++] = oDate[x][1];
+																bValid = false;
+															}
+														} else {
+															if (i == 0) {
+																focusField = field;
+															}
+															fields[i++] = oDate[x][1];
+															bValid = false;
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return bValid;
+											}
+
+											function isValidDate(day, month, year) {
+												if (month < 1 || month > 12) {
+													return false;
+												}
+												if (day < 1 || day > 31) {
+													return false;
+												}
+												if ((month == 4 || month == 6 || month == 9 || month == 11) &&
+													(day == 31)) {
+													return false;
+												}
+												if (month == 2) {
+													var leap = (year % 4 == 0 &&
+														(year % 100 != 0 || year % 400 == 0));
+													if (day > 29 || (day == 29 && !leap)) {
+														return false;
+													}
+												}
+												return true;
+											}
+
+											function validateRutDig(form) {
+												var isValid = true;
+												var focusField;
+												var fieldRut;
+												var fieldRutDig;
+												var fields = new Array();
+												var i = 0;
+												var formName = form.getAttributeNode("name");
+												oRutDig = eval('new ' + formName.value + '_rutDig()');
+
+												// for each field in the list
+												for (x in oRutDig) {
+													var fieldRutDig = form[oRutDig[x][0]];
+													var fieldRut = form[oRutDig[x][2]("rut")];
+													if (fieldRut.value != null && fieldRut.value != '' && !revisarDigito2Solo(fieldRut.value + fieldRutDig.value)) {
+														fields[i++] = oRutDig[x][1];
+														focusField = fieldRutDig;
+														isValid = false;
+													}
+												}
+
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+
+											//
+											// Validador de Rut
+											// Descargado desde http://www.juque.cl/
+											//
+											function revisarDigitoSolo(dvr) {
+												dv = dvr + ""
+												if (dv != '0' && dv != '1' && dv != '2' && dv != '3' && dv != '4' && dv != '5' && dv != '6' && dv != '7' && dv != '8' && dv != '9' && dv != 'k' && dv != 'K') {
+													// alert("Debe ingresar un digito verificador valido");		
+													// window.document.form1.rut.focus();		
+													// window.document.form1.rut.select();		
+													return false;
+												}
+												return true;
+											}
+
+											function revisarDigito2Solo(crut) {
+												largo = crut.length;
+												if (largo < 2) {
+													// alert("Debe ingresar el rut completo")		
+													// window.document.form1.rut.focus();		
+													// window.document.form1.rut.select();		
+													return false;
+												}
+												if (largo > 2)
+													rut = crut.substring(0, largo - 1);
+												else
+													rut = crut.charAt(0);
+												dv = crut.charAt(largo - 1);
+												revisarDigitoSolo(dv);
+
+												if (rut == null || dv == null)
+													return 0
+
+												var dvr = '0'
+												suma = 0
+												mul = 2
+
+												for (i = rut.length - 1; i >= 0; i--) {
+													suma = suma + rut.charAt(i) * mul
+													if (mul == 7)
+														mul = 2
+													else
+														mul++
+												}
+												res = suma % 11
+												if (res == 1)
+													dvr = 'k'
+												else if (res == 0)
+													dvr = '0'
+												else {
+													dvi = 11 - res
+													dvr = dvi + ""
+												}
+												if (dvr != dv.toLowerCase()) {
+													// alert("EL rut es incorrecto")		
+													// window.document.form1.rut.focus();		
+													// window.document.form1.rut.select();		
+													return false
+												}
+
+												return true
+											}
+											/*$RCSfile: validateUtilities.js,v $ $Revision: 1.2 $ $Date: 2004/03/28 16:53:21 $ */
+
+											/**
+											* This is a place holder for common utilities used across the javascript validation
+											*
+											**/
+
+
+											/*$RCSfile: validateMinLength.js,v $ $Revision: 1.11 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* A field is considered valid if greater than the specified minimum.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* <strong>Caution:</strong> Using <code>validateMinLength</code> on a password field in a 
+											*  login page gives unnecessary information away to hackers. While it only slightly
+											*  weakens security, we suggest using it only when modifying a password.</p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateMinLength(form) {
+												var isValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+
+												oMinLength = eval('new ' + formName.value + '_minlength()');
+
+												for (x in oMinLength) {
+													var field = form[oMinLength[x][0]];
+
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'password' ||
+														field.type == 'textarea') &&
+														field.disabled == false) {
+
+														var iMin = parseInt(oMinLength[x][2]("minlength"));
+														if ((trim(field.value).length > 0) && (field.value.length < iMin)) {
+															if (i == 0) {
+																focusField = field;
+															}
+															fields[i++] = oMinLength[x][1];
+															isValid = false;
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											// to pass parameters by Reference
+											function refParam() {
+												this.array = new Array(1);
+												this.setValue = function (v) { this.array[0] = v; }
+												this.getValue = function () { return this.array[0]; }
+											}
+
+											function validateRequiredIfOtherNull(form) {
+												var isValid = true;
+												var focusFieldNN = new refParam;
+												var focusField = new refParam;
+												var fieldNN = new refParam;
+												var fieldX = new refParam;
+												var fields = new Array();
+												var i = 0;
+												var formName = form.getAttributeNode("name");
+												oRequiredIfOtherNotNull = eval('new ' + formName.value + '_requiredIfOtherNull()');
+
+												// for each field in the list
+												for (x in oRequiredIfOtherNotNull) {
+													var field = form[oRequiredIfOtherNotNull[x][0]];
+													var nullField = form[oRequiredIfOtherNotNull[x][2]("nullField")];
+													var j = 0;
+													if (!isNotNull(focusFieldNN, fieldNN, nullField, oRequiredIfOtherNotNull, j)) {
+														if (!isNotNull(focusField, fieldX, field, oRequiredIfOtherNotNull, i)) {  // doble no is yes
+															isValid = false;
+															fields[i++] = fieldX.getValue();
+														}
+													}
+												}
+
+												if (fields.length > 0) {
+													focusField.getValue().focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											function isNotNull(focusField, fieldX, field, oRequiredIfOtherNotNull, i) {
+												var notNull = true;
+
+												if ((field.type == 'hidden' ||
+													field.type == 'text' ||
+													field.type == 'textarea' ||
+													field.type == 'file' ||
+													field.type == 'checkbox' ||
+													field.type == 'select-one' ||
+													field.type == 'password') &&
+													field.disabled == false) {
+
+													var value = '';
+													// get field's value
+													if (field.type == "select-one") {
+														var si = field.selectedIndex;
+														if (si >= 0) {
+															value = field.options[si].value;
+														}
+													} else if (field.type == 'checkbox') {
+														if (field.checked) {
+															value = field.value;
+														}
+													} else {
+														value = field.value;
+													}
+
+													if (trim(value).length == 0) {
+														if (i == 0) {
+															focusField.setValue(field);
+														}
+														fieldX.setValue(oRequiredIfOtherNotNull[x][1]);
+														i++;
+														notNull = false;
+													}
+												} else if (field.type == "select-multiple") {
+													var numOptions = field.options.length;
+													lastSelected = -1;
+													for (loop = numOptions - 1; loop >= 0; loop--) {
+														if (field.options[loop].selected) {
+															lastSelected = loop;
+															value = field.options[loop].value;
+															break;
+														}
+													}
+													if (lastSelected < 0 || trim(value).length == 0) {
+														if (i == 0) {
+															focusField.setValue(field);
+														}
+														fieldX.setValue(oRequiredIfOtherNotNull[x][1]);
+														i++;
+														notNull = false;
+													}
+												} else if ((field.length > 0) && (field[0].type == 'radio' || field[0].type == 'checkbox')) {
+													isChecked = -1;
+													for (loop = 0; loop < field.length; loop++) {
+														if (field[loop].checked) {
+															isChecked = loop;
+															break; // only one needs to be checked
+														}
+													}
+													if (isChecked < 0) {
+														if (i == 0) {
+															focusField.setValue(field[0]);
+														}
+														fieldX.setValue(oRequiredIfOtherNotNull[x][1]);
+														i++;
+														notNull = false;
+													}
+												}
+												return notNull
+											}
+
+											/*$RCSfile: validateShort.js,v $ $Revision: 1.9 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											*  Check to see if fields are a valid short.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateShort(form) {
+												var bValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oShort = eval('new ' + formName.value + '_ShortValidations()');
+
+												for (x in oShort) {
+													var field = form[oShort[x][0]];
+
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'textarea' ||
+														field.type == 'select-one' ||
+														field.type == 'radio') &&
+														field.disabled == false) {
+
+														var value = '';
+														// get field's value
+														if (field.type == "select-one") {
+															var si = field.selectedIndex;
+															if (si >= 0) {
+																value = field.options[si].value;
+															}
+														} else {
+															value = field.value;
+														}
+
+														if (value.length > 0) {
+															if (!isAllDigits(value)) {
+																bValid = false;
+																if (i == 0) {
+																	focusField = field;
+																}
+																fields[i++] = oShort[x][1];
+
+															} else {
+
+																var iValue = parseInt(value);
+																if (isNaN(iValue) || !(iValue >= -32768 && iValue <= 32767)) {
+																	if (i == 0) {
+																		focusField = field;
+																	}
+																	fields[i++] = oShort[x][1];
+																	bValid = false;
+																}
+															}
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return bValid;
+											}
+
+
+											/*$RCSfile: validateInteger.js,v $ $Revision: 1.9 $ $Date: 2004/03/28 16:53:21 $ */
+											/**
+											* Check to see if fields are a valid integer.
+											* Fields are not checked if they are disabled.
+											* <p>
+											* @param form The form validation is taking place on.
+											*/
+											function validateInteger(form) {
+												var bValid = true;
+												var focusField = null;
+												var i = 0;
+												var fields = new Array();
+												var formName = form.getAttributeNode("name");
+
+												oInteger = eval('new ' + formName.value + '_IntegerValidations()');
+												for (x in oInteger) {
+													var field = form[oInteger[x][0]];
+
+													if ((field.type == 'hidden' ||
+														field.type == 'text' ||
+														field.type == 'textarea' ||
+														field.type == 'select-one' ||
+														field.type == 'radio') &&
+														field.disabled == false) {
+
+														var value = '';
+														// get field's value
+														if (field.type == "select-one") {
+															var si = field.selectedIndex;
+															if (si >= 0) {
+																value = field.options[si].value;
+															}
+														} else {
+															value = field.value;
+														}
+
+														if (value.length > 0) {
+
+															if (!isAllDigits(value)) {
+																bValid = false;
+																if (i == 0) {
+																	focusField = field;
+																}
+																fields[i++] = oInteger[x][1];
+
+															} else {
+																var iValue = parseInt(value);
+																if (isNaN(iValue) || !(iValue >= -2147483648 && iValue <= 2147483647)) {
+																	if (i == 0) {
+																		focusField = field;
+																	}
+																	fields[i++] = oInteger[x][1];
+																	bValid = false;
+																}
+															}
+														}
+													}
+												}
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return bValid;
+											}
+
+											function isAllDigits(argvalue) {
+												argvalue = argvalue.toString();
+												var validChars = "0123456789";
+												var startFrom = 0;
+												if (argvalue.substring(0, 2) == "0x") {
+													validChars = "0123456789abcdefABCDEF";
+													startFrom = 2;
+												} else if (argvalue.charAt(0) == "0") {
+													validChars = "01234567";
+													startFrom = 1;
+												} else if (argvalue.charAt(0) == "-") {
+													startFrom = 1;
+												}
+
+												for (var n = startFrom; n < argvalue.length; n++) {
+													if (validChars.indexOf(argvalue.substring(n, n + 1)) == -1) return false;
+												}
+												return true;
+											}
+
+											function validateEquals(form) {
+												var isValid = true;
+												var focusField;
+												var secondProperty;
+												var theField;
+												var fields = new Array();
+												var i = 0;
+												var formName = form.getAttributeNode("name");
+												oEquals = eval('new ' + formName.value + '_equals()');
+
+												// for each field in the list
+												for (x in oEquals) {
+													var theField = form[oEquals[x][0]];
+													var secondProperty = form[oEquals[x][2]("secondProperty")];
+													if (secondProperty.value != theField.value) {
+														fields[i++] = oEquals[x][1];
+														focusField = theField;
+														isValid = false;
+													}
+												}
+
+												if (fields.length > 0) {
+													focusField.focus();
+													alert(fields.join('\n'));
+												}
+												return isValid;
+											}
+
+											//End -->
+										</script>
+
+
+										<!-- CRITERIA TIPO 9 -->
+										<form name="ConsultaComercialForm" method="post"
+											action="/b2bWeb/portal/comercial/consulta/ConsDetalladaVentasSinStockBuscar.do"
+											onsubmit="if (!validaPeriodo()) return false; if (!validate(this)) return false; if (!ValidaDatos(document.forms[0])) return false;">
+											<input type="hidden" name="hdnFechaDesde" value="31-07-2025">
+											<input type="hidden" name="hdnFechaHasta" value="07-08-2025">
+
+											<div>
+												<div align="center">
+													<br>
+													<table border="1" cellpadding="0" cellspacing="0" width="100%"
+														class="FormAgrupaTable">
+														<tbody>
+															<tr>
+																<td class="FormAgrupaCell">
+																	<table border="0" cellpadding="3" cellspacing="0"
+																		width="100%">
+																		<tbody class="FormBuscarTable">
+																			<tr>
+																				<td width="25%">
+																					<div align="right">
+																						<div>Tipo de consulta:</div>
+																					</div>
+																				</td>
+																				<td width="25%">
+
+																					<div align="left">
+																						<div><select
+																								name="cboTipoConsulta"
+																								size="1"
+																								onchange="tipoConsultaFechaIniFin(document.forms[0]);">
+																								<option value="0"
+																									selected="selected">
+																									Diaria</option>
+																								<option value="1">
+																									Mensual</option>
+																							</select></div>
+																					</div>
+																				</td>
+																				<td width="25%">&nbsp;</td>
+																				<td>&nbsp;</td>
+																			</tr>
+																			<tr>
+																				<td width="25%">
+																					<div align="right">
+																						<div>Desde (dd-mm-aaaa):</div>
+																					</div>
+																				</td>
+																				<td width="25%">
+																					<div align="left"><input type="text"
+																							name="txtFechaDesde"
+																							maxlength="10" size="11"
+																							value="" id="txtFechaDesde">
+																						<img src="/b2bWeb/portal/comercial../../../Imagenes/cal.gif"
+																							id="anchorDesde"
+																							onclick="cal.select(document.forms[0].elements['txtFechaDesde'],'anchorDesde','dd-MM-yyyy'); return false;"
+																							border="0" alt="Calendario"
+																							align="top" width="22"
+																							height="21"></div>
+																				</td>
+																				<td width="25%">
+																					<div align="right">
+																						<div>Hasta (dd-mm-aaaa):</div>
+																					</div>
+																				</td>
+																				<td>
+																					<div align="left"><input type="text"
+																							name="txtFechaHasta"
+																							maxlength="10" size="11"
+																							value="" id="txtFechaHasta">
+																						<img src="/b2bWeb/portal/comercial../../../Imagenes/cal.gif"
+																							id="anchorHasta"
+																							onclick="cal.select(document.forms[0].elements['txtFechaHasta'],'anchorHasta','dd-MM-yyyy'); return false;"
+																							border="0" alt="Calendario"
+																							align="top" width="22"
+																							height="21"></div>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</td>
+															</tr>
+															<tr>
+																<td bgcolor="#efefef" class="FormAgrupaCell">
+																	<table class="FormBuscarTable" border="0"
+																		cellpadding="3" cellspacing="0" width="100%">
+																		<tbody>
+																			<tr>
+																				<td width="25%">
+																					<div align="right">
+																						<div>Sucursal:</div>
+																					</div>
+																				</td>
+																				<td width="25%">
+																					<div align="left">
+																						<div><select
+																								name="cboSucursalDestino"
+																								size="1"
+																								onchange="habilitaOnOffArriba(document.forms[0]);"
+																								id="cboSucursalDestino">
+																								<option value=""
+																									selected="selected">
+																									Todas</option>
+																								<option value="10026">
+																									Antofagasta</option>
+																								<option value="10084">
+																									Copiapo</option>
+																								<option value="10069">
+																									Coquimbo</option>
+																								<option value="10076">
+																									Curico</option>
+																								<option value="10028">El
+																									Trebol</option>
+																								<option value="10057">
+																									Florida Center
+																								</option>
+																								<option value="10039">
+																									Internet</option>
+																								<option value="10079">La
+																									Calera</option>
+																								<option value="10088">
+																									Maipu</option>
+																								<option value="10002">
+																									Mall Concepcion
+																								</option>
+																								<option value="10037">
+																									Marina Arauco
+																								</option>
+																								<option value="10098">
+																									Nueva Valdivia Store
+																								</option>
+																								<option value="10012">
+																									Parque Arauco
+																								</option>
+																								<option value="10071">
+																									Plaza Egana</option>
+																								<option value="10045">
+																									Plaza Oeste</option>
+																								<option value="10046">
+																									Plaza Tobalaba
+																								</option>
+																								<option value="10016">
+																									Plaza Vespucio
+																								</option>
+																								<option value="10068">
+																									Portal Temuco
+																								</option>
+																								<option value="10096">
+																									Punta Arenas
+																								</option>
+																								<option value="10085">
+																									Quilpue</option>
+																								<option value="10095">
+																									REDEX</option>
+																								<option value="10099">
+																									San Bernardo
+																								</option>
+																								<option value="10023">
+																									San Fernando
+																								</option>
+																								<option value="10074">
+																									Talca</option>
+																								<option value="10004">
+																									Temuco</option>
+																								<option value="10003">
+																									Vina</option>
+																							</select></div>
+																					</div>
+																				</td>
+																				<td width="25%">
+																					<div align="right">
+																						<div>Marca :</div>
+																					</div>
+
+																				</td>
+																				<td>
+																					<div align="left">
+																						<div><select name="cboMarca"
+																								size="1"
+																								onchange="habilitaOnOffArriba(document.forms[0]);"
+																								id="cboMarca">
+																								<option value=""
+																									selected="selected">
+																									Todas</option>
+																								<option value="42103">
+																									KARCHER</option>
+																								<option value="98043">
+																									RIPLEY II</option>
+																							</select></div>
+																					</div>
+																				</td>
+																			</tr>
+																			<tr>
+																				<td width="25%">
+																					<div align="right">
+																						<div>Departamento:</div>
+																					</div>
+																				</td>
+																				<td width="25%">
+																					<div align="left">
+																						<div><select name="cboDepto"
+																								size="1"
+																								onchange="habilitaOnOffArriba(document.forms[0]);cargaLineasByDepto(this.value,'cboLinea',1);"
+																								id="cboDepto">
+																								<option value=""
+																									selected="selected">
+																									Todos</option>
+																								<option value="D122">
+																									ELECTRODOMESTICOS
+																								</option>
+																							</select></div>
+																					</div>
+																				</td>
+																				<td width="25%">
+																					<div align="right">
+																						<div>Linea de Producto :</div>
+																					</div>
+																				</td>
+																				<td>
+																					<div align="left">
+																						<div><select name="cboLinea"
+																								size="1"
+																								onchange="habilitaOnOffArriba(document.forms[0]);"
+																								id="cboLinea">
+																								<option value=""
+																									selected="selected">
+																									Todos</option>
+																							</select></div>
+																					</div>
+																				</td>
+																			</tr>
+																			<tr>
+																				<td width="25%">
+																					<div align="right">
+																						<div>Temporada:</div>
+																					</div>
+																				</td>
+																				<td width="25%">
+																					<div align="left"><select
+																							name="cboTemporada" size="1"
+																							onchange="habilitaOnOffArriba(document.forms[0]);"
+																							id="cboTemporada">
+																							<option value=""
+																								selected="selected">
+																								Todos</option>
+																							<option value="OTN">OTOÑO
+																							</option>
+																							<option value="TTEMP">TODA
+																								TEMPORADA</option>
+																							<option value="PRIM">
+																								PRIMAVERA</option>
+																							<option value="INV">INVIERNO
+																							</option>
+																							<option value="VER">VERANO
+																							</option>
+																						</select></div>
+																				</td>
+																				<td width="25%">&nbsp;</td>
+																				<td>&nbsp;</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</td>
+															</tr>
+															<tr>
+																<td bgcolor="#efefef" class="FormAgrupaCell">
+																	<table class="FormBuscarTable" border="0"
+																		cellpadding="3" cellspacing="0" width="100%">
+																		<tbody>
+																			<tr>
+																				<td width="50%">
+																					<div align="right">
+																						<div>Código Artículo Ripley
+																						</div>
+																					</div>
+																				</td>
+																				<td width="50%">
+																					<div align="left">
+																						<div><input type="text"
+																								name="txtCodArtRipley"
+																								maxlength="13" size="13"
+																								value=""
+																								onchange="habilitaOnOffCodArtRipleySinFecha(document.forms[0]);">
+																						</div>
+																					</div>
+																				</td>
+																			</tr>
+																			<tr>
+																				<td width="50%">
+																					<div align="right">
+																						<div>Código Artículo Proveedor
+																						</div>
+																					</div>
+																				</td>
+																				<td width="50%">
+																					<div align="left">
+																						<div><input type="text"
+																								name="txtCodArtProveedor"
+																								maxlength="15" size="20"
+																								value=""
+																								onchange="habilitaOnOffCodArtProvSinFecha(document.forms[0]);">
+																						</div>
+																					</div>
+																				</td>
+																			</tr>
+																			<tr>
+																				<td width="50%">
+																					<div align="right">
+																						<div>Código UPC</div>
+																					</div>
+																				</td>
+																				<td width="50%">
+																					<div align="left">
+																						<div><input type="text"
+																								name="txtCodUpc"
+																								maxlength="15" size="20"
+																								value=""
+																								onkeypress="forceNumber(event);"
+																								onchange="habilitaOnOffCodUpcSinFecha(document.forms[0]);">
+																						</div>
+																					</div>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</td>
+															</tr>
+															<tr>
+																<td class="FormAgrupaCell">
+																	<div></div>
+																	<table class="FormBuscarTable" border="0"
+																		cellpadding="3" cellspacing="0" width="100%">
+																		<tbody>
+																			<tr>
+																				<td width="50%">
+																					<div align="right">
+																						<div>Incluye código UPC</div>
+																					</div>
+																				</td>
+																				<td width="50%">
+																					<div align="left"><input
+																							type="checkbox"
+																							name="chkConCodigoUpc"
+																							value="on"
+																							onclick="validaCheck('2');">
+																					</div>
+																				</td>
+																			</tr>
+																			<tr>
+																				<td width="50%">
+																					<div align="right">
+																						<div>Salida a Archivo:</div>
+																					</div>
+																				</td>
+																				<td width="50%">
+																					<div align="left">
+																						<div><input type="checkbox"
+																								name="chkFile"
+																								value="on"></div>
+																					</div>
+																				</td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</td>
+
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<div>&nbsp;</div>
+												<div align="center">
+													<table width="100%">
+														<tbody>
+															<tr>
+																<td width="50%">
+																	<div align="right">
+																		<div><input type="button" name="btnReset"
+																				value="Limpiar"
+																				onclick="resetearDatos(document.forms[0])">&nbsp;&nbsp;&nbsp;&nbsp;
+																		</div>
+																	</div>
+																</td>
+																<td width="50%">&nbsp;&nbsp;&nbsp;&nbsp; <input
+																		type="submit" name="action" value="Buscar"></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+
+
+												<script type="text/javascript">
+													setDefaultDateAnioMesSemanaDia(document.forms[0], "semana");
+												</script>
+
+
+												<div>&nbsp;</div>
+											</div>
+										</form>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+
+
+					<div align="CENTER">
+						<table cellspacing="0" cellpadding="0" border="0" width="100%">
+							<tbody>
+								<tr>
+									<td>&nbsp;</td>
+								</tr>
+								<tr>
+									<td align="center">&nbsp;</td>
+								</tr>
+								<tr>
+									<td align="center">
+										<div align="center">
+											<font color="gray" face="Arial" size="2">
+												Usuario:&nbsp;
+												karcher chile spa&nbsp;
+												&nbsp;-&nbsp;
+												Proveedor:&nbsp;
+
+
+
+												KARCHER CHILE SPA &nbsp;-&nbsp;
+												76215357
+
+
+											</font>
+										</div>
+									</td>
+								</tr>
+
+								<tr>
+									<td align="center">
+										<font size="1">
+											<a href="javascript:parent.logoff();"
+												style="font-family : Verdana, MS Serif; color : #d0d0d0;"
+												name="Salir">Cerrar Sesión</a>
+										</font>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<script defer=""
+		src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+		integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+		data-cf-beacon="{&quot;rayId&quot;:&quot;96bf65c2498725e3&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.7.0&quot;,&quot;token&quot;:&quot;f225f021b8f640d1a0fb927ef1b364e7&quot;}"
+		crossorigin="anonymous"></script>
+
+
+
+</body>
+
+</html>

@@ -1,5 +1,7 @@
 from playwright.sync_api import sync_playwright, TimeoutError
 from src.config import Config
+import time
+
 
 class RipleyScraper:
     def __init__(self, config: Config):
@@ -31,22 +33,38 @@ class RipleyScraper:
                 # Esperar redirección o validación del login
                 page.wait_for_load_state("networkidle", timeout=15000)
 
-                # Validar si el login fue exitoso
-                if "logon.do" not in page.url:
-                    print("[✅] ¡Login exitoso!")
-                else:
-                    print("[❌] Login fallido. Verifica credenciales o captcha.")
-
-                # Guardar estado para depuración
+                # Guardar estado después del login
                 page.screenshot(path="brave_post_login.png")
                 print("[📷] Captura guardada como 'brave_post_login.png'")
 
-                with open("brave_post_login.html", "w", encoding="utf-8") as f:
-                    f.write(page.content())
+                print("[✅] ¡Login exitoso!")
+
+                # 🔁 Esperar hasta que cargue el frame del menú
+                print("[*] Esperando el frame del menú...")
+                menu_frame = None
+                # timeout = time.time() + 10  # Espera máxima: 10s
+                # while time.time() < timeout:
+                for frame in page.frames:
+                    print(f"[DEBUG] Frame encontrado: {frame.url}")
+
+                    if "setProveedor.do" in frame.url:
+
+                        frame.evaluate(
+                            "() => executeActividad('1348', 'portal/comercial/consulta/ConsDetalladaVentasSinStockBuscar.do')"
+                        )
+                        for _ in range(20):
+                            for f in page.frames:
+                                if "ConsDetalladaVentasSinStockBuscar.do" in f.url:
+                                    f.wait_for_load_state("networkidle")
+
+                                    
+                                    break
+
+                        break
+
+                page.wait_for_timeout(500)
 
             except TimeoutError:
                 print("[❌] Timeout: el campo de login no apareció.")
                 page.screenshot(path="brave_timeout.png")
                 print("[📷] Captura guardada como 'brave_timeout.png'")
-
-            browser.close()

@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+	<meta http-equiv="Expires" content="-1">
+	<meta http-equiv="Pragma" content="no-cache">
+	<meta http-equiv="Cache-Control" content="no-cache">
+	<meta http-equiv="Last-Modified" content="0">
+	<meta id="vp" name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="HandheldFriendly" content="true">
+	<title>Portal Proveedores</title>
+	<script type="text/javascript" src="/b2bWeb/portal/static/scripts/general.js"></script>
+	<script type="text/javascript" src="/b2bWeb/portal/static/scripts/html5shiv.js"></script>
+	<script type="text/javascript" src="/b2bWeb/portal/static/scripts/respond.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="/b2bWeb/portal/static/styles/general.css">
+	<script src="https://code.jquery.com/jquery-latest.js"></script>
+	<script language="JavaScript">
+		window.onload = function () {
+			if (screen.width < 640) {
+				var mvp = document.getElementById('vp');
+				mvp.setAttribute('content', 'user-scalable=no,width=640');
+			}
+		}   
+	</script>
+</head>
+
+<body
+	style="overflow: hidden; background-repeat : no-repeat; background-attachment : fixed; margin-top : 0px; margin-bottom : 0px; margin-left : 0px; margin-right : 0px;">
+	<div class="contenedor">
+		<div class="cebecera">
+
+
+
+
+			<script type="text/javascript" src="/b2bWeb/portal/static/scripts/general.js"></script>
+			<script language="JavaScript" src="/b2bWeb/js/jquery-1.12.0.min.js"></script>
+			<link rel="stylesheet" type="text/css" href="/b2bWeb/portal/static/styles/header.css">
+
+			<script type="text/javascript">
+
+				var needToCloseSession = 1;
+				window.onunload = function () {
+
+					// google popup blocker prevents the onunload event to be fired when closing the browser
+					// therefore the onbeforeunload event is used when closing the browser.
+					//alert(needToCloseSession);
+					//alert(dominios);
+					if (needToCloseSession != 0) {
+						if (navigator.appVersion.indexOf("Trident/5") < 0 && navigator.appVersion.indexOf("Trident/6") < 0) {
+							cierraVentana();
+						}
+					}
+					//dominio = 1;
+				}
+				window.onbeforeunload = function () {
+					// we assume that closing the browser can only happen when the user points 
+					// its mouse in the header area of the browser ("X", but also the "refresh")
+					// or uses ALT to invoke "ALT-F4". In all other cases no closeSession is needed.
+					// Unfortunately, this is not fullproof: when a user has the google popup blocker 
+					// enabled and has its mouse in the header area but is using the "tab" to navigate 
+					// on the links: the user will be logged off. However, chances for such situation 
+					// are very very small.
+					if (needToCloseSession == 1) {
+						if (navigator.appVersion.indexOf("Trident/5") < 0 && navigator.appVersion.indexOf("Trident/6") < 0) {
+							if (event.clientY < 0 || event.clientY == undefined || event.altKey > 0) {
+								needToCloseSession = 0;
+								cierraVentana();
+							}
+						}
+						else {
+							if (event.altKey > 0) {
+								needToCloseSession = 0;
+								cierraVentana();
+							}
+						}
+					}
+				}
+				function refrescaVentana() {
+					needToCloseSession = 0;
+				}
+
+				function muestraOpcion(texto) {
+					//
+				}
+				function executeDominio(dominioCode) {
+					//alert('cambio domino '+needToCloseSession );
+					needToCloseSession = 0;
+					window.onbeforeunload = "";
+					window.onunload = "";
+					dominios = 1;
+					location.href = '/b2bWeb/portal/menu.do?DominioCode=' + dominioCode;
+				}
+				function setProveedor() {
+					needToCloseSession = 0;
+					location.href = '/b2bWeb/portal/setProveedor.do';
+				}
+				function logoff() {
+					needToCloseSession = 0;
+					dominioMenu = 0;
+					if (window.confirm('¿Quiere salir?')) {
+						location.href = "/b2bWeb/portal/logoff.do";
+					}
+				}
+
+				function printReportFrame() {
+					if (window.print) {
+						if (document.app) {
+							document.app.focus();
+							window.print();
+						}
+						else {
+							window.frames["app"].window.print();
+
+						}
+					}
+				}
+
+				function closeSession() {
+					needToCloseSession = 0;
+					location.href = '/b2bWeb/portal/logoff.do?silent=true';
+					alert('Por razones de seguridad de la aplicación la sesión ha finalizado por Time Out... \n Puede acceder nuevamente presionando el botón \"Aceptar\"');
+				}
+				function cierraVentana() {
+					location.href = '/b2bWeb/portal/logoff.do?silent=true';
+					needToCloseSession = 0;
+				}
+				function setMapa() {
+					app.location = "/b2bWeb/portal/setProveedor.do?accion=mapa";
+				}
+
+				function toggle(objeto) {
+					if (document.getElementById(objeto).style.display == 'none') {
+						document.getElementById(objeto).style.display = '';
+					} else {
+						document.getElementById(objeto).style.display = 'none';
+					}
+				}
+			</script>
+			<table border="0" cellspacing="0" cellpadding="0" height="62" style="width:100%;">
+				<tbody>
+					<tr>
+						<td width="5">&nbsp;</td>
+						<td>
+							<div>
+								<img name="aImage5784e48" id="aImage5784e48"
+									src="/b2bWeb/portal/static/images/nueva_r.jpg" width="45" height="45" border="0">
+							</div>
+						</td>
+						<td id="logor"
+							style="min-width:320px;background-image :  url(/b2bWeb/portal/static/images/logob2b.jpg); background-repeat : no-repeat; background-position : center top; text-align : center;background-size: contain;"
+							valign="bottom">
+							<div align="CENTER">&nbsp;</div>
+							<div align="RIGHT" id="lnk">
+								<table border="0" cellspacing="0" cellpadding="0" width="100%" height="10">
+									<tbody>
+										<tr>
+											<td style="font-family: Verdana, Book Antiqua, Arial; font-size: 10px; border-top-style: none; border-bottom-style: none; border-left-style: none; border-right-style: none; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; height: 10px;"
+												bgcolor="white" height="10">
+												<hr>
+											</td>
+											<td width="2"
+												style="font-family: Verdana, Book Antiqua, Arial; font-size: 10px; border-top-style: none; border-bottom-style: none; border-left-style: none; border-right-style: none; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; height: 10px;"
+												bgcolor="white" height="10">&nbsp;</td>
+											<td width="85"
+												style="font-family: Verdana, Book Antiqua, Arial; font-size: 10px; border-top-style: none; border-bottom-style: none; border-left-style: none; border-right-style: none; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; height: 10px;"
+												bgcolor="white" height="10">
+												<div>
+													<a class="header" href="http://www.ripley.cl" name="Banco Ripley"
+														target="_blank">Tienda Ripley</a>
+												</div>
+											</td>
+											<td width="80"
+												style="font-family: Verdana, Book Antiqua, Arial; font-size: 10px; border-top-style: none; border-bottom-style: none; border-left-style: none; border-right-style: none; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; height: 10px;"
+												bgcolor="white" height="10">
+												<div align="RIGHT">
+													<a class="header" href="http://www.bancoripley.cl/"
+														name="Banco Ripley" target="_blank">Banco Ripley</a>
+												</div>
+											</td>
+											<td width="120"
+												style="font-family: Verdana, Book Antiqua, Arial; font-size: 10px; border-top-style: none; border-bottom-style: none; border-left-style: none; border-right-style: none; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; height: 10px;"
+												bgcolor="white" height="10">
+												<div align="RIGHT">
+													<a class="header" href="http://citas.ripley.cl"
+														name="Citas Proveedores" target="_blank">Citas Proveedores</a>
+												</div>
+											</td>
+											<td width="2"
+												style="font-family: Verdana, Book Antiqua, Arial; font-size: 10px; border-top-style: none; border-bottom-style: none; border-left-style: none; border-right-style: none; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; height: 10px;"
+												bgcolor="white" height="10">&nbsp;</td>
+											<td style="font-family: Verdana, Book Antiqua, Arial; font-size: 10px; border-top-style: none; border-bottom-style: none; border-left-style: none; border-right-style: none; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; height: 10px;"
+												bgcolor="white" height="10">
+												<hr>
+											</td>
+											<td width="10"
+												style="font-family: Verdana, Book Antiqua, Arial; font-size: 10px; border-top-style: none; border-bottom-style: none; border-left-style: none; border-right-style: none; border-top-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-right-width: 0px; margin-top: 0px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; padding-top: 0px; padding-bottom: 0px; padding-left: 0px; padding-right: 0px; height: 10px;"
+												height="10">
+												<hr>
+											</td>
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</td>
+
+						<td width="110" align="center" valign="middle">
+							<div>
+								<img name="aImage57fdbd8" id="aImage57fdbd8"
+									src="/b2bWeb/portal/static/images/logo_ripley.gif" width="110" height="45"
+									border="0">
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+
+
+
+
+
+
+
+
+
+			<div class="menuborder">
+				<table border="0" bgcolor="#F5F5F5" align="left" cellspacing="0" cellpadding="0" height="28"
+					style="width:100vw;">
+					<tbody>
+						<tr valign="middle">
+							<td style="min-width:30px;max-width:30px;" height="28" bgcolor="#F5F5F5">
+								<div class="hamburger open">
+									<div class="hamburger-inner"></div>
+								</div>
+								<script>
+									$('.hamburger').toggleClass('open');
+									$(function () {
+										$('.hamburger').click(function () {
+											$('.hamburger').toggleClass('open');
+											if (document.getElementById('izq').style.display == 'none') {
+												document.getElementById('izq').style.display = '';
+												if (window.innerWidth > 1200) {
+													document.getElementById('der').style.left = '180px';
+													document.getElementById('der').style.width = 'calc(100% - 180px)';
+												}
+
+											} else {
+												document.getElementById('izq').style.display = 'none';
+												if (window.innerWidth > 1200) {
+													document.getElementById('der').style.width = '100%';
+													document.getElementById('der').style.left = '0px';
+												}
+											}
+										});
+									});
+								</script>
+							</td>
+							<td class="me" style="min-width: 30px; max-width:30px; transform: rotate(-90deg);"
+								height="28" bgcolor="#F5F5F5" align="left" valign="top" nowrap="">Menú</td>
+							<td class="ej" id="tspace" width="90px" height="28" bgcolor="#F5F5F5" align="left"
+								valign="top" nowrap="">&nbsp;</td>
+							<td width="80%" class="ej" height="28" bgcolor="#F5F5F5" align="left" valign="middle"
+								nowrap="">
+								<a class="header" href="javascript:executeDominio('2');">&nbsp;Consultas&nbsp;
+
+								</a><a class="header" href="javascript:executeDominio('4');">&nbsp;Mantención&nbsp;
+
+								</a><a class="header" href="javascript:executeDominio('6');">&nbsp;Operativo&nbsp;
+								</a>
+							</td>
+
+							<td width="15%" height="28" bgcolor="#F5F5F5">
+								<table border="0" align="right" width="100%" cellspacing="0" cellpadding="0">
+									<tbody>
+										<tr>
+											<td height="26" width="177" align="left" bgcolor="#F5F5F5">
+												<table width="100%" border="0" cellspacing="0" cellpadding="0"
+													bgcolor="#F5F5F5">
+													<tbody>
+														<tr>
+															<td width="2" align="left">&nbsp;</td>
+															<td width="26" id="map"><a target="app" name="Mapa"
+																	href="/b2bWeb/portal/setProveedor.do?accion=mapa">
+																	<img name="mapa" id="mapa"
+																		src="/b2bWeb/portal/static/images/mapa.gif"
+																		alt="Mapa del sitio" border="0"
+																		onmouseout="movepic('mapa','/b2bWeb/portal/static/images/mapa.gif');"
+																		onmouseover="movepic('mapa','/b2bWeb/portal/static/images/mapa1.gif');"
+																		hspace="0" vspace="0"></a></td>
+															<td width="26" id="imp"><a href="#" name="Imprimir"
+																	onclick="javascript:printReportFrame()"> <img
+																		name="imprimir" id="imprimir"
+																		src="/b2bWeb/portal/static/images/imprimir.gif"
+																		alt="Imprimir" border="0"
+																		onmouseout="movepic('imprimir','/b2bWeb/portal/static/images/imprimir.gif')"
+																		onmouseover="movepic('imprimir','/b2bWeb/portal/static/images/imprimir1.gif')"
+																		hspace="0" vspace="0"></a></td>
+															<td width="26" id="prv"><a href="#"
+																	onclick="javascript:setProveedor();"
+																	name="CambiarProveedor"> <img name="proveedor"
+																		id="proveedor"
+																		src="/b2bWeb/portal/static/images/proveedores.gif"
+																		alt="Cambiar proveedor" border="0"
+																		onmouseout="movepic('proveedor','/b2bWeb/portal/static/images/proveedores.gif')"
+																		onmouseover="movepic('proveedor','/b2bWeb/portal/static/images/proveedores1.gif')"
+																		hspace="0" vspace="0"></a></td>
+															<td width="26"><a name="Salir" href="#"
+																	onclick="javascript:logoff();"> <img name="salir"
+																		id="salir"
+																		src="/b2bWeb/portal/static/images/salir.gif"
+																		alt="Cerrar sesión" border="0"
+																		onmouseout="movepic('salir','/b2bWeb/portal/static/images/salir.gif')"
+																		onmouseover="movepic('salir','/b2bWeb/portal/static/images/salida1.gif')"
+																		hspace="0" vspace="0"></a></td>
+															<td width="26" id="ayu"><a target="_blank"
+																	href="/help/HelpInicio.htm" name="Ayuda"> <img
+																		name="ayuda" id="ayuda"
+																		src="/b2bWeb/portal/static/images/ayuda.gif"
+																		alt="Ayuda" border="0"
+																		onmouseout="movepic('ayuda','/b2bWeb/portal/static/images/ayuda.gif')"
+																		onmouseover="movepic('ayuda','/b2bWeb/portal/static/images/ayuda1.gif')"
+																		hspace="0" vspace="0"></a></td>
+															<td width="2"><a target="app"
+																	href="/b2bWeb/portal/administracion/CambiarPassword.do"
+																	name="CambioClave"> <img name="clave" id="clave"
+																		src="/b2bWeb/portal/static/images/clave.gif"
+																		alt="Cambiar Contraseña" border="0"
+																		onmouseout="movepic('clave','/b2bWeb/portal/static/images/clave.gif')"
+																		onmouseover="movepic('clave','/b2bWeb/portal/static/images/clave1.gif')"
+																		hspace="0" vspace="0"></a></td>
+															<td width="25">&nbsp;</td>
+														</tr>
+													</tbody>
+												</table>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div align="right" class="centro">
+				Versión @ 3.10.6 [23/06/2025 17:13:21]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</div>
+		</div>
+		<div class="cuerpo">
+			<div class="izquierda" id="izq">
+
+
+
+				<script language="Javascript">
+					//Do you want images (if not set to 0 and remove the images from the body)?
+					foldImg = 1;
+
+					//Here are the images for the top links.
+					foldinImg = new Image(); foldinImg.src = "/b2bWeb/portal/static/images/foldoutmenu2_arrow.gif";
+					foldoutImg = new Image(); foldoutImg.src = "/b2bWeb/portal/static/images/foldoutmenu2_arrow_open.gif";
+
+					//Here are the images for the sub links.
+					foldsubinImg = new Image(); foldsubinImg.src = "/b2bWeb/portal/static/images/foldoutmenu2_arrow.gif";
+					foldsuboutImg = new Image(); foldsuboutImg.src = "/b2bWeb/portal/static/images/foldoutmenu2_arrow_open.gif";
+					//If you change the images above please remember to change the images in the actual page as well.
+
+					// se cambio el document.app.location.href por app.location
+
+					function executeProceso(procesoCode, wasPagina) {
+						if (window.innerWidth < 1200) {
+							$('.hamburger').toggleClass('open');
+							document.getElementById('izq').style.display = 'none';
+						}
+						if (wasPagina.indexOf("/CitasWeb") >= 0 || wasPagina.indexOf("/BajadaPortal") >= 0) {
+							app.location = wasPagina;
+						} else {
+							app.location = "/b2bWeb/" + wasPagina;
+						}
+					}
+					function executeActividad(actividadCode, wasPagina) {
+						if (window.innerWidth < 1200) {
+							$('.hamburger').toggleClass('open');
+							document.getElementById('izq').style.display = 'none';
+						}
+						if (wasPagina.indexOf("/CitasWeb") >= 0 || wasPagina.indexOf("/BajadaPortal") >= 0) {
+							app.location = wasPagina;
+						} else {
+							app.location = "/b2bWeb/" + wasPagina;
+						}
+					}
+
+					function executeOpcion(opcionCode, wasPagina) {
+						if (window.innerWidth < 1200) {
+							$('.hamburger').toggleClass('open');
+							document.getElementById('izq').style.display = 'none';
+						}
+						app.location = "/b2bWeb/" + wasPagina;
+					}
+
+				</script>
+
+				<script type="text/javascript" src="/b2bWeb/portal/static/scripts/menu.js"></script>
+				<link rel="stylesheet" type="text/css" href="/b2bWeb/portal/static/styles/menu.css">
+				<div class="menu">
+
+
+					<table class="tgen" width="165" border="0" cellspacing="0" cellpadding="0" height="100%">
+						<tbody>
+							<tr>
+								<td width="4">
+									<div align="LEFT">&nbsp;</div>
+								</td>
+								<td background="/b2bWeb/portal/static/images/bg_b.gif" class="clTitulo" width="156"
+									height="20">
+									Consultas
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<div id="divFoldCont" style="visibility: visible;">
+
+
+
+										<div id="divFold0" class="clFold" style="top: 0px;">
+											<table class="tsub" border="0" width="154" cellspacing="0" cellpadding="0">
+												<tbody>
+													<tr>
+														<td class="clBorde">
+															<table class="tsub" border="0" width="154" cellspacing="0"
+																cellpadding="0" bordercolor="#f7f7f7">
+																<tbody>
+																	<tr>
+																		<td width="4" valign="top"><img
+																				src="/b2bWeb/portal/static/images/foldoutmenu2_arrow.gif"
+																				name="imgFold0" border="0"
+																				align="middle" hspace="2" vspace="4">
+																		</td>
+																		<td id="proceso13" width="97%" valign="top"><a
+																				href="javascript:foldmenu(0,1);"
+																				class="clFoldLinks" title="+">Ordenes de
+																				Compra</a></td>
+																	</tr>
+																</tbody>
+															</table>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+
+
+
+
+											<div id="divFoldSub0_0" class="clFoldSub"
+												style="visibility: hidden; top: 21px;">
+												<table class="tsub" width="154" border="0" cellspacing="0"
+													cellpadding="0">
+													<tbody>
+														<tr>
+															<td class="clBorde">
+																<table class="tsub" width="154" border="0"
+																	cellspacing="0" cellpadding="0"
+																	bordercolor="#f7f7f7">
+																	<tbody>
+																		<tr>
+																			<td width="10">&nbsp;</td>
+																			<td width="4" valign="top"><img
+																					src="/b2bWeb/portal/static/images/bullet_sec.gif"
+																					name="imgFold0Sub0" border="0"
+																					align="middle" vspace="4"></td>
+																			<td id="actividad1276" width="97%"
+																				valign="top" style="display : block;"><a
+																					href="javascript:executeActividad('1276','portal/comercial/consulta/OrdenCompraHistoricaBuscar.do');"
+																					onclick="subfoldmenu(0,-1);"
+																					class="clSubLinks"
+																					title="Orden de Compra Historica (Was)">1.
+																					Orden de Compra Historica</a> </td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div id="divFoldSub0_0_0" class="clFoldSub2"
+													style="visibility: hidden;"></div>
+											</div>
+
+
+
+										</div>
+
+
+
+
+
+
+										<div id="divFold1" class="clFold" style="top: 21px;">
+											<table class="tsub" border="0" width="154" cellspacing="0" cellpadding="0">
+												<tbody>
+													<tr>
+														<td class="clBorde">
+															<table class="tsub" border="0" width="154" cellspacing="0"
+																cellpadding="0" bordercolor="#f7f7f7">
+																<tbody>
+																	<tr>
+																		<td width="4" valign="top"><img
+																				src="/b2bWeb/portal/static/images/foldoutmenu2_arrow.gif"
+																				name="imgFold1" border="0"
+																				align="middle" hspace="2" vspace="4">
+																		</td>
+																		<td id="proceso17" width="97%" valign="top"><a
+																				href="javascript:foldmenu(1,1);"
+																				class="clFoldLinks" title="+">Stock
+																				Ripley</a></td>
+																	</tr>
+																</tbody>
+															</table>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+
+
+
+
+											<div id="divFoldSub1_0" class="clFoldSub"
+												style="visibility: hidden; top: 21px;">
+												<table class="tsub" width="154" border="0" cellspacing="0"
+													cellpadding="0">
+													<tbody>
+														<tr>
+															<td class="clBorde">
+																<table class="tsub" width="154" border="0"
+																	cellspacing="0" cellpadding="0"
+																	bordercolor="#f7f7f7">
+																	<tbody>
+																		<tr>
+																			<td width="10">&nbsp;</td>
+																			<td width="4" valign="top"><img
+																					src="/b2bWeb/portal/static/images/bullet_sec.gif"
+																					name="imgFold1Sub0" border="0"
+																					align="middle" vspace="4"></td>
+																			<td id="actividad1268" width="97%"
+																				valign="top" style="display : block;"><a
+																					href="javascript:executeActividad('1268','portal/comercial/consulta/ConsDetalladaStockBuscar.do');"
+																					onclick="subfoldmenu(1,-1);"
+																					class="clSubLinks"
+																					title="Consulta Detallada Stock Ripley (Was)">1.
+																					Consulta Detallada Stock Ripley</a>
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div id="divFoldSub1_0_0" class="clFoldSub2"
+													style="visibility: hidden;"></div>
+											</div>
+
+
+
+
+
+
+											<div id="divFoldSub1_1" class="clFoldSub"
+												style="visibility: hidden; top: 48px;">
+												<table class="tsub" width="154" border="0" cellspacing="0"
+													cellpadding="0">
+													<tbody>
+														<tr>
+															<td class="clBorde">
+																<table class="tsub" width="154" border="0"
+																	cellspacing="0" cellpadding="0"
+																	bordercolor="#f7f7f7">
+																	<tbody>
+																		<tr>
+																			<td width="10">&nbsp;</td>
+																			<td width="4" valign="top"><img
+																					src="/b2bWeb/portal/static/images/bullet_sec.gif"
+																					name="imgFold1Sub1" border="0"
+																					align="middle" vspace="4"></td>
+																			<td id="actividad1273" width="97%"
+																				valign="top" style="display : block;"><a
+																					href="javascript:executeActividad('1273','portal/comercial/consulta/ConsResumidaStockBuscar.do');"
+																					onclick="subfoldmenu(1,-1);"
+																					class="clSubLinks"
+																					title="Consulta Resumida Stock Ripley (was)">2.
+																					Consulta Resumida Stock Ripley</a>
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div id="divFoldSub1_1_0" class="clFoldSub2"
+													style="visibility: hidden;"></div>
+											</div>
+
+
+
+
+
+
+											<div id="divFoldSub1_2" class="clFoldSub"
+												style="visibility: hidden; top: 75px;">
+												<table class="tsub" width="154" border="0" cellspacing="0"
+													cellpadding="0">
+													<tbody>
+														<tr>
+															<td class="clBorde">
+																<table class="tsub" width="154" border="0"
+																	cellspacing="0" cellpadding="0"
+																	bordercolor="#f7f7f7">
+																	<tbody>
+																		<tr>
+																			<td width="10">&nbsp;</td>
+																			<td width="4" valign="top"><img
+																					src="/b2bWeb/portal/static/images/bullet_sec.gif"
+																					name="imgFold1Sub2" border="0"
+																					align="middle" vspace="4"></td>
+																			<td id="actividad1269" width="97%"
+																				valign="top" style="display : block;"><a
+																					href="javascript:executeActividad('1269','portal/comercial/consulta/ReporteDeGestionBuscar.do?action=desplegar');"
+																					onclick="subfoldmenu(1,-1);"
+																					class="clSubLinks"
+																					title="Reporte de gestion (was)">3.
+																					Reporte de Gestiòn</a> </td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div id="divFoldSub1_2_0" class="clFoldSub2"
+													style="visibility: hidden;"></div>
+											</div>
+
+
+
+										</div>
+
+
+
+
+
+
+										<div id="divFold2" class="clFold" style="top: 42px;">
+											<table class="tsub" border="0" width="154" cellspacing="0" cellpadding="0">
+												<tbody>
+													<tr>
+														<td class="clBorde">
+															<table class="tsub" border="0" width="154" cellspacing="0"
+																cellpadding="0" bordercolor="#f7f7f7">
+																<tbody>
+																	<tr>
+																		<td width="4" valign="top"><img
+																				src="/b2bWeb/portal/static/images/foldoutmenu2_arrow.gif"
+																				name="imgFold2" border="0"
+																				align="middle" hspace="2" vspace="4">
+																		</td>
+																		<td id="proceso14" width="97%" valign="top"><a
+																				href="javascript:foldmenu(2,1);"
+																				class="clFoldLinks" title="+">Ventas</a>
+																		</td>
+																	</tr>
+																</tbody>
+															</table>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+
+
+
+											<div id="divFoldSub2_0" class="clFoldSub"
+												style="visibility: hidden; top: 21px;">
+												<table class="tsub" border="0" width="154" cellspacing="0"
+													cellpadding="0">
+													<tbody>
+														<tr>
+															<td class="clBorde">
+																<table class="tsub" border="0" width="154"
+																	cellspacing="0" cellpadding="0"
+																	bordercolor="#f7f7f7">
+																	<tbody>
+																		<tr>
+																			<td width="10">&nbsp;</td>
+																			<td width="4" valign="top"><img
+																					src="/b2bWeb/portal/static/images/foldoutmenu2_arrow.gif"
+																					name="imgFold2Sub0" border="0"
+																					align="middle" vspace="4"></td>
+																			<td id="actividad1270" width="97%"
+																				valign="top" style="display : block;"><a
+																					href="#" onclick="subfoldmenu(2,0)"
+																					class="clSubLinks" title="+">1.
+																					Comparativo Ventas</a></td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div id="divFoldSub2_0_0" class="clFoldSub2"
+													style="visibility: hidden;">
+
+													<table class="tsub" width="154" border="0" cellspacing="0"
+														cellpadding="0">
+														<tbody>
+															<tr>
+																<td width="154" class="clBorde" align="left">
+																	<table class="tsub" width="154" border="0"
+																		cellspacing="0" cellpadding="0"
+																		bordercolor="#f7f7f7">
+																		<tbody>
+																			<tr>
+																				<td width="15">&nbsp;</td>
+																				<td width="4"><img
+																						src="/b2bWeb/portal/static/images/foldoutmenu2_arrow.gif"
+																						name="imgFold2Sub0" border="0"
+																						align="middle" vspace="4"></td>
+																				<td id="opcion800" width="92%"
+																					valign="top"><a
+																						href="javascript:executeOpcion('800', 'portal/comercial/consulta/ComparativoVentasDiariaBuscar.do');"
+																						class="clSubLinks2"
+																						title="Comparativo de Ventas Diarias (WAS)">A.
+																						Comparativo de Ventas
+																						Diarias</a></td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+
+													<table class="tsub" width="154" border="0" cellspacing="0"
+														cellpadding="0">
+														<tbody>
+															<tr>
+																<td width="154" class="clBorde" align="left">
+																	<table class="tsub" width="154" border="0"
+																		cellspacing="0" cellpadding="0"
+																		bordercolor="#f7f7f7">
+																		<tbody>
+																			<tr>
+																				<td width="15">&nbsp;</td>
+																				<td width="4"><img
+																						src="/b2bWeb/portal/static/images/foldoutmenu2_arrow.gif"
+																						name="imgFold2Sub0" border="0"
+																						align="middle" vspace="4"></td>
+																				<td id="opcion801" width="92%"
+																					valign="top"><a
+																						href="javascript:executeOpcion('801', 'portal/comercial/consulta/ComparativoVentasMensualBuscar.do');"
+																						class="clSubLinks2"
+																						title="Comparativo de Ventas Mensuales (WAS)">B.
+																						Comparativo de Ventas
+																						Mensuales</a></td>
+																			</tr>
+																		</tbody>
+																	</table>
+																</td>
+															</tr>
+														</tbody>
+													</table>
+
+												</div>
+											</div>
+
+
+
+
+
+
+
+											<div id="divFoldSub2_1" class="clFoldSub"
+												style="visibility: hidden; top: 42px;">
+												<table class="tsub" width="154" border="0" cellspacing="0"
+													cellpadding="0">
+													<tbody>
+														<tr>
+															<td class="clBorde">
+																<table class="tsub" width="154" border="0"
+																	cellspacing="0" cellpadding="0"
+																	bordercolor="#f7f7f7">
+																	<tbody>
+																		<tr>
+																			<td width="10">&nbsp;</td>
+																			<td width="4" valign="top"><img
+																					src="/b2bWeb/portal/static/images/bullet_sec.gif"
+																					name="imgFold2Sub1" border="0"
+																					align="middle" vspace="4"></td>
+																			<td id="actividad1271" width="97%"
+																				valign="top" style="display : block;"><a
+																					href="javascript:executeActividad('1271','portal/comercial/consulta/ParticipacionMercadoBuscar.do');"
+																					onclick="subfoldmenu(2,-1);"
+																					class="clSubLinks"
+																					title="Participaci¿n de Mercado (was)">2.
+																					Participaciòn de Mercado</a> </td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div id="divFoldSub2_1_0" class="clFoldSub2"
+													style="visibility: hidden;"></div>
+											</div>
+
+
+
+
+
+
+											<div id="divFoldSub2_2" class="clFoldSub"
+												style="visibility: hidden; top: 63px;">
+												<table class="tsub" width="154" border="0" cellspacing="0"
+													cellpadding="0">
+													<tbody>
+														<tr>
+															<td class="clBorde">
+																<table class="tsub" width="154" border="0"
+																	cellspacing="0" cellpadding="0"
+																	bordercolor="#f7f7f7">
+																	<tbody>
+																		<tr>
+																			<td width="10">&nbsp;</td>
+																			<td width="4" valign="top"><img
+																					src="/b2bWeb/portal/static/images/bullet_sec.gif"
+																					name="imgFold2Sub2" border="0"
+																					align="middle" vspace="4"></td>
+																			<td id="actividad1274" width="97%"
+																				valign="top" style="display : block;"><a
+																					href="javascript:executeActividad('1274','portal/comercial/consulta/ConsDetalladaVentasBuscar.do');"
+																					onclick="subfoldmenu(2,-1);"
+																					class="clSubLinks"
+																					title="Consulta Detallada de Ventas y Stock (was)">3.
+																					Consulta Detallada de Ventas y
+																					Stock</a> </td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div id="divFoldSub2_2_0" class="clFoldSub2"
+													style="visibility: hidden;"></div>
+											</div>
+
+
+
+
+
+
+											<div id="divFoldSub2_3" class="clFoldSub"
+												style="visibility: hidden; top: 90px;">
+												<table class="tsub" width="154" border="0" cellspacing="0"
+													cellpadding="0">
+													<tbody>
+														<tr>
+															<td class="clBorde">
+																<table class="tsub" width="154" border="0"
+																	cellspacing="0" cellpadding="0"
+																	bordercolor="#f7f7f7">
+																	<tbody>
+																		<tr>
+																			<td width="10">&nbsp;</td>
+																			<td width="4" valign="top"><img
+																					src="/b2bWeb/portal/static/images/bullet_sec.gif"
+																					name="imgFold2Sub3" border="0"
+																					align="middle" vspace="4"></td>
+																			<td id="actividad1275" width="97%"
+																				valign="top" style="display : block;"><a
+																					href="javascript:executeActividad('1275','portal/comercial/consulta/ConsResumidaVentasBuscar.do');"
+																					onclick="subfoldmenu(2,-1);"
+																					class="clSubLinks"
+																					title="Consulta Resumida de Ventas (Was)">4.
+																					Consulta Resumida de Ventas</a>
+																			</td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div id="divFoldSub2_3_0" class="clFoldSub2"
+													style="visibility: hidden;"></div>
+											</div>
+
+
+
+
+
+
+											<div id="divFoldSub2_4" class="clFoldSub"
+												style="visibility: hidden; top: 117px;">
+												<table class="tsub" width="154" border="0" cellspacing="0"
+													cellpadding="0">
+													<tbody>
+														<tr>
+															<td class="clBorde">
+																<table class="tsub" width="154" border="0"
+																	cellspacing="0" cellpadding="0"
+																	bordercolor="#f7f7f7">
+																	<tbody>
+																		<tr>
+																			<td width="10">&nbsp;</td>
+																			<td width="4" valign="top"><img
+																					src="/b2bWeb/portal/static/images/bullet_sec.gif"
+																					name="imgFold2Sub4" border="0"
+																					align="middle" vspace="4"></td>
+																			<td id="actividad1348" width="97%"
+																				valign="top" style="display : block;"><a
+																					href="javascript:executeActividad('1348','portal/comercial/consulta/ConsDetalladaVentasSinStockBuscar.do');"
+																					onclick="subfoldmenu(2,-1);"
+																					class="clSubLinks"
+																					title="Consulta Detallada de Ventas por día o mes">5.
+																					Consulta Detallada de Ventas por día
+																					o mes</a> </td>
+																		</tr>
+																	</tbody>
+																</table>
+															</td>
+														</tr>
+													</tbody>
+												</table>
+												<div id="divFoldSub2_4_0" class="clFoldSub2"
+													style="visibility: hidden;"></div>
+											</div>
+
+
+
+										</div>
+
+
+
+
+
+
+
+
+
+
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+
+			<div class="derecha" id="der">
+
+				<iframe name="app" scrolling="auto" frameborder="0" width="100%" height="100%" marginwidth="0"
+					marginheight="0" src="/b2bWeb/portal/avisos.jsp">
+				</iframe>
+			</div>
+
+		</div>
+	</div>
+	<script defer=""
+		src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015"
+		integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ=="
+		data-cf-beacon="{&quot;rayId&quot;:&quot;96bf503fcf00db21&quot;,&quot;serverTiming&quot;:{&quot;name&quot;:{&quot;cfExtPri&quot;:true,&quot;cfEdge&quot;:true,&quot;cfOrigin&quot;:true,&quot;cfL4&quot;:true,&quot;cfSpeedBrain&quot;:true,&quot;cfCacheStatus&quot;:true}},&quot;version&quot;:&quot;2025.7.0&quot;,&quot;token&quot;:&quot;f225f021b8f640d1a0fb927ef1b364e7&quot;}"
+		crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
