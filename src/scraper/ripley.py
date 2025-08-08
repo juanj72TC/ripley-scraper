@@ -29,7 +29,7 @@ class RipleyScraper:
         self.username = config.config["ripley"]["username"]
         self.password = config.config["ripley"]["password"]
 
-    def run(self, date_from: str, date_to: str):
+    def run(self, date_from: str = None, date_to: str = None):
         with sync_playwright() as p:
             print("[*] Conectando a Brave en http://localhost:9222...")
             browser = p.chromium.connect_over_cdp("http://localhost:9222")
