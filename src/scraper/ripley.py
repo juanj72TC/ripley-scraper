@@ -2,6 +2,7 @@ from playwright.sync_api import sync_playwright, TimeoutError
 from src.config import Config
 import pandas as pd
 from bs4 import BeautifulSoup
+from src.validators.date_format import validate_date_format
 
 
 class RipleyScraper:
@@ -15,7 +16,7 @@ class RipleyScraper:
         "search_button": "input[value='Buscar']",
         "menu_frame_url": "setProveedor.do",
         "target_frame_url": "ConsDetalladaVentasSinStockBuscar.do",
-        "table_class": "DojoTable"
+        "table_class": "DojoTable",
     }
     TIMEOUTS = {
         "default": 15000,
@@ -50,7 +51,9 @@ class RipleyScraper:
                 print(f"[✅] Frame del formulario cargado: {target_frame.url}")
                 target_frame.wait_for_load_state("load")
 
-                html_content  = self._fill_input_dates(target_frame)
+                html_content = self._fill_input_dates(
+                    target_frame, date_from="01-07-2025", date_to="05-07-2025"
+                )
                 # Extraer la tabla con pandas
 
                 html = html_content
@@ -59,7 +62,9 @@ class RipleyScraper:
 
                 if table:
                     df = pd.read_html(str(table), header=0)[0]
-                    print(df)
+                    df.to_csv("ripley_data.csv", index=False)
+                    print("archivo 'ripley_data.csv' guardado.")
+                    return df
                 else:
                     print("[❌] No se encontró la tabla con clase 'DojoTable'.")
 
@@ -78,11 +83,11 @@ class RipleyScraper:
         page.wait_for_selector(f"{self.SELECTORS['username_input']}", timeout=60000)
 
         print("[*] Ingresando credenciales...")
-        page.fill("input#txtCodUsuario", self.username)
-        page.fill("input#txtPassword", self.password)
+        page.fill(f"{self.SELECTORS['username_input']}", self.username)
+        page.fill(f"{self.SELECTORS['password_input']}", self.password)
 
         print("[*] Enviando formulario...")
-        page.click("input#btnLogin")
+        page.click(f"{self.SELECTORS['login_button']}")
 
         page.wait_for_load_state("networkidle", timeout=15000)
 
@@ -121,16 +126,24 @@ class RipleyScraper:
 
         return target_frame
 
-    def _fill_input_dates(self, target_frame):
+    def _fill_input_dates(
+        self, target_frame, date_from="01-07-2025", date_to="31-07-2025"
+    ):
         print("[*] Esperando inputs de fechas...")
-        target_frame.wait_for_selector("input#txtFechaDesde", timeout=10000)
-        target_frame.wait_for_selector("input#txtFechaHasta", timeout=10000)
+        if not validate_date_format(date_from) or not validate_date_format(date_to):
+            raise ValueError("El formato de las fechas debe ser DD-MM-YYYY")
+        target_frame.wait_for_selector(
+            f"{self.SELECTORS['date_from_input']}", timeout=10000
+        )
+        target_frame.wait_for_selector(
+            f"{self.SELECTORS['date_to_input']}", timeout=10000
+        )
 
-        target_frame.fill("input#txtFechaDesde", "01-07-2025")
-        target_frame.fill("input#txtFechaHasta", "31-07-2025")
+        target_frame.fill(f"{self.SELECTORS['date_from_input']}", date_from)
+        target_frame.fill(f"{self.SELECTORS['date_to_input']}", date_to)
 
         print("[*] Haciendo clic en Buscar...")
-        target_frame.click("input[value='Buscar']")
+        target_frame.click(f"{self.SELECTORS['search_button']}")
         target_frame.wait_for_load_state("networkidle", timeout=15000)
 
         return target_frame.content()
