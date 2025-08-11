@@ -23,4 +23,5 @@
 
 ### Documentación adicional
 	- actualmente el proyecto burla el captha e inicia sesion en la plataforma con navegador directo del sistema operativo en modo "-- no headless"
+	- para que el flujo funcione de manera adecuada, tienes que tener instalado en wsl o linux directamente el navegador brave.
 
