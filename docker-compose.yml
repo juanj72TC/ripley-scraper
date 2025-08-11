@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  ripley:
+    build: .
+    image: ripley:latest
+    container_name: ripley
+    environment:
+      - BRAVE_BIN=/usr/bin/brave-browser
+      - DISPLAY=:99
+      - PYTHONUNBUFFERED=1
+    shm_size: "1gb"
+    ports:
+      - "8000:8000"
+    # En desarrollo, si quieres hot-reload, monta el código y añade --reload al script o usa Opción B
+    # volumes:
+    #   - .:/app
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/docs"]
+      interval: 10s
+      timeout: 3s
+      retries: 6

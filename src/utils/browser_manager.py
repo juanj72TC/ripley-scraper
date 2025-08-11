@@ -8,7 +8,7 @@ from urllib.request import urlopen, URLError
 
 
 class BrowserManager:
-    def __init__(self, brave_bin="brave"):
+    def __init__(self, brave_bin="brave-browser"):
         self.brave_bin = brave_bin
         self.proc = None
         self.port = None
@@ -47,6 +47,11 @@ class BrowserManager:
                 f"--user-data-dir={self.user_data_dir}",
                 "--no-first-run",
                 "--no-default-browser-check",
+                # flags críticos en contenedores:
+                "--no-sandbox",
+                "--disable-dev-shm-usage",
+                "--disable-gpu",
+                "--disable-software-rasterizer",
             ],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,
