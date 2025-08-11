@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
-from src.scraper.ripley import RipleyScraper
+from src.scraper.ripley.scraper import RipleyScraper
 
 
 class RouterRipley:

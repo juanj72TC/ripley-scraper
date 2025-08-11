@@ -4,6 +4,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from src.validators.date_format import validate_date_format
 from src.models.ripley_response import RipleyResponse
+from src.utils.browser_manager import BrowserManager
 
 
 class RipleyScraper:
@@ -25,12 +26,14 @@ class RipleyScraper:
         "network": 15000,
     }
 
-    def __init__(self, config: Config):
+    def __init__(self, config: Config, browser_manager: BrowserManager):
         self.config = config
         self.username = config.config["ripley"]["username"]
         self.password = config.config["ripley"]["password"]
+        self.browser_manager = browser_manager
 
     def run(self, date_from: str = None, date_to: str = None):
+        self.browser_manager.launch_browser()
         with sync_playwright() as p:
             print("[*] Conectando a Brave en http://localhost:9222...")
             browser = p.chromium.connect_over_cdp("http://localhost:9222")
@@ -63,7 +66,8 @@ class RipleyScraper:
 
                 if table:
                     df = pd.read_html(str(table), header=1)[0]
-                    df.to_csv("ripley_data.csv", index=False)
+                    df.to_csv("src/artifacts/exports/ripley_data.csv", index=False)
+                    self.browser_manager.terminate_browser()
                     return self.convert_to_ripley_response(df)
 
                 else:
@@ -73,7 +77,7 @@ class RipleyScraper:
 
             except TimeoutError:
                 print("[❌] Timeout: el campo de login no apareció.")
-                page.screenshot(path="brave_timeout.png")
+                page.screenshot(path="src/artifacts/screenshots/brave_timeout.png")
                 print("Captura guardada como 'brave_timeout.png'")
 
     def _do_login(self, page):  # Método privado para realizar el login
@@ -92,7 +96,7 @@ class RipleyScraper:
 
         page.wait_for_load_state("networkidle", timeout=15000)
 
-        page.screenshot(path="brave_post_login.png")
+        page.screenshot(path="src/artifacts/screenshots/brave_post_login.png")
         print("[📷] Captura guardada como 'brave_post_login.png'")
         print("[✅] ¡Login exitoso!")
         return page
