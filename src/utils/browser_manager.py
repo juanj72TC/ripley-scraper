@@ -21,7 +21,7 @@ class BrowserManager:
         s.close()
         return port
 
-    def _wait_for_cdp(self, timeout=10):
+    def _wait_for_cdp(self, timeout=30):
         url = f"http://127.0.0.1:{self.port}/json/version"
         start = time.time()
         while time.time() - start < timeout:
