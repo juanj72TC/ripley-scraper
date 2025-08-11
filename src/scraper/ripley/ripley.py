@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 from src.validators.date_format import validate_date_format
 from src.models.ripley_response import RipleyResponse
 
+
 class RipleyScraper:
 
     SELECTORS = {
@@ -147,13 +148,13 @@ class RipleyScraper:
         target_frame.wait_for_load_state("networkidle", timeout=15000)
 
         return target_frame.content()
-    
+
     def convert_to_ripley_response(self, data: pd.DataFrame) -> list[RipleyResponse]:
         """Convierte un DataFrame a una lista de RipleyResponse."""
         responses = []
         for _, row in data.iterrows():
             response = RipleyResponse(
-                fecha= row["Fecha"],
+                fecha=row["Fecha"],
                 cod_art_ripley=row["Cód.Art. Ripley"],
                 upc=row.get("UPC"),
                 desc_art_ripley=row["Desc.Art. Ripley"],
@@ -166,7 +167,6 @@ class RipleyScraper:
                 mark_up=row["Mark-up"],
                 marca=row["Marca"],
                 temp=row["Temp."],
-               
             )
             responses.append(response)
         return responses
