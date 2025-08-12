@@ -28,7 +28,7 @@ RUN curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://br
     rm -rf /var/lib/apt/lists/*
 
 # Poetry + deps (sin venv)
-COPY pyproject.toml poetry.lock /app/
+COPY pyproject.toml /app/
 RUN pip install --no-cache-dir "poetry==1.7.1" && \
     poetry install --no-interaction --no-ansi --no-root
 
