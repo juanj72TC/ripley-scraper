@@ -32,6 +32,7 @@ class RipleyScraper:
     def run(self, date_from: str | None = None, date_to: str | None = None):
 
         self.browser_manager.launch_browser()
+        print("navegador iniciado....")
         browser = None
         context = None
         try:
@@ -43,11 +44,13 @@ class RipleyScraper:
                     connect_url = f"http://127.0.0.1:{self.browser_manager.port}"
 
                 browser = p.chromium.connect_over_cdp(connect_url)
+                print(f"[✅] Conectado a {browser.version} en {connect_url}")
 
                 context = browser.new_context()
                 page = context.new_page()
 
                 page = self._do_login(page)
+                
 
                 menu_frame = self._search_menu_frame(page)
                 menu_frame.evaluate(
@@ -99,6 +102,7 @@ class RipleyScraper:
     # --- Métodos privados ---
 
     def _do_login(self, page):
+        print("[*] Iniciando sesión en Ripley...")
         page.goto(
             "https://b2b.ripley.cl/b2bWeb/portal/logon.do",
             timeout=self.TIMEOUTS["navigation"],
@@ -106,6 +110,7 @@ class RipleyScraper:
         page.wait_for_selector(self.SELECTORS["username_input"], timeout=60000)
         page.fill(self.SELECTORS["username_input"], self.username)
         page.fill(self.SELECTORS["password_input"], self.password)
+        print("datos ingresados")
         page.click(self.SELECTORS["login_button"])
         page.wait_for_load_state("networkidle", timeout=self.TIMEOUTS["network"])
         page.screenshot(path="src/artifacts/screenshots/brave_post_login.png")
