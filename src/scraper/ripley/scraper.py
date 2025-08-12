@@ -107,6 +107,7 @@ class RipleyScraper:
             "https://b2b.ripley.cl/b2bWeb/portal/logon.do",
             timeout=self.TIMEOUTS["navigation"],
         )
+        page.screenshot(path="src/artifacts/screenshots/first_frame.png")
         page.wait_for_selector(self.SELECTORS["username_input"], timeout=60000)
         page.fill(self.SELECTORS["username_input"], self.username)
         page.fill(self.SELECTORS["password_input"], self.password)
