@@ -26,7 +26,7 @@ class BrowserManager:
         start = time.time()
         while time.time() - start < timeout:
             try:
-                with urlopen(url, timeout=1) as resp:
+                with urlopen(url, timeout=10) as resp:
                     if resp.status == 200:
                         return True
             except URLError:
