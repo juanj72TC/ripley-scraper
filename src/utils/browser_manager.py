@@ -8,11 +8,13 @@ from urllib.request import urlopen, URLError
 
 
 class BrowserManager:
-    def __init__(self, brave_bin="brave-browser"):
+    def __init__(self, brave_bin="chromium", user_data_dir: str = None):
         self.brave_bin = brave_bin
         self.proc = None
         self.port = None
-        self.user_data_dir = None
+        self.user_data_dir = user_data_dir or os.path.expanduser(
+            "~/.config/google-chrome-selcop"
+        )
 
     def _get_free_port(self):
         s = socket.socket()
@@ -39,19 +41,19 @@ class BrowserManager:
             tempfile.gettempdir(), f"brave_{uuid.uuid4().hex}"
         )
 
-        print(f"[*] Lanzando Brave en puerto {self.port}...")
+        print(f"[*] Lanzando navegador en puerto {self.port}...")
         self.proc = subprocess.Popen(
             [
                 self.brave_bin,
                 f"--remote-debugging-port={self.port}",
-                f"--user-data-dir={self.user_data_dir}",
-                "--no-first-run",
-                "--no-default-browser-check",
-                # flags críticos en contenedores:
-                "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--disable-software-rasterizer",
+                f"--user-data-dir=$HOME/.config/google-chrome-selcop",
+                # "--no-first-run",
+                # "--no-default-browser-check",
+                # # flags críticos en contenedores:
+                # "--no-sandbox",
+                # "--disable-dev-shm-usage",
+                # "--disable-gpu",
+                # "--disable-software-rasterizer",
             ],
             stdout=subprocess.DEVNULL,
             stderr=subprocess.DEVNULL,

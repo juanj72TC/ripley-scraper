@@ -12,6 +12,6 @@ class RouterRipley:
     def get_instance(self):
         return self.router
 
-    def scrape(self, date_from: str = "01-07-2025", date_to: str = "31-07-2025"):
-        result = self.scraper.run(date_from, date_to)
+    async def scrape(self, date_from: str = "01-07-2025", date_to: str = "31-07-2025"):
+        result = await self.scraper.run(date_from, date_to)
         return result

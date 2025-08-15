@@ -1,10 +1,10 @@
-from playwright.sync_api import sync_playwright, TimeoutError
-from src.config import Config
-import pandas as pd
+from playwright.async_api import async_playwright, TimeoutError
 from bs4 import BeautifulSoup
-from src.validators.date_format import validate_date_format
+import pandas as pd
 from src.models.ripley_response import RipleyResponse
-from src.utils.browser_manager import BrowserManager  # debe proveer .connect_url
+from src.validators.date_format import validate_date_format
+from src.config import Config
+from src.utils.browser_manager import BrowserManager
 
 
 class RipleyScraper:
@@ -29,38 +29,36 @@ class RipleyScraper:
         self.password = config.config["ripley"]["password"]
         self.browser_manager = browser_manager
 
-    def run(self, date_from: str | None = None, date_to: str | None = None):
-
+    async def run(self, date_from: str | None = None, date_to: str | None = None):
         self.browser_manager.launch_browser()
-        print("navegador iniciado....")
+        print("Navegador iniciado...")
         browser = None
         context = None
         try:
-            with sync_playwright() as p:
+            async with async_playwright() as p:
+                connect_url = (
+                    getattr(self.browser_manager, "connect_url", None)
+                    or f"http://127.0.0.1:{self.browser_manager.port}"
+                )
 
-                connect_url = getattr(self.browser_manager, "connect_url", None)
-                if not connect_url:
+                browser = await p.chromium.connect_over_cdp(connect_url)  # ✅ await
+                version = browser.version  # ✅ await
+                print(f"[✅] Conectado a {version} en {connect_url}")
 
-                    connect_url = f"http://127.0.0.1:{self.browser_manager.port}"
+                context = await browser.new_context()  # ✅ await
+                page = await context.new_page()  # ✅ await
 
-                browser = p.chromium.connect_over_cdp(connect_url)
-                print(f"[✅] Conectado a {browser.version} en {connect_url}")
+                await self._do_login(page)  # ✅ await
 
-                context = browser.new_context()
-                page = context.new_page()
-
-                page = self._do_login(page)
-                
-
-                menu_frame = self._search_menu_frame(page)
-                menu_frame.evaluate(
+                menu_frame = await self._search_menu_frame(page)
+                await menu_frame.evaluate(
                     "() => executeActividad('1348','portal/comercial/consulta/ConsDetalladaVentasSinStockBuscar.do')"
                 )
 
-                target_frame = self._search_target_frame(page)
-                target_frame.wait_for_load_state("load")
+                target_frame = await self._search_target_frame(page)
+                await target_frame.wait_for_load_state("load")
 
-                html_content = self._fill_input_dates(
+                html_content = await self._fill_input_dates(
                     target_frame,
                     date_from=date_from or "01-07-2025",
                     date_to=date_to or "31-07-2025",
@@ -80,76 +78,77 @@ class RipleyScraper:
             if context:
                 try:
                     page = context.pages[-1]
-                    page.screenshot(path="src/artifacts/screenshots/brave_timeout.png")
+                    await page.screenshot(
+                        path="src/artifacts/screenshots/brave_timeout.png"
+                    )
                 except Exception:
                     pass
             print("[❌] Timeout durante el flujo.")
             return []
         finally:
-
             try:
                 if context:
-                    context.close()
+                    await context.close()
             except Exception:
                 pass
             try:
                 if browser:
-                    browser.close()  # cierra la conexión CDP (no mata Brave)
+                    await browser.close()  # ✅ await
             except Exception:
                 pass
-            self.browser_manager.terminate_browser()  # mata la instancia de Brave
+            self.browser_manager.terminate_browser()
 
-    # --- Métodos privados ---
+    # --- Métodos privados async ---
 
-    def _do_login(self, page):
+    async def _do_login(self, page):
         print("[*] Iniciando sesión en Ripley...")
-        page.goto(
+        await page.goto(
             "https://b2b.ripley.cl/b2bWeb/portal/logon.do",
             timeout=self.TIMEOUTS["navigation"],
         )
-        page.screenshot(path="src/artifacts/screenshots/first_frame.png")
-        page.wait_for_selector(self.SELECTORS["username_input"], timeout=60000)
-        page.fill(self.SELECTORS["username_input"], self.username)
-        page.fill(self.SELECTORS["password_input"], self.password)
-        print("datos ingresados")
-        page.click(self.SELECTORS["login_button"])
-        page.wait_for_load_state("networkidle", timeout=self.TIMEOUTS["network"])
-        page.screenshot(path="src/artifacts/screenshots/brave_post_login.png")
+        await page.screenshot(path="src/artifacts/screenshots/first_frame.png")
+        await page.wait_for_selector(self.SELECTORS["username_input"], timeout=60000)
+        await page.fill(self.SELECTORS["username_input"], self.username)
+        await page.fill(self.SELECTORS["password_input"], self.password)
+        print("Datos ingresados")
+        await page.click(self.SELECTORS["login_button"])
+        await page.wait_for_load_state("networkidle", timeout=self.TIMEOUTS["network"])
+        await page.screenshot(path="src/artifacts/screenshots/brave_post_login.png")
         print("[✅] ¡Login exitoso!")
-        return page
 
-    def _search_menu_frame(self, page):
-
+    async def _search_menu_frame(self, page):
         for frame in page.frames:
             if "setProveedor.do" in (frame.url or ""):
                 return frame
         raise RuntimeError("No se encontró el frame del menú (setProveedor.do).")
 
-    def _search_target_frame(self, page):
-
+    async def _search_target_frame(self, page):
         for _ in range(40):  # ~20s
             for f in page.frames:
                 u = f.url or ""
                 if "ConsDetalladaVentasSinStockBuscar.do" in u:
                     return f
-            page.wait_for_timeout(500)
+            await page.wait_for_timeout(500)
         raise RuntimeError("No se encontró el frame del formulario de ventas.")
 
-    def _fill_input_dates(self, target_frame, date_from: str, date_to: str):
+    async def _fill_input_dates(self, target_frame, date_from: str, date_to: str):
         if not validate_date_format(date_from) or not validate_date_format(date_to):
             raise ValueError("El formato de las fechas debe ser DD-MM-YYYY")
 
-        target_frame.wait_for_selector(self.SELECTORS["date_from_input"], timeout=10000)
-        target_frame.wait_for_selector(self.SELECTORS["date_to_input"], timeout=10000)
+        await target_frame.wait_for_selector(
+            self.SELECTORS["date_from_input"], timeout=10000
+        )
+        await target_frame.wait_for_selector(
+            self.SELECTORS["date_to_input"], timeout=10000
+        )
 
-        target_frame.fill(self.SELECTORS["date_from_input"], date_from)
-        target_frame.fill(self.SELECTORS["date_to_input"], date_to)
+        await target_frame.fill(self.SELECTORS["date_from_input"], date_from)
+        await target_frame.fill(self.SELECTORS["date_to_input"], date_to)
 
-        target_frame.click(self.SELECTORS["search_button"])
-        # Espera a que regrese contenido (a veces recarga en el mismo frame)
-        target_frame.wait_for_load_state("networkidle", timeout=20000)
+        await target_frame.click(self.SELECTORS["search_button"])
+        await target_frame.wait_for_load_state("networkidle", timeout=20000)
 
-        return target_frame.content()
+        return await target_frame.content()
 
     def convert_to_ripley_response(self, data: pd.DataFrame) -> list[RipleyResponse]:
         responses = []
