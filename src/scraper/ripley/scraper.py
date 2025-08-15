@@ -30,25 +30,27 @@ class RipleyScraper:
         self.browser_manager = browser_manager
 
     async def run(self, date_from: str | None = None, date_to: str | None = None):
-        self.browser_manager.launch_browser()
+        # self.browser_manager.launch_browser()
         print("Navegador iniciado...")
         browser = None
         context = None
         try:
             async with async_playwright() as p:
-                connect_url = (
-                    getattr(self.browser_manager, "connect_url", None)
-                    or f"http://127.0.0.1:{self.browser_manager.port}"
-                )
+                #TODO: Validar que el navegador siempre este en ejecución
+                # connect_url = (
+                #     getattr(self.browser_manager, "connect_url", None)
+                #     or f"http://127.0.0.1:{self.browser_manager.port}"
+                # )
+                connect_url = "http://127.0.0.1:9222"
 
-                browser = await p.chromium.connect_over_cdp(connect_url)  # ✅ await
-                version = browser.version  # ✅ await
+                browser = await p.chromium.connect_over_cdp(connect_url)
+                version = browser.version
                 print(f"[✅] Conectado a {version} en {connect_url}")
 
-                context = await browser.new_context()  # ✅ await
-                page = await context.new_page()  # ✅ await
+                context = await browser.new_context()
+                page = await context.new_page()
 
-                await self._do_login(page)  # ✅ await
+                await self._do_login(page)
 
                 menu_frame = await self._search_menu_frame(page)
                 await menu_frame.evaluate(
@@ -91,12 +93,12 @@ class RipleyScraper:
                     await context.close()
             except Exception:
                 pass
-            try:
-                if browser:
-                    await browser.close()  # ✅ await
-            except Exception:
-                pass
-            self.browser_manager.terminate_browser()
+            # try:
+            #     if browser:
+            #         await browser.close()
+            # except Exception:
+            #     pass
+            # self.browser_manager.terminate_browser()
 
     # --- Métodos privados async ---
 
