@@ -14,3 +14,10 @@ router_ripley = RouterRipley(scraper_ripley)
 app = FastAPI()
 
 app.include_router(router_ripley.get_instance())
+
+# TODO:
+"""
+1. check pass verifica si las credenciales son validas o invalidas
+2. last update : retorne la ultima fecha de actualzacion del stock (HOME)
+3. retorno de archivo
+"""
