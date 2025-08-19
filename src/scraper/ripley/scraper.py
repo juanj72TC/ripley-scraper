@@ -1,10 +1,11 @@
 from playwright.async_api import async_playwright, TimeoutError
 from bs4 import BeautifulSoup
 import pandas as pd
-from src.models.ripley_response import RipleyResponse
+from src.models.ripley import RipleyResponse, RipleyCredentials, StockResponseRipley
 from src.validators.date_format import validate_date_format
 from src.config import Config
 from src.utils.browser_manager import BrowserManager
+from io import StringIO
 
 
 class RipleyScraper:
@@ -21,18 +22,22 @@ class RipleyScraper:
     }
     BASE_URL = "https://b2b.ripley.cl"
     TIMEOUTS = {
-        "default": 1000,
+        "default": 10000,
         "navigation": 90000,
         "network": 15000,
     }
 
     def __init__(self, config: Config, browser_manager: BrowserManager):
         self.config = config
-        self.username = config.config["ripley"]["username"]
-        self.password = config.config["ripley"]["password"]
+
         self.browser_manager = browser_manager
 
-    async def run(self, date_from: str | None = None, date_to: str | None = None):
+    async def run(
+        self,
+        ripley_credentials: RipleyCredentials,
+        date_from: str | None = None,
+        date_to: str | None = None,
+    ):
         # self.browser_manager.launch_browser()
         print("Navegador iniciado...")
         browser = None
@@ -53,23 +58,20 @@ class RipleyScraper:
                 context = await browser.new_context()
                 page = await context.new_page()
 
-                await self._do_login(page)
+                await self._do_login(page, ripley_credentials)
 
                 menu_frame = await self._search_menu_frame(page)
-                await menu_frame.evaluate(
-                    "() => executeActividad('1274','portal/comercial/consulta/ConsDetalladaVentasBuscar.do')"
-                )
-
-                target_frame = await self._search_target_frame(page)
-                await target_frame.wait_for_load_state("load")
-
-                target_frame = await self._fill_input_dates(
-                    target_frame,
-                    date_from=date_from or "01-07-2025",
-                    date_to=date_to or "31-07-2025",
-                )
-                df = await self._get_sales_data(target_frame)
-                return self.convert_to_ripley_response(df)
+                match ripley_credentials.type_report:
+                    case ripley_credentials.TypeReport.sales:
+                        return self.convert_to_ripley_response(
+                            await self._sales_process(
+                                menu_frame, page, date_from, date_to
+                            )
+                        )
+                    case ripley_credentials.TypeReport.stock:
+                        return self._convert_to_stock_response(
+                            await self._stock_process(menu_frame, page)
+                        )
 
         except TimeoutError:
             if context:
@@ -90,6 +92,35 @@ class RipleyScraper:
                 pass
 
     # --- Métodos privados async ---
+
+    async def _sales_process(self, menu_frame, page, date_from, date_to):
+
+        await menu_frame.evaluate(
+            "() => executeActividad('1274','portal/comercial/consulta/ConsDetalladaVentasBuscar.do')"
+        )
+
+        target_frame = await self._search_target_frame(page, "Ventas")
+        await target_frame.wait_for_load_state("load")
+
+        target_frame = await self._fill_input_dates(
+            target_frame,
+            date_from=date_from or "01-07-2025",
+            date_to=date_to or "31-07-2025",
+        )
+        df = await self._get_data(target_frame)
+        return df
+
+    async def _stock_process(self, menu_frame, page):
+        await menu_frame.evaluate(
+            "() => executeActividad('1268','portal/comercial/consulta/ConsDetalladaStockBuscar.do')"
+        )
+        target_frame = await self._search_target_frame(page, "Stock")
+        await target_frame.wait_for_load_state("load")
+        await target_frame.click(self.SELECTORS["search_button"])
+        await target_frame.wait_for_load_state("networkidle", timeout=20000)
+        await target_frame.select_option("select[name='pageSize']", "200")
+        return await self._get_data(target_frame)
+
     async def _get_all_items_selector(self, target_frame, name_selector: str):
         options = await target_frame.eval_on_selector_all(
             f"select[name='{name_selector}'] option",
@@ -97,7 +128,7 @@ class RipleyScraper:
         )
         return options, len(options)
 
-    async def _get_sales_data(self, target_frame):
+    async def _get_data(self, target_frame):
         options, len_ = await self._get_all_items_selector(target_frame, "pag")
         dataframes = []
         if len_ == 0:
@@ -126,12 +157,10 @@ class RipleyScraper:
             print("[❌] No se encontró la tabla DojoTable.")
             return []
 
-        df = pd.read_html(str(table), header=1)[0]
+        df = pd.read_html(StringIO(str(table)), header=1)[0]
         return df
 
-        pass
-
-    async def _do_login(self, page):
+    async def _do_login(self, page, ripley_credentials: RipleyCredentials):
         print("[*] Iniciando sesión en Ripley...")
         await page.goto(
             "https://b2b.ripley.cl/b2bWeb/portal/logon.do",
@@ -139,8 +168,8 @@ class RipleyScraper:
         )
         await page.screenshot(path="src/artifacts/screenshots/first_frame.png")
         await page.wait_for_selector(self.SELECTORS["username_input"], timeout=60000)
-        await page.fill(self.SELECTORS["username_input"], self.username)
-        await page.fill(self.SELECTORS["password_input"], self.password)
+        await page.fill(self.SELECTORS["username_input"], ripley_credentials.username)
+        await page.fill(self.SELECTORS["password_input"], ripley_credentials.password)
         print("Datos ingresados")
         await page.click(self.SELECTORS["login_button"])
         await page.wait_for_load_state("networkidle", timeout=self.TIMEOUTS["network"])
@@ -153,11 +182,11 @@ class RipleyScraper:
                 return frame
         raise RuntimeError("No se encontró el frame del menú (setProveedor.do).")
 
-    async def _search_target_frame(self, page):
+    async def _search_target_frame(self, page, detail_report: str):
         for _ in range(40):  # ~20s
             for f in page.frames:
                 u = f.url or ""
-                if "ConsDetalladaVentasBuscar.do" in u:
+                if f"ConsDetallada{detail_report}Buscar.do" in u:
                     return f
             await page.wait_for_timeout(500)
         raise RuntimeError("No se encontró el frame del formulario de ventas.")
@@ -208,6 +237,33 @@ class RipleyScraper:
                     mark_up=row.get("Mark-up"),
                     marca=row.get("Marca"),
                     temp=row.get("Temp."),
+                )
+            )
+        return responses
+
+    def _convert_to_stock_response(self, data: pd.DataFrame):
+        responses = []
+        for _, row in data.iterrows():
+            responses.append(
+                StockResponseRipley(
+                    sucursal=row.get("Sucursal"),
+                    marca=row.get("Marca"),
+                    dpto=row.get("Dpto."),
+                    linea=row.get("Línea"),
+                    cod_art_ripley=row.get("Cód. Art. Ripley"),
+                    desc_art_ripley=row.get("Desc. Art. Ripley"),
+                    cod_art_prov_case_pack=row.get("Cód. Art. Prov. (Case Pack)"),
+                    desc_art_prov_case_pack=row.get("Desc. Art. Prov. (Case Pack)"),
+                    transfer_on_order_u=row.get("Tranfer. on order (u)"),
+                    transfer_on_order_pesos=row.get("Tranfer. on order ($)"),
+                    stock_on_hand_disponible_u=row.get("Stock on Hand Disponible(u)"),
+                    stock_on_hand_disponible_pesos=row.get(
+                        "Stock on Hand Disponible($)"
+                    ),
+                    stock_on_hand_empresa_u=row.get("Stock on hand empresa(u)"),
+                    stock_on_hand_empresa_pesos=row.get("Stock on hand empresa($)"),
+                    stock_protegido_u=row.get("Stock Protegido(u)"),
+                    stock_pdte_por_oc_u=row.get("Stock Pdte por OC (u)"),
                 )
             )
         return responses

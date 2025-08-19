@@ -9,10 +9,6 @@ class Config:
 
         self.config: Dict[str, Any] = {
             "env": self._get_env_var("ENV", str, default="development"),
-            "ripley":{
-                "username": self._get_env_var("RIPLEY_USERNAME", str),
-                "password": self._get_env_var("RIPLEY_PASSWORD", str),
-            }
         }
 
     def _get_env_var(self, name, expected_type, default=None):
