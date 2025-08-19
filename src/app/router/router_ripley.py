@@ -1,7 +1,8 @@
 from fastapi import APIRouter
-from fastapi.responses import JSONResponse
+from fastapi.responses import StreamingResponse
 from src.scraper.ripley.scraper import RipleyScraper
 from src.models.ripley import RipleyCredentials
+import io
 
 
 class RouterRipley:
@@ -20,4 +21,9 @@ class RouterRipley:
         date_to: str = "31-07-2025",
     ):
         result = await self.scraper.run(ripley_credentials, date_from, date_to)
-        return result
+        stream = io.StringIO()
+        result.to_csv(stream, index=False)
+        response = StreamingResponse(iter([stream.getvalue()]), media_type="text/csv")
+        response.headers["Content-Disposition"] = "attachment; filename=data.csv"
+
+        return response

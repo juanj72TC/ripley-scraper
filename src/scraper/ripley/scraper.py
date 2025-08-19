@@ -63,15 +63,14 @@ class RipleyScraper:
                 menu_frame = await self._search_menu_frame(page)
                 match ripley_credentials.type_report:
                     case ripley_credentials.TypeReport.sales:
-                        return self.convert_to_ripley_response(
-                            await self._sales_process(
-                                menu_frame, page, date_from, date_to
-                            )
+                        response = await self._sales_process(
+                            menu_frame, page, date_from, date_to
                         )
+                        return pd.DataFrame(response)
+
                     case ripley_credentials.TypeReport.stock:
-                        return self._convert_to_stock_response(
-                            await self._stock_process(menu_frame, page)
-                        )
+                        response = await self._stock_process(menu_frame, page)
+                        return pd.DataFrame(response)
 
         except TimeoutError:
             if context:
@@ -107,8 +106,7 @@ class RipleyScraper:
             date_from=date_from or "01-07-2025",
             date_to=date_to or "31-07-2025",
         )
-        df = await self._get_data(target_frame)
-        return df
+        return await self._get_data(target_frame)
 
     async def _stock_process(self, menu_frame, page):
         await menu_frame.evaluate(
@@ -119,6 +117,7 @@ class RipleyScraper:
         await target_frame.click(self.SELECTORS["search_button"])
         await target_frame.wait_for_load_state("networkidle", timeout=20000)
         await target_frame.select_option("select[name='pageSize']", "200")
+        await target_frame.wait_for_timeout(self.TIMEOUTS["default"])
         return await self._get_data(target_frame)
 
     async def _get_all_items_selector(self, target_frame, name_selector: str):
