@@ -106,7 +106,7 @@ class RipleyScraper:
             date_from=date_from or "01-07-2025",
             date_to=date_to or "31-07-2025",
         )
-        return await self._get_data(target_frame)
+        return await self._get_data(target_frame,1)
 
     async def _stock_process(self, menu_frame, page):
         await menu_frame.evaluate(
@@ -127,7 +127,7 @@ class RipleyScraper:
         )
         return options, len(options)
 
-    async def _get_data(self, target_frame):
+    async def _get_data(self, target_frame, header: int = 0):
         options, len_ = await self._get_all_items_selector(target_frame, "pag")
         dataframes = []
         if len_ == 0:
@@ -139,7 +139,7 @@ class RipleyScraper:
                 )
                 await target_frame.wait_for_timeout(self.TIMEOUTS["default"])
                 dataframes.append(
-                    self.convert_to_dataframe(await target_frame.content())
+                    self.convert_to_dataframe(await target_frame.content(),header)
                 )
             return pd.concat(dataframes, ignore_index=True)
         if len_ == 1:
@@ -149,14 +149,14 @@ class RipleyScraper:
             await target_frame.wait_for_timeout(self.TIMEOUTS["default"])
             return self.convert_to_dataframe(await target_frame.content())
 
-    def convert_to_dataframe(self, html_content):
+    def convert_to_dataframe(self, html_content, header: int = 0):
         soup = BeautifulSoup(html_content, "html.parser")
         table = soup.find("table", class_=self.SELECTORS["table_class"])
         if not table:
             print("[❌] No se encontró la tabla DojoTable.")
             return []
 
-        df = pd.read_html(StringIO(str(table)), header=1)[0]
+        df = pd.read_html(StringIO(str(table)), header=header)[0]
         return df
 
     async def _do_login(self, page, ripley_credentials: RipleyCredentials):
