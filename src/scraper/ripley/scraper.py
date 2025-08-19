@@ -21,7 +21,7 @@ class RipleyScraper:
     }
     BASE_URL = "https://b2b.ripley.cl"
     TIMEOUTS = {
-        "default": 15000,
+        "default": 1000,
         "navigation": 90000,
         "network": 15000,
     }
@@ -63,20 +63,12 @@ class RipleyScraper:
                 target_frame = await self._search_target_frame(page)
                 await target_frame.wait_for_load_state("load")
 
-                html_content = await self._fill_input_dates(
+                target_frame = await self._fill_input_dates(
                     target_frame,
                     date_from=date_from or "01-07-2025",
                     date_to=date_to or "31-07-2025",
                 )
-
-                soup = BeautifulSoup(html_content, "html.parser")
-                table = soup.find("table", class_=self.SELECTORS["table_class"])
-                if not table:
-                    print("[❌] No se encontró la tabla DojoTable.")
-                    return []
-
-                df = pd.read_html(str(table), header=1)[0]
-                df.to_csv("src/artifacts/exports/ripley_data.csv", index=False)
+                df = await self._get_sales_data(target_frame)
                 return self.convert_to_ripley_response(df)
 
         except TimeoutError:
@@ -96,14 +88,48 @@ class RipleyScraper:
                     await context.close()
             except Exception:
                 pass
-            # try:
-            #     if browser:
-            #         await browser.close()
-            # except Exception:
-            #     pass
-            # self.browser_manager.terminate_browser()
 
     # --- Métodos privados async ---
+    async def _get_all_items_selector(self, target_frame, name_selector: str):
+        options = await target_frame.eval_on_selector_all(
+            f"select[name='{name_selector}'] option",
+            "elements => elements.map(el => ({value: el.value, text: el.textContent.trim()}))",
+        )
+        return options, len(options)
+
+    async def _get_sales_data(self, target_frame):
+        options, len_ = await self._get_all_items_selector(target_frame, "pag")
+        dataframes = []
+        if len_ == 0:
+            return []
+        if len_ > 1:
+            for option in options:
+                await target_frame.select_option(
+                    "select[name='pag']", option.get("value")
+                )
+                await target_frame.wait_for_timeout(self.TIMEOUTS["default"])
+                dataframes.append(
+                    self.convert_to_dataframe(await target_frame.content())
+                )
+            return pd.concat(dataframes, ignore_index=True)
+        if len_ == 1:
+            # await target_frame.select_option(
+            #     "select[name='pag']", options[0].get("value")
+            # )
+            await target_frame.wait_for_timeout(self.TIMEOUTS["default"])
+            return self.convert_to_dataframe(await target_frame.content())
+
+    def convert_to_dataframe(self, html_content):
+        soup = BeautifulSoup(html_content, "html.parser")
+        table = soup.find("table", class_=self.SELECTORS["table_class"])
+        if not table:
+            print("[❌] No se encontró la tabla DojoTable.")
+            return []
+
+        df = pd.read_html(str(table), header=1)[0]
+        return df
+
+        pass
 
     async def _do_login(self, page):
         print("[*] Iniciando sesión en Ripley...")
@@ -157,7 +183,7 @@ class RipleyScraper:
         await target_frame.select_option("select[name='pageSize']", "200")
         await target_frame.wait_for_timeout(self.TIMEOUTS["default"])
 
-        return await target_frame.content()
+        return target_frame
 
     def convert_to_ripley_response(self, data: pd.DataFrame) -> list[RipleyResponse]:
         responses = []
