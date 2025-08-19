@@ -16,7 +16,10 @@ class RipleyScraper:
         "date_to_input": "input#txtFechaHasta",
         "search_button": "input[value='Buscar']",
         "table_class": "DojoTable",
+        "checkbox_upc": "input[name='chkConCodigoUpc']",
+        "checkbox_salida_archivo": "input[name='chkFile']",
     }
+    BASE_URL = "https://b2b.ripley.cl"
     TIMEOUTS = {
         "default": 15000,
         "navigation": 90000,
@@ -36,7 +39,7 @@ class RipleyScraper:
         context = None
         try:
             async with async_playwright() as p:
-                #TODO: Validar que el navegador siempre este en ejecución
+                # TODO: Validar que el navegador siempre este en ejecución
                 # connect_url = (
                 #     getattr(self.browser_manager, "connect_url", None)
                 #     or f"http://127.0.0.1:{self.browser_manager.port}"
@@ -54,7 +57,7 @@ class RipleyScraper:
 
                 menu_frame = await self._search_menu_frame(page)
                 await menu_frame.evaluate(
-                    "() => executeActividad('1348','portal/comercial/consulta/ConsDetalladaVentasSinStockBuscar.do')"
+                    "() => executeActividad('1274','portal/comercial/consulta/ConsDetalladaVentasBuscar.do')"
                 )
 
                 target_frame = await self._search_target_frame(page)
@@ -128,7 +131,7 @@ class RipleyScraper:
         for _ in range(40):  # ~20s
             for f in page.frames:
                 u = f.url or ""
-                if "ConsDetalladaVentasSinStockBuscar.do" in u:
+                if "ConsDetalladaVentasBuscar.do" in u:
                     return f
             await page.wait_for_timeout(500)
         raise RuntimeError("No se encontró el frame del formulario de ventas.")
@@ -143,6 +146,8 @@ class RipleyScraper:
         await target_frame.wait_for_selector(
             self.SELECTORS["date_to_input"], timeout=10000
         )
+        await target_frame.check(self.SELECTORS["checkbox_upc"])
+        # await target_frame.check(self.SELECTORS["checkbox_salida_archivo"])
 
         await target_frame.fill(self.SELECTORS["date_from_input"], date_from)
         await target_frame.fill(self.SELECTORS["date_to_input"], date_to)
@@ -157,19 +162,24 @@ class RipleyScraper:
         for _, row in data.iterrows():
             responses.append(
                 RipleyResponse(
-                    fecha=row["Fecha"],
-                    cod_art_ripley=row["Cód.Art. Ripley"],
+                    cod_art_ripley=row.get("Cód.Art. Ripley"),
                     upc=row.get("UPC"),
-                    desc_art_ripley=row["Desc.Art. Ripley"],
-                    cod_art_prov_case_pack=row["Cód.Art.Prov. (Case Pack)"],
-                    desc_art_prov_case_pack=row["Desc.Art.Prov.(Case Pack)"],
-                    sucursal=row["Sucursal"],
-                    venta_u=row["Venta (u)"],
-                    venta_pesos=row["Venta ($)"],
-                    costo_de_venta_pesos=row["Costo De Venta($)"],
-                    mark_up=row["Mark-up"],
-                    marca=row["Marca"],
-                    temp=row["Temp."],
+                    desc_art_ripley=row.get("Desc.Art. Ripley"),
+                    cod_art_prov_case_pack=row.get("Cód.Art.Prov. (Case Pack)"),
+                    desc_art_prov_case_pack=row.get("Desc.Art.Prov.(Case Pack)"),
+                    sucursal=row.get("Sucursal"),
+                    venta_u=row.get("Venta (u)"),
+                    venta_pesos=row.get("Venta ($)"),
+                    transfer_on_order_u=row.get("Transfer. on Order(u)"),
+                    transfer_on_order_pesos=row.get("Transfer. on Order($)"),
+                    stock_on_hand_disponible_u=row.get("Stock on Hand Disponible (u)"),
+                    stock_on_hand_disponible_pesos=row.get(
+                        "Stock on Hand Disponible ($)"
+                    ),
+                    costo_de_venta_pesos=row.get("Costo De Venta($)"),
+                    mark_up=row.get("Mark-up"),
+                    marca=row.get("Marca"),
+                    temp=row.get("Temp."),
                 )
             )
         return responses
