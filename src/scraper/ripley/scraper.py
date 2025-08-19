@@ -154,6 +154,8 @@ class RipleyScraper:
 
         await target_frame.click(self.SELECTORS["search_button"])
         await target_frame.wait_for_load_state("networkidle", timeout=20000)
+        await target_frame.select_option("select[name='pageSize']", "200")
+        await target_frame.wait_for_timeout(self.TIMEOUTS["default"])
 
         return await target_frame.content()
 
