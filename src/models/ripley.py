@@ -46,6 +46,11 @@ class RipleyCredentials(BaseModel):
     type_report: TypeReport
 
 
+class RipleyRequestCredentials(BaseModel):
+    username: str
+    password: str
+
+
 class StockResponseRipley(BaseModel):
     sucursal: Optional[str]
     marca: Optional[str]

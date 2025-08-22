@@ -60,7 +60,8 @@ class RipleyScraper:
 
                 await self._do_login(page, ripley_credentials)
 
-                menu_frame = await self._search_menu_frame(page)
+                menu_frame, message = await self._search_menu_frame(page)
+
                 match ripley_credentials.type_report:
                     case ripley_credentials.TypeReport.sales:
                         response = await self._sales_process(
@@ -106,7 +107,7 @@ class RipleyScraper:
             date_from=date_from or "01-07-2025",
             date_to=date_to or "31-07-2025",
         )
-        return await self._get_data(target_frame,1)
+        return await self._get_data(target_frame, 1)
 
     async def _stock_process(self, menu_frame, page):
         await menu_frame.evaluate(
@@ -139,7 +140,7 @@ class RipleyScraper:
                 )
                 await target_frame.wait_for_timeout(self.TIMEOUTS["default"])
                 dataframes.append(
-                    self.convert_to_dataframe(await target_frame.content(),header)
+                    self.convert_to_dataframe(await target_frame.content(), header)
                 )
             return pd.concat(dataframes, ignore_index=True)
         if len_ == 1:
@@ -173,13 +174,13 @@ class RipleyScraper:
         await page.click(self.SELECTORS["login_button"])
         await page.wait_for_load_state("networkidle", timeout=self.TIMEOUTS["network"])
         await page.screenshot(path="src/artifacts/screenshots/brave_post_login.png")
-        print("[✅] ¡Login exitoso!")
 
     async def _search_menu_frame(self, page):
         for frame in page.frames:
             if "setProveedor.do" in (frame.url or ""):
-                return frame
-        raise RuntimeError("No se encontró el frame del menú (setProveedor.do).")
+                print("Login exitoso")
+                return frame, True
+        raise RuntimeError("Credenciales invalidas")
 
     async def _search_target_frame(self, page, detail_report: str):
         for _ in range(40):  # ~20s
